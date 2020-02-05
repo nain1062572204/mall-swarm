@@ -225,63 +225,63 @@ public class PmsProductExample {
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdIsNull() {
-            addCriterion("pms_product_category_id is null");
+        public Criteria andProductCategoryIdIsNull() {
+            addCriterion("product_category_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdIsNotNull() {
-            addCriterion("pms_product_category_id is not null");
+        public Criteria andProductCategoryIdIsNotNull() {
+            addCriterion("product_category_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdEqualTo(Long value) {
-            addCriterion("pms_product_category_id =", value, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdEqualTo(Long value) {
+            addCriterion("product_category_id =", value, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdNotEqualTo(Long value) {
-            addCriterion("pms_product_category_id <>", value, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdNotEqualTo(Long value) {
+            addCriterion("product_category_id <>", value, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdGreaterThan(Long value) {
-            addCriterion("pms_product_category_id >", value, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdGreaterThan(Long value) {
+            addCriterion("product_category_id >", value, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdGreaterThanOrEqualTo(Long value) {
-            addCriterion("pms_product_category_id >=", value, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("product_category_id >=", value, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdLessThan(Long value) {
-            addCriterion("pms_product_category_id <", value, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdLessThan(Long value) {
+            addCriterion("product_category_id <", value, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdLessThanOrEqualTo(Long value) {
-            addCriterion("pms_product_category_id <=", value, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdLessThanOrEqualTo(Long value) {
+            addCriterion("product_category_id <=", value, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdIn(List<Long> values) {
-            addCriterion("pms_product_category_id in", values, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdIn(List<Long> values) {
+            addCriterion("product_category_id in", values, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdNotIn(List<Long> values) {
-            addCriterion("pms_product_category_id not in", values, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdNotIn(List<Long> values) {
+            addCriterion("product_category_id not in", values, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdBetween(Long value1, Long value2) {
-            addCriterion("pms_product_category_id between", value1, value2, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdBetween(Long value1, Long value2) {
+            addCriterion("product_category_id between", value1, value2, "productCategoryId");
             return (Criteria) this;
         }
 
-        public Criteria andPmsProductCategoryIdNotBetween(Long value1, Long value2) {
-            addCriterion("pms_product_category_id not between", value1, value2, "pmsProductCategoryId");
+        public Criteria andProductCategoryIdNotBetween(Long value1, Long value2) {
+            addCriterion("product_category_id not between", value1, value2, "productCategoryId");
             return (Criteria) this;
         }
 

@@ -3,15 +3,13 @@ package com.wang.mall;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
 /**
  * @author 王念
- * @create 2020-01-27 20:08
+ * @create 2020-02-04 18:47
  */
-
 @SpringBootApplication
-public class AdminApplication {
+public class FrontApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AdminApplication.class, args);
+        SpringApplication.run(FrontApplication.class, args);
     }
 }

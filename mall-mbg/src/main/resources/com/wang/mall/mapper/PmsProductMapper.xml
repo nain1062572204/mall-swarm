@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wang.mall.model.PmsProduct">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="product_attribute_category_id" jdbcType="BIGINT" property="productAttributeCategoryId" />
-    <result column="pms_product_category_id" jdbcType="BIGINT" property="pmsProductCategoryId" />
+    <result column="product_category_id" jdbcType="BIGINT" property="productCategoryId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="pic" jdbcType="VARCHAR" property="pic" />
     <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
@@ -89,10 +89,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, product_attribute_category_id, pms_product_category_id, name, pic, product_sn, 
-    delete_status, publish_status, new_status, recommand_status, verify_status, sort, 
-    sale, price, promotion_price, description, orginal_price, stock, unit, weight, services_ids, 
-    keywords, album_pics, product_category_name
+    id, product_attribute_category_id, product_category_id, name, pic, product_sn, delete_status, 
+    publish_status, new_status, recommand_status, verify_status, sort, sale, price, promotion_price, 
+    description, orginal_price, stock, unit, weight, services_ids, keywords, album_pics, 
+    product_category_name
   </sql>
   <sql id="Blob_Column_List">
     detail_html
@@ -149,7 +149,7 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into pms_product (product_attribute_category_id, pms_product_category_id, 
+    insert into pms_product (product_attribute_category_id, product_category_id, 
       name, pic, product_sn, 
       delete_status, publish_status, new_status, 
       recommand_status, verify_status, sort, 
@@ -158,7 +158,7 @@
       unit, weight, services_ids, 
       keywords, album_pics, product_category_name, 
       detail_html)
-    values (#{productAttributeCategoryId,jdbcType=BIGINT}, #{pmsProductCategoryId,jdbcType=BIGINT}, 
+    values (#{productAttributeCategoryId,jdbcType=BIGINT}, #{productCategoryId,jdbcType=BIGINT}, 
       #{name,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{productSn,jdbcType=VARCHAR}, 
       #{deleteStatus,jdbcType=INTEGER}, #{publishStatus,jdbcType=INTEGER}, #{newStatus,jdbcType=INTEGER}, 
       #{recommandStatus,jdbcType=INTEGER}, #{verifyStatus,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
@@ -177,8 +177,8 @@
       <if test="productAttributeCategoryId != null">
         product_attribute_category_id,
       </if>
-      <if test="pmsProductCategoryId != null">
-        pms_product_category_id,
+      <if test="productCategoryId != null">
+        product_category_id,
       </if>
       <if test="name != null">
         name,
@@ -251,8 +251,8 @@
       <if test="productAttributeCategoryId != null">
         #{productAttributeCategoryId,jdbcType=BIGINT},
       </if>
-      <if test="pmsProductCategoryId != null">
-        #{pmsProductCategoryId,jdbcType=BIGINT},
+      <if test="productCategoryId != null">
+        #{productCategoryId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -337,8 +337,8 @@
       <if test="record.productAttributeCategoryId != null">
         product_attribute_category_id = #{record.productAttributeCategoryId,jdbcType=BIGINT},
       </if>
-      <if test="record.pmsProductCategoryId != null">
-        pms_product_category_id = #{record.pmsProductCategoryId,jdbcType=BIGINT},
+      <if test="record.productCategoryId != null">
+        product_category_id = #{record.productCategoryId,jdbcType=BIGINT},
       </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
@@ -415,7 +415,7 @@
     update pms_product
     set id = #{record.id,jdbcType=BIGINT},
       product_attribute_category_id = #{record.productAttributeCategoryId,jdbcType=BIGINT},
-      pms_product_category_id = #{record.pmsProductCategoryId,jdbcType=BIGINT},
+      product_category_id = #{record.productCategoryId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       pic = #{record.pic,jdbcType=VARCHAR},
       product_sn = #{record.productSn,jdbcType=VARCHAR},
@@ -446,7 +446,7 @@
     update pms_product
     set id = #{record.id,jdbcType=BIGINT},
       product_attribute_category_id = #{record.productAttributeCategoryId,jdbcType=BIGINT},
-      pms_product_category_id = #{record.pmsProductCategoryId,jdbcType=BIGINT},
+      product_category_id = #{record.productCategoryId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
       pic = #{record.pic,jdbcType=VARCHAR},
       product_sn = #{record.productSn,jdbcType=VARCHAR},
@@ -478,8 +478,8 @@
       <if test="productAttributeCategoryId != null">
         product_attribute_category_id = #{productAttributeCategoryId,jdbcType=BIGINT},
       </if>
-      <if test="pmsProductCategoryId != null">
-        pms_product_category_id = #{pmsProductCategoryId,jdbcType=BIGINT},
+      <if test="productCategoryId != null">
+        product_category_id = #{productCategoryId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -553,7 +553,7 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wang.mall.model.PmsProduct">
     update pms_product
     set product_attribute_category_id = #{productAttributeCategoryId,jdbcType=BIGINT},
-      pms_product_category_id = #{pmsProductCategoryId,jdbcType=BIGINT},
+      product_category_id = #{productCategoryId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       pic = #{pic,jdbcType=VARCHAR},
       product_sn = #{productSn,jdbcType=VARCHAR},
@@ -581,7 +581,7 @@
   <update id="updateByPrimaryKey" parameterType="com.wang.mall.model.PmsProduct">
     update pms_product
     set product_attribute_category_id = #{productAttributeCategoryId,jdbcType=BIGINT},
-      pms_product_category_id = #{pmsProductCategoryId,jdbcType=BIGINT},
+      product_category_id = #{productCategoryId,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
       pic = #{pic,jdbcType=VARCHAR},
       product_sn = #{productSn,jdbcType=VARCHAR},

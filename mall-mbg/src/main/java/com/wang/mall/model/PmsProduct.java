@@ -12,7 +12,7 @@ public class PmsProduct implements Serializable {
     private Long productAttributeCategoryId;
 
     @ApiModelProperty(value = "分类id")
-    private Long pmsProductCategoryId;
+    private Long productCategoryId;
 
     @ApiModelProperty(value = "标题")
     private String name;
@@ -96,12 +96,12 @@ public class PmsProduct implements Serializable {
         this.productAttributeCategoryId = productAttributeCategoryId;
     }
 
-    public Long getPmsProductCategoryId() {
-        return pmsProductCategoryId;
+    public Long getProductCategoryId() {
+        return productCategoryId;
     }
 
-    public void setPmsProductCategoryId(Long pmsProductCategoryId) {
-        this.pmsProductCategoryId = pmsProductCategoryId;
+    public void setProductCategoryId(Long productCategoryId) {
+        this.productCategoryId = productCategoryId;
     }
 
     public String getName() {
@@ -288,7 +288,7 @@ public class PmsProduct implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", productAttributeCategoryId=").append(productAttributeCategoryId);
-        sb.append(", pmsProductCategoryId=").append(pmsProductCategoryId);
+        sb.append(", productCategoryId=").append(productCategoryId);
         sb.append(", name=").append(name);
         sb.append(", pic=").append(pic);
         sb.append(", productSn=").append(productSn);

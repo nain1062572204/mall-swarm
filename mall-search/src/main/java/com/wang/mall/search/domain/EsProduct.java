@@ -16,7 +16,7 @@ import java.util.List;
  * 搜索中的商品信息
  */
 @Data
-@Document(indexName = "pms", type = "product",shards = 1,replicas = 0)
+@Document(indexName = "pms", type = "product", shards = 1, replicas = 0)
 public class EsProduct implements Serializable {
     private static final long serialVersionUID = -4475476547105423116L;
 
@@ -24,17 +24,15 @@ public class EsProduct implements Serializable {
     private Long id;
     @Field(type = FieldType.Keyword)
     private String productSn;
-    @Field(type = FieldType.Keyword)
-    private String brandName;
     private Long productCategoryId;
     @Field(type = FieldType.Keyword)
     private String productCategoryName;
     private String pic;
-    @Field(analyzer = "ik_max_word",type = FieldType.Text)
+    @Field(analyzer = "ik_max_word", type = FieldType.Text)
     private String name;
-    @Field(analyzer = "ik_max_word",type = FieldType.Text)
+    @Field(analyzer = "ik_max_word", type = FieldType.Text)
     private String subTitle;
-    @Field(analyzer = "ik_max_word",type = FieldType.Text)
+    @Field(analyzer = "ik_max_word", type = FieldType.Text)
     private String keywords;
     private BigDecimal price;
     private Integer sale;
@@ -43,6 +41,6 @@ public class EsProduct implements Serializable {
     private Integer stock;
     private Integer promotionType;
     private Integer sort;
-    @Field(type =FieldType.Nested)
+    @Field(type = FieldType.Nested)
     private List<EsProductAttributeValue> attrValueList;
 }
