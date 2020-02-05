@@ -1,4 +1,4 @@
-package com.wang.mall.service.imol;
+package com.wang.mall.service.impl;
 
 import com.wang.mall.service.HomeService;
 import org.springframework.stereotype.Service;

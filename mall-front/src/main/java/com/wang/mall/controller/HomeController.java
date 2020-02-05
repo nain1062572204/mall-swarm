@@ -3,6 +3,7 @@ package com.wang.mall.controller;
 import com.wang.mall.common.api.CommonResult;
 import com.wang.mall.service.HomeService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class HomeController {
     @Autowired
     private HomeService homeService;
 
+    @ApiOperation(value = "获取首页数据")
     @GetMapping("/pageInfo")
     public CommonResult homeInfo() {
         return CommonResult.success(homeService.getPageInfo());

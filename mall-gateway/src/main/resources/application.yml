@@ -1,0 +1,15 @@
+server:
+  port: 8201
+spring:
+  application:
+    name: mall-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true  #使用小写service-id
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+
