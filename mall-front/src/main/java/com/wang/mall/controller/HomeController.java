@@ -21,8 +21,8 @@ public class HomeController {
     private HomeService homeService;
 
     @ApiOperation(value = "获取首页数据")
-    @GetMapping("/pageInfo")
+    @GetMapping("/content")
     public CommonResult homeInfo() {
-        return CommonResult.success(homeService.getPageInfo());
+        return CommonResult.success(homeService.content());
     }
 }

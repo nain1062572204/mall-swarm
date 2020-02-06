@@ -1,5 +1,6 @@
 package com.wang.mall.domain;
 
+import com.wang.mall.model.PmsProductCategory;
 import com.wang.mall.model.SmsHomeAdvertise;
 import com.wang.mall.model.SmsHomeBanner;
 import com.wang.mall.model.SmsHomePromo;
@@ -24,6 +25,7 @@ public class HomeContentResult implements Serializable {
     private List<SmsHomePromo> promos;
     //中间横线广告
     private List<SmsHomeBanner> banners;
-
+    //分类信息
+    private List<PmsProductCategory> pmsProductCategories;
 
 }

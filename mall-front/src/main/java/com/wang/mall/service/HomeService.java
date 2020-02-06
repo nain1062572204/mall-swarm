@@ -1,5 +1,7 @@
 package com.wang.mall.service;
 
+import com.wang.mall.domain.HomeContentResult;
+
 import java.util.Map;
 
 /**
@@ -11,5 +13,5 @@ public interface HomeService {
      * 获取首页信息
      *
      */
-    Map<String, Object> getPageInfo();
+    HomeContentResult content();
 }

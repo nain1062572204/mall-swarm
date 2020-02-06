@@ -1,10 +1,12 @@
 package com.wang.mall.service.impl;
 
+import com.wang.mall.domain.HomeContentResult;
+import com.wang.mall.model.SmsHomeAdvertise;
 import com.wang.mall.service.HomeService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 王念
@@ -13,12 +15,16 @@ import java.util.Map;
 @Service
 public class HomeServiceImpl implements HomeService {
     @Override
-    public Map<String, Object> getPageInfo() {
-        //获取分类信息
-        Map<String, Object> result = new HashMap<>(16);
-        //一级分类
-
-        result.put("手机 通讯", new String[]{"手机", "OnePlus 7Pro", "华为 P30", "华为 C8813D"});
-        return result;
+    public HomeContentResult content() {
+        HomeContentResult contentResult = new HomeContentResult();
+        List<SmsHomeAdvertise> advertises = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            SmsHomeAdvertise homeAdvertise = new SmsHomeAdvertise();
+            homeAdvertise.setId(new Long(i));
+            homeAdvertise.setPic("xxxxxxxxxxxxxxxxx");
+            advertises.add(homeAdvertise);
+        }
+        contentResult.setAdvertises(advertises);
+        return contentResult;
     }
 }
