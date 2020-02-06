@@ -1,12 +1,14 @@
 package com.wang.mall.service.impl;
 
 import com.wang.mall.domain.HomeContentResult;
-import com.wang.mall.model.SmsHomeAdvertise;
+import com.wang.mall.mapper.SmsHomeAdvertiseMapper;
+import com.wang.mall.mapper.SmsHomeBannerMapper;
+import com.wang.mall.mapper.SmsHomePromoMapper;
+import com.wang.mall.model.PmsProductCategory;
 import com.wang.mall.service.HomeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author 王念
@@ -14,17 +16,18 @@ import java.util.List;
  */
 @Service
 public class HomeServiceImpl implements HomeService {
+    @Autowired
+    private SmsHomeAdvertiseMapper advertiseMapper;
+    @Autowired
+    private SmsHomeBannerMapper bannerMapper;
+    @Autowired
+    private SmsHomePromoMapper promoMapper;
+    @Autowired
+    private PmsProductCategory pmsProductCategory;
+
     @Override
     public HomeContentResult content() {
         HomeContentResult contentResult = new HomeContentResult();
-        List<SmsHomeAdvertise> advertises = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            SmsHomeAdvertise homeAdvertise = new SmsHomeAdvertise();
-            homeAdvertise.setId(new Long(i));
-            homeAdvertise.setPic("xxxxxxxxxxxxxxxxx");
-            advertises.add(homeAdvertise);
-        }
-        contentResult.setAdvertises(advertises);
         return contentResult;
     }
 }

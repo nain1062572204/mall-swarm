@@ -2,7 +2,6 @@ package com.wang.mall.service;
 
 import com.wang.mall.domain.HomeContentResult;
 
-import java.util.Map;
 
 /**
  * @author 王念

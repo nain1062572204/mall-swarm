@@ -1,14 +1,12 @@
 package com.wang.mall.domain;
 
-import com.wang.mall.model.PmsProductCategory;
-import com.wang.mall.model.SmsHomeAdvertise;
-import com.wang.mall.model.SmsHomeBanner;
-import com.wang.mall.model.SmsHomePromo;
+import com.wang.mall.model.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 王念
@@ -26,6 +24,7 @@ public class HomeContentResult implements Serializable {
     //中间横线广告
     private List<SmsHomeBanner> banners;
     //分类信息
-    private List<PmsProductCategory> pmsProductCategories;
-
+    private List<Map<String, Map<String, PmsProductCategory>>> categories;
+    //推荐分类信息
+    private List<Map<String, List<PmsProduct>>> recommendCategories;
 }
