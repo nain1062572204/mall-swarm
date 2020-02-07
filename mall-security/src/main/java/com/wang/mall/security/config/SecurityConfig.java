@@ -28,7 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity
                 .authorizeRequests();
         for (String url : ignoreUrlsConfig().getUrls()) {
-            System.out.println(url);
             registry.antMatchers(url).permitAll();
         }
         //允许跨域请求的OPTIONS请求

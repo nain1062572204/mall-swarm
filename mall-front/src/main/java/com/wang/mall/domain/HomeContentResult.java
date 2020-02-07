@@ -24,7 +24,7 @@ public class HomeContentResult implements Serializable {
     //中间横线广告
     private List<SmsHomeBanner> banners;
     //分类信息
-    private List<Map<String, Map<String, PmsProductCategory>>> categories;
+    private List<Map<String, List<PmsProductCategory>>> categories;
     //推荐分类信息
     private List<Map<String, List<PmsProduct>>> recommendCategories;
 }
