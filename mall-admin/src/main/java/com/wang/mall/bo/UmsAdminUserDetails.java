@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 public class UmsAdminUserDetails implements UserDetails {
     private static final long serialVersionUID = 6811818070079863639L;
+
     private UmsAdmin umsAdmin;
     private List<UmsPermission> permissionList;
 
@@ -29,7 +30,7 @@ public class UmsAdminUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //返回当前用户的权限
         return permissionList.stream()
-                .filter(permission -> permission.getValue() != null && !permission.getValue().equals(""))
+                .filter(permission -> permission.getValue() != null && !permission.getValue().trim().equals(""))
                 .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
                 .collect(Collectors.toList());
     }

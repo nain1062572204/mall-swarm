@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "FeignFrontController", description = "Feign调用mall-front接口实例")
 @RestController
-@RequestMapping("/feign/front")
+@RequestMapping("/front")
 public class FeignFrontController {
     @Autowired
     private FeignFrontService feignFrontService;
