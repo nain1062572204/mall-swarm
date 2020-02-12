@@ -1,7 +1,7 @@
  # mall-swarm
  ##项目介绍
  `mall-swarm` 是一套微服务商城，采用Spring cloud、SpringBoot、Mybaits、Elasticsearch等核心技术搭建
-##组织结构
+ ##组织结构
 ``` lua
 mall
 ├── mall-common -- 工具类及通用代码模块
