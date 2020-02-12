@@ -52,11 +52,10 @@ public class PmsProductController {
 
     @ApiOperation("查询商品")
     @GetMapping("/list")
-    @PreAuthorize("hasAnyAuthority('pms:prodcut:read')")
-    public CommonResult<CommonPage<PmsProduct>> list(
-            @RequestBody PmsProductQueryParam productQueryParam,
-            @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
-            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
+    @PreAuthorize("hasAnyAuthority('pms:product:read')")
+    public CommonResult<CommonPage<PmsProduct>> list(PmsProductQueryParam productQueryParam,
+                                                     @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
+                                                     @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
         List<PmsProduct> products = productService.list(productQueryParam, pageSize, pageNum);
         return CommonResult.success(CommonPage.restPage(products));
     }
@@ -71,10 +70,9 @@ public class PmsProductController {
     @ApiOperation("批量修改审核状态")
     @PutMapping("/update/verifyStatus")
     @PreAuthorize("hasAnyAuthority('pms:product:update')")
-    public CommonResult updateVerifyStatus(
-            @RequestParam("ids") List<Long> ids,
-            @RequestParam("verifyStatus") Integer verifyStatus,
-            @RequestParam("detail") String detail
+    public CommonResult updateVerifyStatus(@RequestParam("ids") List<Long> ids,
+                                           @RequestParam("verifyStatus") Integer verifyStatus,
+                                           @RequestParam("detail") String detail
     ) {
         int count = productService.updateVerifyStatus(ids, verifyStatus, detail);
         return count > 0 ? CommonResult.success(count) : CommonResult.failed();

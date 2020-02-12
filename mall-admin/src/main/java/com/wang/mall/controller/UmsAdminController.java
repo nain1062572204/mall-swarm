@@ -2,18 +2,19 @@ package com.wang.mall.controller;
 
 import com.wang.mall.common.api.CommonResult;
 import com.wang.mall.dto.UmsAdminLoginParam;
+import com.wang.mall.model.UmsAdmin;
+import com.wang.mall.model.UmsRole;
 import com.wang.mall.service.UmsAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,5 +45,24 @@ public class UmsAdminController {
         return CommonResult.success(tokenMap);
 
 
+    }
+
+    @ApiOperation("获取用户信息")
+    @GetMapping("/info")
+    public CommonResult info(Principal principal) {
+        String username = principal.getName();
+        UmsAdmin admin = adminService.getAdminByUsername(username);
+        Map<String, Object> data = new HashMap<>(4);
+        data.put("username", admin.getUsername());
+        data.put("roles", adminService.getRoles(admin.getId()));
+        data.put("icon", admin.getIcon());
+        return CommonResult.success(data);
+    }
+
+    @ApiOperation("获取指定用户的角色")
+    @GetMapping(value = "/role/{adminId}")
+    public CommonResult<List<UmsRole>> getRoleList(@PathVariable Long adminId) {
+        List<UmsRole> roleList = adminService.getRoles(adminId);
+        return CommonResult.success(roleList);
     }
 }

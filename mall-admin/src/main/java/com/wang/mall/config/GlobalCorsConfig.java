@@ -10,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
  * @author 王念
  * @create 2020-02-07 18:45
  */
-@Configuration
+//@Configuration
 public class GlobalCorsConfig {
     /**
      * 允许跨域调用

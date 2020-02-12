@@ -2,6 +2,7 @@ package com.wang.mall.service;
 
 import com.wang.mall.model.UmsAdmin;
 import com.wang.mall.model.UmsPermission;
+import com.wang.mall.model.UmsRole;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
@@ -33,4 +34,8 @@ public interface UmsAdminService {
      * 登录
      */
     String login(String username, String password);
+    /**
+     * 获取用户角色
+     */
+    List<UmsRole> getRoles(Long adminId);
 }

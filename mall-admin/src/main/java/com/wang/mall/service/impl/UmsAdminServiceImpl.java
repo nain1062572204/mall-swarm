@@ -4,10 +4,7 @@ import com.wang.mall.bo.UmsAdminUserDetails;
 import com.wang.mall.dao.UmsAdminRoleRelationDao;
 import com.wang.mall.mapper.UmsAdminLoginLogMapper;
 import com.wang.mall.mapper.UmsAdminMapper;
-import com.wang.mall.model.UmsAdmin;
-import com.wang.mall.model.UmsAdminExample;
-import com.wang.mall.model.UmsAdminLoginLog;
-import com.wang.mall.model.UmsPermission;
+import com.wang.mall.model.*;
 import com.wang.mall.security.util.JwtTokenUtil;
 import com.wang.mall.service.UmsAdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -92,6 +89,11 @@ public class UmsAdminServiceImpl implements UmsAdminService {
             log.warn("登录异常:{}", e.getMessage());
         }
         return token;
+    }
+
+    @Override
+    public List<UmsRole> getRoles(Long adminId) {
+        return adminRoleRelationDao.getRoleList(adminId);
     }
 
     /**
