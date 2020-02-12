@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * 商品分类管理Controller
+ *
  * @author 王念
  * @create 2020-02-10 17:43
  */
-@Api(tags = "PmsProductCategoryController", description = "商品分类管理Controller")
+@Api(tags = "PmsProductCategoryController", description = "商品分类管理")
 @RequestMapping("/productCategory")
 @RestController
 public class PmsProductCategoryController {

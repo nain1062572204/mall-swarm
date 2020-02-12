@@ -20,7 +20,7 @@ import java.util.Map;
  * @author 王念
  * @create 2020-02-07 18:49
  */
-@Api(value = "后台用户Controller", tags = "UmsAdminController")
+@Api(description = "后台用户管理", tags = "UmsAdminController")
 @RestController
 @RequestMapping("/admin")
 public class UmsAdminController {
