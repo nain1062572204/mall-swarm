@@ -60,6 +60,7 @@ public class Swagger2Config {
         result.add(getContextByPath("/product/.*"));
         result.add(getContextByPath("/productCategory/.*"));
         result.add(getContextByPath("/admin/role/.*"));
+        result.add(getContextByPath("/advertise/.*"));
         return result;
     }
 
