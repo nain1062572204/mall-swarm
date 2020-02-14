@@ -62,6 +62,8 @@ public class Swagger2Config {
         result.add(getContextByPath("/admin/role/.*"));
         result.add(getContextByPath("/advertise/.*"));
         result.add(getContextByPath("/promo/.*"));
+        result.add(getContextByPath("/flashSession/.*"));
+        result.add(getContextByPath("/flashProductRelation/.*"));
         return result;
     }
 

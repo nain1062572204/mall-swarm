@@ -19,6 +19,9 @@ public class SmsFlashPromotionSession implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
+    @ApiModelProperty(value = "场次名称")
+    private String name;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -61,6 +64,14 @@ public class SmsFlashPromotionSession implements Serializable {
         this.createTime = createTime;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -72,6 +83,7 @@ public class SmsFlashPromotionSession implements Serializable {
         sb.append(", endTime=").append(endTime);
         sb.append(", status=").append(status);
         sb.append(", createTime=").append(createTime);
+        sb.append(", name=").append(name);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
