@@ -20,6 +20,9 @@ spring:
       max-file-size: 10MB #最大文件上传大小
   application:
     name: mall-admin
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml

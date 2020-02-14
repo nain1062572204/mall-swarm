@@ -17,20 +17,20 @@ import java.util.List;
 @Getter
 @Setter
 public class PmsProductCategoryParam {
-    @ApiModelProperty("父分类id")
+    @ApiModelProperty(value = "父分类id",example = "0")
     private Long parentId;
     @ApiModelProperty(value = "商品分类名称", required = true)
     @NotEmpty(message = "商品分类名不能为空")
     private String name;
     @ApiModelProperty("分类单位")
     private String productUnit;
-    @ApiModelProperty("是否在导航栏显示")
+    @ApiModelProperty(value = "是否在导航栏显示",example = "1")
     @FlagValidator(value = {"0", "1"}, message = "状态只能为0或1")
     private Integer navStatus;
-    @ApiModelProperty("是否进行显示")
+    @ApiModelProperty(value = "是否进行显示",example = "1")
     @FlagValidator(value = {"0", "1"}, message = "状态只能为0或1")
     private Integer showStatus;
-    @ApiModelProperty("排序")
+    @ApiModelProperty(value = "排序",example = "0")
     @Min(value = 0, message = "排序最小为0")
     private Integer sort;
     @ApiModelProperty("图标")

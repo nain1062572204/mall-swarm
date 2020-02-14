@@ -58,9 +58,10 @@ public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
 
     @Override
     public List<SmsHomeAdvertise> list(Integer type, String endTime, Integer pageSize, Integer pageNum) {
-        PageHelper.offsetPage(pageNum, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
         SmsHomeAdvertiseExample.Criteria criteria = example.createCriteria();
+        example.setOrderByClause("sort desc");
         if (type != null)
             criteria.andTypeEqualTo(type);
         if (!StringUtils.isEmpty(endTime)) {
@@ -83,7 +84,6 @@ public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
                 criteria.andEndTimeBetween(start, end);
             }
         }
-        example.setOrderByClause("sort desc");
         return advertiseMapper.selectByExample(example);
     }
 }
