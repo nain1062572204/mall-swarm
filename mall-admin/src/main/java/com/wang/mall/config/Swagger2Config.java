@@ -64,8 +64,10 @@ public class Swagger2Config {
         result.add(getContextByPath("/promo/.*"));
         result.add(getContextByPath("/flashSession/.*"));
         result.add(getContextByPath("/flashProductRelation/.*"));
+        result.add(getContextByPath("/productAttribute/.*"));
         return result;
     }
+
 
     private SecurityContext getContextByPath(String pathRegex) {
         return SecurityContext.builder()
