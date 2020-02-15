@@ -3,6 +3,7 @@
 <mapper namespace="com.wang.mall.mapper.SmsHomeAdvertiseMapper">
   <resultMap id="BaseResultMap" type="com.wang.mall.model.SmsHomeAdvertise">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="pic" jdbcType="VARCHAR" property="pic" />
     <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, type, pic, start_time, end_time, status, url, note, sort
+    id, name, type, pic, start_time, end_time, status, url, note, sort
   </sql>
   <select id="selectByExample" parameterType="com.wang.mall.model.SmsHomeAdvertiseExample" resultMap="BaseResultMap">
     select
@@ -107,12 +108,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into sms_home_advertise (type, pic, start_time, 
-      end_time, status, url, 
-      note, sort)
-    values (#{type,jdbcType=INTEGER}, #{pic,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
-      #{note,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+    insert into sms_home_advertise (name, type, pic, 
+      start_time, end_time, status, 
+      url, note, sort)
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{pic,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{url,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.wang.mall.model.SmsHomeAdvertise">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -120,6 +121,9 @@
     </selectKey>
     insert into sms_home_advertise
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
       <if test="type != null">
         type,
       </if>
@@ -146,6 +150,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
       <if test="type != null">
         #{type,jdbcType=INTEGER},
       </if>
@@ -184,6 +191,9 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
       <if test="record.type != null">
         type = #{record.type,jdbcType=INTEGER},
       </if>
@@ -216,6 +226,7 @@
   <update id="updateByExample" parameterType="map">
     update sms_home_advertise
     set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=INTEGER},
       pic = #{record.pic,jdbcType=VARCHAR},
       start_time = #{record.startTime,jdbcType=TIMESTAMP},
@@ -231,6 +242,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wang.mall.model.SmsHomeAdvertise">
     update sms_home_advertise
     <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
       <if test="type != null">
         type = #{type,jdbcType=INTEGER},
       </if>
@@ -260,7 +274,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wang.mall.model.SmsHomeAdvertise">
     update sms_home_advertise
-    set type = #{type,jdbcType=INTEGER},
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
       pic = #{pic,jdbcType=VARCHAR},
       start_time = #{startTime,jdbcType=TIMESTAMP},
       end_time = #{endTime,jdbcType=TIMESTAMP},

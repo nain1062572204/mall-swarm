@@ -7,7 +7,10 @@ import java.util.Date;
 public class SmsHomeAdvertise implements Serializable {
     private Long id;
 
-    @ApiModelProperty(value = "轮播位置：0->PC首页轮播；1->app首页轮播")
+    @ApiModelProperty(value = "名称")
+    private String name;
+
+    @ApiModelProperty(value = "广告位置：0->首页轮播；1->轮播下的促销；2->中间横向广告")
     private Integer type;
 
     private String pic;
@@ -38,6 +41,14 @@ public class SmsHomeAdvertise implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getType() {
@@ -111,6 +122,7 @@ public class SmsHomeAdvertise implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
         sb.append(", type=").append(type);
         sb.append(", pic=").append(pic);
         sb.append(", startTime=").append(startTime);

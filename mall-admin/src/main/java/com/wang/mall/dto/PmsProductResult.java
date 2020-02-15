@@ -12,6 +12,6 @@ import lombok.Setter;
 public class PmsProductResult extends PmsProductParam {
     private static final long serialVersionUID = -5936183314676110014L;
     //商品所选分类的父id
-    private Long id;
+    private Long cateParentId;
 
 }
