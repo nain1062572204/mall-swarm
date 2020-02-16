@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +56,9 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int create(PmsProductParam productParam) {
+        for (PmsSkuStock skuStock : productParam.getSkuStockList()) {
+            System.out.println(skuStock);
+        }
         //创建商品
         PmsProduct product = productParam;
         product.setId(null);
@@ -62,15 +66,15 @@ public class PmsProductServiceImpl implements PmsProductService {
         //设置满减价格、阶梯价格
         Long productId = product.getId();
         //阶梯价格
-        relateAndInsertList(productLadderDao, productParam.getProductLadders(), productId);
+        relateAndInsertList(productLadderDao, productParam.getProductLadderList(), productId);
         //满减价格
-        relateAndInsertList(productFullReductionDao, productParam.getProductFullReductions(), productId);
+        relateAndInsertList(productFullReductionDao, productParam.getProductFullReductionList(), productId);
         //处理sku编码
-        handleSkuStockCode(productParam.getSkuStocks(), productId);
+        handleSkuStockCode(productParam.getSkuStockList(), productId);
         //添加sku库存
-        relateAndInsertList(skuStockDao, productParam.getSkuStocks(), productId);
+        relateAndInsertList(skuStockDao, productParam.getSkuStockList(), productId);
         //添加商品参数,添加自定义商品规格
-        relateAndInsertList(productAttributeValueDao, productParam.getProductAttributeValues(), productId);
+        relateAndInsertList(productAttributeValueDao, productParam.getProductAttributeValueList(), productId);
         return 1;
     }
 
@@ -106,22 +110,22 @@ public class PmsProductServiceImpl implements PmsProductService {
         PmsProductLadderExample ladderExample = new PmsProductLadderExample();
         ladderExample.createCriteria().andProductIdEqualTo(id);
         productLadderMapper.deleteByExample(ladderExample);
-        relateAndInsertList(productLadderDao, productParam.getProductLadders(), id);
+        relateAndInsertList(productLadderDao, productParam.getProductLadderList(), id);
         //满减价格
         PmsProductFullReductionExample fullReductionExample = new PmsProductFullReductionExample();
         fullReductionExample.createCriteria().andProductIdEqualTo(id);
         productFullReductionMapper.deleteByExample(fullReductionExample);
-        relateAndInsertList(productFullReductionDao, productParam.getProductFullReductions(), id);
+        relateAndInsertList(productFullReductionDao, productParam.getProductFullReductionList(), id);
         //修改sku库存信息
         PmsSkuStockExample skuStockExample = new PmsSkuStockExample();
         skuStockExample.createCriteria().andProductIdEqualTo(id);
         skuStockMapper.deleteByExample(skuStockExample);
-        relateAndInsertList(skuStockDao, productParam.getSkuStocks(), id);
+        relateAndInsertList(skuStockDao, productParam.getSkuStockList(), id);
         //修改商品参数,添加自定义商品规格
         PmsProductAttributeValueExample productAttributeValueExample = new PmsProductAttributeValueExample();
         productAttributeValueExample.createCriteria().andProductIdEqualTo(id);
         productAttributeValueMapper.deleteByExample(productAttributeValueExample);
-        relateAndInsertList(productAttributeValueDao, productParam.getProductAttributeValues(), id);
+        relateAndInsertList(productAttributeValueDao, productParam.getProductAttributeValueList(), id);
         return 1;
     }
 
@@ -225,6 +229,7 @@ public class PmsProductServiceImpl implements PmsProductService {
     private void relateAndInsertList(Object dao, List dataList, Long productId) {
         if (CollectionUtils.isEmpty(dataList)) return;
         try {
+            if (CollectionUtils.isEmpty(dataList)) return;
             for (Object item : dataList) {
                 Method setId = item.getClass().getMethod("setId", Long.class);
                 setId.invoke(item, (Long) null);
@@ -233,9 +238,15 @@ public class PmsProductServiceImpl implements PmsProductService {
             }
             Method insertList = dao.getClass().getMethod("insertList", List.class);
             insertList.invoke(dao, dataList);
-        } catch (Exception e) {
-            log.warn("创建商品出错：{}", e.getMessage());
-            throw new RuntimeException(e.getMessage());
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            throw new RuntimeException("创建商品失败");
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            throw new RuntimeException("创建商品失败");
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            throw new RuntimeException("创建商品失败");
         }
     }
 }

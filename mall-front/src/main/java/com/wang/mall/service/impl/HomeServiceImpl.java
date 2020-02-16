@@ -5,13 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wang.mall.domain.HomeContentResult;
 import com.wang.mall.mapper.PmsProductCategoryMapper;
 import com.wang.mall.mapper.SmsHomeAdvertiseMapper;
-import com.wang.mall.mapper.SmsHomeBannerMapper;
-import com.wang.mall.mapper.SmsHomePromoMapper;
-
 import com.wang.mall.model.PmsProductCategory;
 import com.wang.mall.model.PmsProductCategoryExample;
-import com.wang.mall.model.SmsHomeAdvertise;
-import com.wang.mall.model.SmsHomeAdvertiseExample;
 import com.wang.mall.service.HomeService;
 import com.wang.mall.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
@@ -53,10 +48,6 @@ public class HomeServiceImpl implements HomeService {
     private RedisService redisService;
     @Autowired
     private SmsHomeAdvertiseMapper advertiseMapper;
-    @Autowired
-    private SmsHomeBannerMapper bannerMapper;
-    @Autowired
-    private SmsHomePromoMapper promoMapper;
     @Autowired
     private PmsProductCategoryMapper productCategoryMapper;
 

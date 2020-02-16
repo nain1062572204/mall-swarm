@@ -31,6 +31,7 @@ public class PmsProductController {
     @PostMapping("/create")
     @PreAuthorize("hasAnyAuthority('pms:product:create')")
     public CommonResult create(@RequestBody PmsProductParam productParam) {
+
         int count = productService.create(productParam);
         return count > 0 ? CommonResult.success(count) : CommonResult.failed();
     }
@@ -79,8 +80,7 @@ public class PmsProductController {
     }
 
     @ApiOperation("批量上下架")
-    @RequestMapping(value = "/update/publishStatus", method = RequestMethod.POST)
-    @ResponseBody
+    @PutMapping(value = "/update/publishStatus")
     @PreAuthorize("hasAuthority('pms:product:update')")
     public CommonResult updatePublishStatus(@RequestParam("ids") List<Long> ids,
                                             @RequestParam("publishStatus") Integer publishStatus) {
@@ -93,8 +93,7 @@ public class PmsProductController {
     }
 
     @ApiOperation("批量推荐商品")
-    @RequestMapping(value = "/update/recommendStatus", method = RequestMethod.POST)
-    @ResponseBody
+    @PutMapping(value = "/update/recommendStatus")
     @PreAuthorize("hasAuthority('pms:product:update')")
     public CommonResult updateRecommendStatus(@RequestParam("ids") List<Long> ids,
                                               @RequestParam("recommendStatus") Integer recommendStatus) {
@@ -107,8 +106,7 @@ public class PmsProductController {
     }
 
     @ApiOperation("批量设为新品")
-    @RequestMapping(value = "/update/newStatus", method = RequestMethod.POST)
-    @ResponseBody
+    @PutMapping(value = "/update/newStatus")
     @PreAuthorize("hasAuthority('pms:product:update')")
     public CommonResult updateNewStatus(@RequestParam("ids") List<Long> ids,
                                         @RequestParam("newStatus") Integer newStatus) {
@@ -121,8 +119,7 @@ public class PmsProductController {
     }
 
     @ApiOperation("批量修改删除状态")
-    @RequestMapping(value = "/update/deleteStatus", method = RequestMethod.POST)
-    @ResponseBody
+    @PutMapping(value = "/update/deleteStatus")
     @PreAuthorize("hasAuthority('pms:product:delete')")
     public CommonResult updateDeleteStatus(@RequestParam("ids") List<Long> ids,
                                            @RequestParam("deleteStatus") Integer deleteStatus) {

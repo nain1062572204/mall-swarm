@@ -4,16 +4,16 @@
     <resultMap id="updateInfoMap" type="com.wang.mall.dto.PmsProductResult"
                extends="com.wang.mall.mapper.PmsProductMapper.ResultMapWithBLOBs">
         <result column="cateParentId" jdbcType="BIGINT" property="cateParentId"/>
-        <collection property="productLadders" columnPrefix="ladder_"
+        <collection property="productLadderList" columnPrefix="ladder_"
                     resultMap="com.wang.mall.mapper.PmsProductLadderMapper.BaseResultMap">
         </collection>
-        <collection property="productFullReductions" columnPrefix="full_"
+        <collection property="productFullReductionList" columnPrefix="full_"
                     resultMap="com.wang.mall.mapper.PmsProductFullReductionMapper.BaseResultMap">
         </collection>
-        <collection property="skuStocks" columnPrefix="sku_"
+        <collection property="skuStockList" columnPrefix="sku_"
                     resultMap="com.wang.mall.mapper.PmsSkuStockMapper.BaseResultMap">
         </collection>
-        <collection property="productAttributeValues" columnPrefix="attribute_"
+        <collection property="productAttributeValueList" columnPrefix="attribute_"
                     resultMap="com.wang.mall.mapper.PmsProductAttributeValueMapper.BaseResultMap">
         </collection>
 

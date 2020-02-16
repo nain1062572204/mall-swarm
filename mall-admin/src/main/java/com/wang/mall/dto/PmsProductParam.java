@@ -4,6 +4,7 @@ import com.wang.mall.model.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -16,14 +17,16 @@ import java.util.List;
  */
 @Getter
 @Setter
+@ToString
 public class PmsProductParam extends PmsProduct {
     private static final long serialVersionUID = -342532281459917481L;
     @ApiModelProperty("商品阶梯价格设置")
-    private List<PmsProductLadder> productLadders;
+    private List<PmsProductLadder> productLadderList;
     @ApiModelProperty("商品满减价格设置")
-    private List<PmsProductFullReduction> productFullReductions;
-    @ApiModelProperty("商品sku库存信息")
-    private List<PmsSkuStock> skuStocks;
-    @ApiModelProperty("商品参数和自定义属性")
-    private List<PmsProductAttributeValue> productAttributeValues;
+    private List<PmsProductFullReduction> productFullReductionList;
+    @ApiModelProperty("商品的sku库存信息")
+    private List<PmsSkuStock> skuStockList;
+    @ApiModelProperty("商品参数及自定义规格属性")
+    private List<PmsProductAttributeValue> productAttributeValueList;
+
 }

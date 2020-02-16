@@ -65,6 +65,7 @@ public class Swagger2Config {
         result.add(getContextByPath("/flashSession/.*"));
         result.add(getContextByPath("/flashProductRelation/.*"));
         result.add(getContextByPath("/productAttribute/.*"));
+        result.add(getContextByPath("/sku/.*"));
         return result;
     }
 

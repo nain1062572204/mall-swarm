@@ -39,6 +39,7 @@ public class PmsProductAttributeController {
         return CommonResult.success(CommonPage.restPage(productAttributeList));
     }
 
+
     @ApiOperation("添加商品属性信息")
     @PostMapping(value = "/create")
     public CommonResult create(@RequestBody PmsProductAttributeParam productAttributeParam, BindingResult bindingResult) {
