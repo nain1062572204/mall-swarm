@@ -13,6 +13,7 @@
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="keywords" jdbcType="VARCHAR" property="keywords" />
     <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="recommand_status" jdbcType="INTEGER" property="recommandStatus" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, parent_id, name, level, product_count, nav_status, show_status, sort, icon, keywords, 
-    description
+    description, recommand_status
   </sql>
   <select id="selectByExample" parameterType="com.wang.mall.model.PmsProductCategoryExample" resultMap="BaseResultMap">
     select
@@ -113,11 +114,11 @@
     insert into pms_product_category (parent_id, name, level, 
       product_count, nav_status, show_status, 
       sort, icon, keywords, 
-      description)
+      description, recommand_status)
     values (#{parentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, 
       #{productCount,jdbcType=INTEGER}, #{navStatus,jdbcType=INTEGER}, #{showStatus,jdbcType=INTEGER}, 
       #{sort,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR})
+      #{description,jdbcType=VARCHAR}, #{recommandStatus,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.wang.mall.model.PmsProductCategory">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -155,6 +156,9 @@
       <if test="description != null">
         description,
       </if>
+      <if test="recommandStatus != null">
+        recommand_status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="parentId != null">
@@ -186,6 +190,9 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="recommandStatus != null">
+        #{recommandStatus,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -231,6 +238,9 @@
       <if test="record.description != null">
         description = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.recommandStatus != null">
+        recommand_status = #{record.recommandStatus,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -248,7 +258,8 @@
       sort = #{record.sort,jdbcType=INTEGER},
       icon = #{record.icon,jdbcType=VARCHAR},
       keywords = #{record.keywords,jdbcType=VARCHAR},
-      description = #{record.description,jdbcType=VARCHAR}
+      description = #{record.description,jdbcType=VARCHAR},
+      recommand_status = #{record.recommandStatus,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -286,6 +297,9 @@
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
       </if>
+      <if test="recommandStatus != null">
+        recommand_status = #{recommandStatus,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -300,7 +314,8 @@
       sort = #{sort,jdbcType=INTEGER},
       icon = #{icon,jdbcType=VARCHAR},
       keywords = #{keywords,jdbcType=VARCHAR},
-      description = #{description,jdbcType=VARCHAR}
+      description = #{description,jdbcType=VARCHAR},
+      recommand_status = #{recommandStatus,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

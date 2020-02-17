@@ -134,6 +134,14 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
     }
 
     @Override
+    public int updateRecommandStatus(List<Long> ids, Integer recommandStatus) {
+        PmsProductCategory productCategory = PmsProductCategory.builder().recommandStatus(recommandStatus).build();
+        PmsProductCategoryExample example = new PmsProductCategoryExample();
+        example.createCriteria().andIdIn(ids);
+        return productCategoryMapper.updateByExampleSelective(productCategory, example);
+    }
+
+    @Override
     public List<PmsProductCategoryWithChildrenItem> listWithChildren() {
         return productCategoryDao.listWithChildren();
     }

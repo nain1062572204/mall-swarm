@@ -79,7 +79,18 @@ public class PmsProductCategoryController {
         int count = productCategoryService.updateNavStatus(ids, navStatus);
         return count > 0 ? CommonResult.success(count) : CommonResult.failed();
     }
-
+    @ApiOperation("批量设为推荐")
+    @PutMapping(value = "/update/recommandStatus")
+    @PreAuthorize("hasAuthority('pms:product:update')")
+    public CommonResult updateRecommandStatus(@RequestParam("ids") List<Long> ids,
+                                              @RequestParam("recommandStatus") Integer recommandStatus) {
+        int count = productCategoryService.updateRecommandStatus(ids, recommandStatus);
+        if (count > 0) {
+            return CommonResult.success(count);
+        } else {
+            return CommonResult.failed();
+        }
+    }
     @ApiOperation("修改显示状态")
     @PutMapping("/update/showStatus")
     @PreAuthorize("hasAnyAuthority('pms:productCategory:update')")

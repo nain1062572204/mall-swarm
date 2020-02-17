@@ -29,5 +29,7 @@ public interface PmsProductCategoryService {
 
     int updateShowStatus(List<Long> ids, Integer showStatus);
 
+    int updateRecommandStatus(List<Long> ids, Integer recommandStatus);
+
     List<PmsProductCategoryWithChildrenItem> listWithChildren();
 }

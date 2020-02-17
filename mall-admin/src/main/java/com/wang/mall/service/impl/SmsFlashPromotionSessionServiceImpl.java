@@ -1,5 +1,6 @@
 package com.wang.mall.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.wang.mall.dto.SmsFlashPromotionSessionDetail;
 import com.wang.mall.mapper.SmsFlashPromotionSessionMapper;
 import com.wang.mall.model.SmsFlashPromotionSession;
@@ -58,7 +59,8 @@ public class SmsFlashPromotionSessionServiceImpl implements SmsFlashPromotionSes
     }
 
     @Override
-    public List<SmsFlashPromotionSession> list() {
+    public List<SmsFlashPromotionSession> list(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         SmsFlashPromotionSessionExample example = new SmsFlashPromotionSessionExample();
         return promotionSessionMapper.selectByExample(example);
     }

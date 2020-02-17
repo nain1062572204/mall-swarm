@@ -8,7 +8,7 @@ import lombok.Data;;
 import lombok.NoArgsConstructor;;
 
 /**
- * Created by Mybatis Generator 2020-02-17 16:08
+ * Created by Mybatis Generator 2020-02-17 21:05
  */
 @Data
 @Builder
@@ -43,6 +43,9 @@ public class PmsProductCategory implements Serializable {
 
     @ApiModelProperty(value = "描述")
     private String description;
+
+    @ApiModelProperty(value = "推荐状态：0->不推荐；1->推荐")
+    private Integer recommandStatus;
 
     private static final long serialVersionUID = 1L;
 }

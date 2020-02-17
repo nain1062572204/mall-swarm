@@ -803,6 +803,66 @@ public class PmsProductCategoryExample {
             addCriterion("description not between", value1, value2, "description");
             return (Criteria) this;
         }
+
+        public Criteria andRecommandStatusIsNull() {
+            addCriterion("recommand_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusIsNotNull() {
+            addCriterion("recommand_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusEqualTo(Integer value) {
+            addCriterion("recommand_status =", value, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusNotEqualTo(Integer value) {
+            addCriterion("recommand_status <>", value, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusGreaterThan(Integer value) {
+            addCriterion("recommand_status >", value, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("recommand_status >=", value, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusLessThan(Integer value) {
+            addCriterion("recommand_status <", value, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusLessThanOrEqualTo(Integer value) {
+            addCriterion("recommand_status <=", value, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusIn(List<Integer> values) {
+            addCriterion("recommand_status in", values, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusNotIn(List<Integer> values) {
+            addCriterion("recommand_status not in", values, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusBetween(Integer value1, Integer value2) {
+            addCriterion("recommand_status between", value1, value2, "recommandStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andRecommandStatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("recommand_status not between", value1, value2, "recommandStatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

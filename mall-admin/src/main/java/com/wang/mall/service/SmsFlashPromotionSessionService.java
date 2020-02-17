@@ -40,7 +40,7 @@ public interface SmsFlashPromotionSessionService {
     /**
      * 根据启用状态获取场次列表
      */
-    List<SmsFlashPromotionSession> list();
+    List<SmsFlashPromotionSession> list(Integer pageNum, Integer pageSize);
 
     /**
      * 获取全部可选场次及其商品数量

@@ -118,6 +118,7 @@ public class PmsProductController {
         }
     }
 
+
     @ApiOperation("批量修改删除状态")
     @PutMapping(value = "/update/deleteStatus")
     @PreAuthorize("hasAuthority('pms:product:delete')")

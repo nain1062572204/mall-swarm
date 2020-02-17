@@ -1,5 +1,6 @@
 package com.wang.mall.controller;
 
+import com.wang.mall.common.api.CommonPage;
 import com.wang.mall.common.api.CommonResult;
 import com.wang.mall.dto.SmsFlashPromotionSessionDetail;
 import com.wang.mall.model.SmsFlashPromotionSession;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Api(tags = "SmsFlashPromotionSessionController", description = "闪购场次管理")
 @RestController
-@RequestMapping("/flashSession")
+@RequestMapping("/flash")
 public class SmsFlashPromotionSessionController {
     @Autowired
     private SmsFlashPromotionSessionService promotionSessionService;
@@ -52,10 +53,13 @@ public class SmsFlashPromotionSessionController {
         return CommonResult.success(promotionSessionService.item(id));
     }
 
-    @ApiOperation("获取全部场次")
+    @ApiOperation("分页获取全部场次")
     @GetMapping("/list")
-    public CommonResult<List<SmsFlashPromotionSession>> list() {
-        return CommonResult.success(promotionSessionService.list());
+    public CommonResult<CommonPage<SmsFlashPromotionSession>> list(
+            @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+            @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
+    ) {
+        return CommonResult.success(CommonPage.restPage(promotionSessionService.list(pageNum, pageSize)));
     }
 
     @ApiOperation("获取全部可选场次及其数量")

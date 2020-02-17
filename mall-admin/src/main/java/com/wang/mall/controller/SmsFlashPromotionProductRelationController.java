@@ -55,10 +55,10 @@ public class SmsFlashPromotionProductRelationController {
     @ApiOperation("分页获取不同场次及关联商品信息")
     @GetMapping("/list")
     public CommonResult<CommonPage<SmsFlashPromotionProduct>> list(
-            @RequestParam("id") Long id,
+            @RequestParam("flashPromotionId") Long flashPromotionId,
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize,
             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum) {
-        return CommonResult.success(CommonPage.restPage(relationService.list(id, pageNum, pageSize)));
+        return CommonResult.success(CommonPage.restPage(relationService.list(flashPromotionId, pageNum, pageSize)));
     }
 
 }

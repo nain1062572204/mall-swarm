@@ -61,7 +61,7 @@ public class PmsProductAttributeCategoryController {
     }
 
     @ApiOperation("获取所有商品属性分类及其包含属性")
-    @GetMapping("/listWithAttr")
+    @GetMapping("/list/withAttr")
     public CommonResult<List<PmsProductAttributeCategoryItem>> listWithAttr() {
         return CommonResult.success(productAttributeCategoryService.listWithAttr());
     }
