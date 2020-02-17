@@ -3,7 +3,20 @@ package com.wang.mall.model;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Builder;;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+/**
+* Created by Mybatis Generator 2020-02-17 16:00
+*/
+@Getter
+@Setter
+@Data
+@Builder
+@ToString
 public class PmsProductVerifyRecord implements Serializable {
     private Long id;
 
@@ -21,69 +34,4 @@ public class PmsProductVerifyRecord implements Serializable {
     private String detail;
 
     private static final long serialVersionUID = 1L;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getVerifyMan() {
-        return verifyMan;
-    }
-
-    public void setVerifyMan(String verifyMan) {
-        this.verifyMan = verifyMan;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", productId=").append(productId);
-        sb.append(", createTime=").append(createTime);
-        sb.append(", verifyMan=").append(verifyMan);
-        sb.append(", status=").append(status);
-        sb.append(", detail=").append(detail);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
-    }
 }
