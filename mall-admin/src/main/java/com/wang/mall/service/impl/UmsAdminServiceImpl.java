@@ -100,15 +100,16 @@ public class UmsAdminServiceImpl implements UmsAdminService {
      * 添加登录记录
      */
     private void insertLoginLog(String username) {
-        UmsAdmin admin = getAdminByUsername(username);
-        UmsAdminLoginLog adminLoginLog = new UmsAdminLoginLog();
-        adminLoginLog.setAdminId(admin.getId());
-        adminLoginLog.setCreateTime(new Date());
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        adminLoginLog.setIp(request.getRemoteAddr());
-        adminLoginLog.setUserAgent("");
-        adminLoginLog.setAddress("");
+        UmsAdmin admin = getAdminByUsername(username);
+        UmsAdminLoginLog adminLoginLog = UmsAdminLoginLog.builder()
+                .adminId(admin.getId())
+                .createTime(new Date())
+                .ip(request.getRemoteAddr())
+                .userAgent("")
+                .address("")
+                .build();
         adminLoginLogMapper.insert(adminLoginLog);
     }
 }

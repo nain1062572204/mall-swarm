@@ -4,20 +4,18 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import lombok.AllArgsConstructor;;
 import lombok.Builder;;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;;
+import lombok.NoArgsConstructor;;
 
 /**
-* Created by Mybatis Generator 2020-02-17 16:00
-*/
-@Getter
-@Setter
+ * Created by Mybatis Generator 2020-02-17 16:08
+ */
 @Data
 @Builder
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class OmsOrder implements Serializable {
     @ApiModelProperty(value = "订单id")
     private Long id;

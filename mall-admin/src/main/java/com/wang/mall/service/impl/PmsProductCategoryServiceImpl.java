@@ -38,8 +38,9 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int create(PmsProductCategoryParam productCategoryParam) {
-        PmsProductCategory productCategory = new PmsProductCategory();
-        productCategory.setProductCount(0);
+        PmsProductCategory productCategory = PmsProductCategory.builder()
+                .productCount(0)
+                .build();
         BeanUtils.copyProperties(productCategoryParam, productCategory);
         //没有父分类时为一级分类
         setCategoryLevel(productCategory);

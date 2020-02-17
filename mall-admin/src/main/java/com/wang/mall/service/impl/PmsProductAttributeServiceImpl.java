@@ -59,8 +59,9 @@ public class PmsProductAttributeServiceImpl implements PmsProductAttributeServic
 
     @Override
     public int update(Long id, PmsProductAttributeParam productAttributeParam) {
-        PmsProductAttribute productAttribute = new PmsProductAttribute();
-        productAttribute.setId(id);
+        PmsProductAttribute productAttribute = PmsProductAttribute.builder()
+                .id(id)
+                .build();
         BeanUtils.copyProperties(productAttributeParam, productAttribute);
         return productAttributeMapper.updateByPrimaryKeySelective(productAttribute);
     }

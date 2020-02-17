@@ -88,13 +88,12 @@ public class OssServiceImpl implements OssService {
     public OssCallbackResult callback(HttpServletRequest request) {
         String filename = request.getParameter("filename");
         filename = "http://".concat(ALIYUN_OSS_BUCKET_NAME).concat(".").concat(ALIYUN_OSS_ENDPOINT).concat("/").concat(filename);
-        OssCallbackResult result = OssCallbackResult.builder()
+        return OssCallbackResult.builder()
                 .filename(filename)
                 .size(request.getParameter("size"))
                 .mimeType(request.getParameter("mimeType"))
                 .width(request.getParameter("width"))
                 .height(request.getParameter("height"))
                 .build();
-        return result;
     }
 }

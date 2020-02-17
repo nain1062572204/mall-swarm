@@ -151,8 +151,7 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int updateVerifyStatus(List<Long> ids, Integer verifyStatus, String detail) {
-        PmsProduct product = new PmsProduct();
-        product.setVerifyStatus(verifyStatus);
+        PmsProduct product = PmsProduct.builder().verifyStatus(verifyStatus).build();
         PmsProductExample example = new PmsProductExample();
         example.createCriteria().andIdIn(ids);
         List<PmsProductVerifyRecord> vertifyRecords = new ArrayList<>();
@@ -173,8 +172,7 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int updatePublishStatus(List<Long> ids, Integer publishStatus) {
-        PmsProduct record = new PmsProduct();
-        record.setPublishStatus(publishStatus);
+        PmsProduct record = PmsProduct.builder().publishStatus(publishStatus).build();
         PmsProductExample example = new PmsProductExample();
         example.createCriteria().andIdIn(ids);
         return productMapper.updateByExampleSelective(record, example);

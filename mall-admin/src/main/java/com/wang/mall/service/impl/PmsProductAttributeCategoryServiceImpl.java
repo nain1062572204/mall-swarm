@@ -34,9 +34,10 @@ public class PmsProductAttributeCategoryServiceImpl implements PmsProductAttribu
 
     @Override
     public int update(Long id, String name) {
-        PmsProductAttributeCategory productAttributeCategory = new PmsProductAttributeCategoryItem();
-        productAttributeCategory.setId(id);
-        productAttributeCategory.setName(name);
+        PmsProductAttributeCategory productAttributeCategory = PmsProductAttributeCategoryItem.builder()
+                .id(id)
+                .name(name)
+                .build();
         return productAttributeCategoryMapper.updateByPrimaryKeySelective(productAttributeCategory);
     }
 

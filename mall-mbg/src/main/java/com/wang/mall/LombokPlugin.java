@@ -24,19 +24,17 @@ public class LombokPlugin extends PluginAdapter {
     }
 
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable table) {
-        topLevelClass.addImportedType("lombok.Data");
-        topLevelClass.addImportedType("lombok.Getter");
-        topLevelClass.addImportedType("lombok.Setter");
-        topLevelClass.addImportedType("lombok.ToString");
+        topLevelClass.addImportedType("lombok.Data;");
         topLevelClass.addImportedType("lombok.Builder;");
-        topLevelClass.addAnnotation("@Getter");
-        topLevelClass.addAnnotation("@Setter");
+        topLevelClass.addImportedType("lombok.AllArgsConstructor;");
+        topLevelClass.addImportedType("lombok.NoArgsConstructor;");
         topLevelClass.addAnnotation("@Data");
         topLevelClass.addAnnotation("@Builder");
-        topLevelClass.addAnnotation("@ToString");
+        topLevelClass.addAnnotation("@AllArgsConstructor");
+        topLevelClass.addAnnotation("@NoArgsConstructor");
         topLevelClass.addJavaDocLine("/**");
-        topLevelClass.addJavaDocLine("* Created by Mybatis Generator " + this.date2Str(new Date()));
-        topLevelClass.addJavaDocLine("*/");
+        topLevelClass.addJavaDocLine(" * Created by Mybatis Generator " + this.date2Str(new Date()));
+        topLevelClass.addJavaDocLine(" */");
         return true;
     }
 
