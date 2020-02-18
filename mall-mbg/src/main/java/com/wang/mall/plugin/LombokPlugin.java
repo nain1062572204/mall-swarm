@@ -1,4 +1,4 @@
-package com.wang.mall;
+package com.wang.mall.plugin;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -24,10 +24,10 @@ public class LombokPlugin extends PluginAdapter {
     }
 
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable table) {
-        topLevelClass.addImportedType("lombok.Data;");
-        topLevelClass.addImportedType("lombok.Builder;");
-        topLevelClass.addImportedType("lombok.AllArgsConstructor;");
-        topLevelClass.addImportedType("lombok.NoArgsConstructor;");
+        topLevelClass.addImportedType("lombok.Data");
+        topLevelClass.addImportedType("lombok.Builder");
+        topLevelClass.addImportedType("lombok.AllArgsConstructor");
+        topLevelClass.addImportedType("lombok.NoArgsConstructor");
         topLevelClass.addAnnotation("@Data");
         topLevelClass.addAnnotation("@Builder");
         topLevelClass.addAnnotation("@AllArgsConstructor");

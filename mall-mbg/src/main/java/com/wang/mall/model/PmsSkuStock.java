@@ -3,13 +3,13 @@ package com.wang.mall.model;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import lombok.AllArgsConstructor;;
-import lombok.Builder;;
-import lombok.Data;;
-import lombok.NoArgsConstructor;;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-02-17 21:05
+ * Created by Mybatis Generator 2020-02-18 14:20
  */
 @Data
 @Builder

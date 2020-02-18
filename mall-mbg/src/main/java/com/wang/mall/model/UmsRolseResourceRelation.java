@@ -14,12 +14,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UmsRolePermissionRelation implements Serializable {
+public class UmsRolseResourceRelation implements Serializable {
     private Long id;
 
+    @ApiModelProperty(value = "角色ID")
     private Long roleId;
 
-    private Long permissionId;
+    @ApiModelProperty(value = "资源ID")
+    private Long resourceId;
 
     private static final long serialVersionUID = 1L;
 }

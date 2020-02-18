@@ -16,7 +16,7 @@
         <!--生成mapper.xml时覆盖原文件-->
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
         <!--lombok注解-->
-        <plugin type="com.wang.mall.LombokPlugin"/>
+        <plugin type="com.wang.mall.plugin.LombokPlugin"/>
         <commentGenerator type="com.wang.mall.CommentGenerator">
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
             <property name="suppressAllComments" value="true"/>
