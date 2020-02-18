@@ -69,6 +69,7 @@ public class Swagger2Config {
         result.add(getContextByPath("/aliyun/.*"));
         result.add(getContextByPath("/menu/.*"));
         result.add(getContextByPath("/permission/.*"));
+        result.add(getContextByPath("/resourceCategory/.*"));
         return result;
     }
 
