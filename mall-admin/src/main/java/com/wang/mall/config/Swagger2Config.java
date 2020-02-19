@@ -70,6 +70,8 @@ public class Swagger2Config {
         result.add(getContextByPath("/menu/.*"));
         result.add(getContextByPath("/permission/.*"));
         result.add(getContextByPath("/resourceCategory/.*"));
+        result.add(getContextByPath("/resource/.*"));
+        result.add(getContextByPath("/role/.*"));
         return result;
     }
 
@@ -90,3 +92,4 @@ public class Swagger2Config {
         return result;
     }
 }
+

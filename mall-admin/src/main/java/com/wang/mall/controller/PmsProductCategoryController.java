@@ -30,7 +30,7 @@ public class PmsProductCategoryController {
 
     @ApiOperation("添加商品分类")
     @PostMapping("/create")
-    @PreAuthorize("hasAnyAuthority('pms:productCategory:create')")
+    //@PreAuthorize("hasAnyAuthority('pms:productCategory:create')")
     public CommonResult create(@Validated @RequestBody PmsProductCategoryParam productCategoryParam, BindingResult result) {
         int count = productCategoryService.create(productCategoryParam);
         return count > 0 ? CommonResult.success(count) : CommonResult.failed();
@@ -38,7 +38,7 @@ public class PmsProductCategoryController {
 
     @ApiOperation("修改商品分类")
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasAnyAuthority('pms:productCategory:update')")
+    //@PreAuthorize("hasAnyAuthority('pms:productCategory:update')")
     public CommonResult update(@PathVariable Long id, @Validated @RequestBody PmsProductCategoryParam productCategoryParam, BindingResult result) {
         int count = productCategoryService.update(id, productCategoryParam);
         return count > 0 ? CommonResult.success(count) : CommonResult.failed();
@@ -46,7 +46,7 @@ public class PmsProductCategoryController {
 
     @ApiOperation("分页查询商品分类")
     @GetMapping("/list/{parentId}")
-    @PreAuthorize("hasAnyAuthority('pms:productCategory:read')")
+    //@PreAuthorize("hasAnyAuthority('pms:productCategory:read')")
     public CommonResult<List<PmsProductCategory>> list(
             @PathVariable Long parentId,
             @RequestParam(value = "pageSize", defaultValue = "15") Integer pageSize,
@@ -59,14 +59,14 @@ public class PmsProductCategoryController {
 
     @ApiOperation("根据Id获取商品分类")
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('pms:productCategory:read')")
+    //@PreAuthorize("hasAnyAuthority('pms:productCategory:read')")
     public CommonResult<PmsProductCategory> item(@PathVariable Long id) {
         return CommonResult.success(productCategoryService.item(id));
     }
 
     @ApiOperation("删除商品分类")
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAnyAuthority('pms:productCategory:delete')")
+    //@PreAuthorize("hasAnyAuthority('pms:productCategory:delete')")
     public CommonResult delete(@PathVariable Long id) {
         int count = productCategoryService.delete(id);
         return count > 0 ? CommonResult.success(count) : CommonResult.failed();
@@ -74,14 +74,14 @@ public class PmsProductCategoryController {
 
     @ApiOperation("修改导航栏显示状态")
     @PutMapping("/update/navStatus")
-    @PreAuthorize("hasAnyAuthority('pms:productCategory:update')")
+    //@PreAuthorize("hasAnyAuthority('pms:productCategory:update')")
     public CommonResult updateNavStatus(@RequestParam("ids") List<Long> ids, @RequestParam("navStatus") Integer navStatus) {
         int count = productCategoryService.updateNavStatus(ids, navStatus);
         return count > 0 ? CommonResult.success(count) : CommonResult.failed();
     }
     @ApiOperation("批量设为推荐")
     @PutMapping(value = "/update/recommandStatus")
-    @PreAuthorize("hasAuthority('pms:product:update')")
+    //@PreAuthorize("hasAuthority('pms:product:update')")
     public CommonResult updateRecommandStatus(@RequestParam("ids") List<Long> ids,
                                               @RequestParam("recommandStatus") Integer recommandStatus) {
         int count = productCategoryService.updateRecommandStatus(ids, recommandStatus);
@@ -93,7 +93,7 @@ public class PmsProductCategoryController {
     }
     @ApiOperation("修改显示状态")
     @PutMapping("/update/showStatus")
-    @PreAuthorize("hasAnyAuthority('pms:productCategory:update')")
+    //@PreAuthorize("hasAnyAuthority('pms:productCategory:update')")
     public CommonResult updateShowStatus(@RequestParam("ids") List<Long> ids, @RequestParam("showStatus") Integer showStatus) {
         int count = productCategoryService.updateShowStatus(ids, showStatus);
         return count > 0 ? CommonResult.success(count) : CommonResult.failed();
@@ -101,7 +101,7 @@ public class PmsProductCategoryController {
 
     @ApiOperation("查询所有一级分类级子分类")
     @GetMapping("/list/withChildren")
-    @PreAuthorize("hasAnyAuthority('pms:productCategory:read')")
+    //@PreAuthorize("hasAnyAuthority('pms:productCategory:read')")
     public CommonResult<List<PmsProductCategoryWithChildrenItem>> listWithChildren() {
         return CommonResult.success(productCategoryService.listWithChildren());
     }

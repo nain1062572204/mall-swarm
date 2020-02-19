@@ -2,6 +2,7 @@ package com.wang.mall.dao;
 
 import com.wang.mall.model.UmsAdminRoleRelation;
 import com.wang.mall.model.UmsPermission;
+import com.wang.mall.model.UmsResource;
 import com.wang.mall.model.UmsRole;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,4 +33,9 @@ public interface UmsAdminRoleRelationDao {
      * 获取用户所有权限
      */
     List<UmsPermission> getPermissionList(@Param("adminId") Long adminId);
+
+    /**
+     * 获取用户可以访问的资源
+     */
+    List<UmsResource> getResourceList(@Param("adminId") Long adminId);
 }

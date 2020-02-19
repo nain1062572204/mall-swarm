@@ -1,11 +1,10 @@
 package com.wang.mall.security.config;
 
-import com.wang.mall.security.component.JwtAuthenticationTokenFilter;
-import com.wang.mall.security.component.RestAuthenticationEntryPoint;
-import com.wang.mall.security.component.RestfulAccessDeniedHandler;
+import com.wang.mall.security.component.*;
 import com.wang.mall.security.util.JwtTokenUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.Expression
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -22,11 +22,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @create 2020-02-05 20:20
  */
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired(required = false)
+    private DynamicSecurityService dynamicSecurityService;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity
                 .authorizeRequests();
+        //不需要保护的资源路径允许访问
         for (String url : ignoreUrlsConfig().getUrls()) {
             registry.antMatchers(url).permitAll();
         }
@@ -52,6 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 自定义权限拦截器JWT过滤器
                 .and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        if (dynamicSecurityService != null) {
+            registry.and().addFilterBefore(dynamicSecurityFilter(), FilterSecurityInterceptor.class);
+        }
     }
 
     @Override
@@ -96,4 +102,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtTokenUtil();
     }
 
+    @ConditionalOnBean(name = "dynamicSecurityService")
+    @Bean
+    public DynamicAccessDecisionManager dynamicAccessDecisionManager() {
+        return new DynamicAccessDecisionManager();
+    }
+
+
+    @ConditionalOnBean(name = "dynamicSecurityService")
+    @Bean
+    public DynamicSecurityFilter dynamicSecurityFilter() {
+        return new DynamicSecurityFilter();
+    }
+
+    @ConditionalOnBean(name = "dynamicSecurityService")
+    @Bean
+    public DynamicSecurityMetadataSource dynamicSecurityMetadataSource() {
+        return new DynamicSecurityMetadataSource();
+    }
 }

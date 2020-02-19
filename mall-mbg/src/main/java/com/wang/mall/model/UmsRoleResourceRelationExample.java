@@ -3,14 +3,14 @@ package com.wang.mall.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UmsRolseResourceRelationExample {
+public class UmsRoleResourceRelationExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public UmsRolseResourceRelationExample() {
+    public UmsRoleResourceRelationExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 

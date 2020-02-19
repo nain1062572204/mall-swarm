@@ -8,13 +8,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-02-18 14:20
+ * Created by Mybatis Generator 2020-02-18 19:11
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UmsRolseResourceRelation implements Serializable {
+public class UmsRoleResourceRelation implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "角色ID")

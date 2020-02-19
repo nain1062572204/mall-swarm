@@ -3,6 +3,9 @@ package com.wang.mall.bo;
 
 import com.wang.mall.model.UmsAdmin;
 import com.wang.mall.model.UmsPermission;
+import com.wang.mall.model.UmsResource;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,23 +18,19 @@ import java.util.stream.Collectors;
  * @author 王念
  * @create 2020-02-07 17:11
  */
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class UmsAdminUserDetails implements UserDetails {
     private static final long serialVersionUID = 6811818070079863639L;
 
     private UmsAdmin umsAdmin;
-    private List<UmsPermission> permissionList;
+    private List<UmsResource> resources;
 
-    public UmsAdminUserDetails(UmsAdmin umsAdmin, List<UmsPermission> permissionList) {
-        this.umsAdmin = umsAdmin;
-        this.permissionList = permissionList;
-    }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //返回当前用户的权限
-        return permissionList.stream()
-                .filter(permission -> permission.getValue() != null && !permission.getValue().trim().equals(""))
-                .map(permission -> new SimpleGrantedAuthority(permission.getValue()))
+        //返回当前用户的资源
+        return resources.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getId() + ":" + role.getName()))
                 .collect(Collectors.toList());
     }
 
