@@ -1,6 +1,6 @@
 package com.wang.mall.demo.dto;
 
-import com.wang.mall.validator.FlagValidator;
+import com.wang.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;

@@ -42,11 +42,12 @@ spring:
         authCode: 120
       category: "CATEGORY" #分类信息
       homeAdvertise: "HOME_ADVERTISE" #轮播图信息
-      homeBanner: "HOME_BANNER" #中间广告
-      homePromo: "HOME_PROMO" #轮播图下方广告
-      falshPormotion: "FLASH_PROMOTION" #闪购信息
+      flashPromotion: "FLASH_PROMOTION" #闪购信息
       homeProduct: "HOME_PRODUCT" #首页推荐商品
-
+    expireTime: 3600 # 60*60一小时过期
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml
