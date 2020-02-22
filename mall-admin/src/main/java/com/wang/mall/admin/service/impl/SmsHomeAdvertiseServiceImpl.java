@@ -1,6 +1,8 @@
 package com.wang.mall.admin.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.wang.mall.admin.feign.FeignRedisService;
+import com.wang.mall.common.rediskey.RedisKeys;
 import com.wang.mall.mapper.SmsHomeAdvertiseMapper;
 import com.wang.mall.model.SmsHomeAdvertise;
 import com.wang.mall.model.SmsHomeAdvertiseExample;
@@ -24,9 +26,12 @@ import java.util.List;
 public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
     @Autowired
     private SmsHomeAdvertiseMapper advertiseMapper;
+    @Autowired
+    private FeignRedisService feignRedisService;
 
     @Override
     public int create(SmsHomeAdvertise advertise) {
+        feignRedisService.delete(RedisKeys.HOME_ADVERTISE.getKey());
         return advertiseMapper.insert(advertise);
     }
 
@@ -34,6 +39,7 @@ public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
     public int delete(List<Long> ids) {
         SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
         example.createCriteria().andIdIn(ids);
+        feignRedisService.delete(RedisKeys.HOME_ADVERTISE.getKey());
         return advertiseMapper.deleteByExample(example);
     }
 
@@ -42,6 +48,7 @@ public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
         SmsHomeAdvertise advertise = new SmsHomeAdvertise();
         advertise.setId(id);
         advertise.setStatus(status);
+        feignRedisService.delete(RedisKeys.HOME_ADVERTISE.getKey());
         return advertiseMapper.updateByPrimaryKeySelective(advertise);
     }
 
@@ -53,6 +60,7 @@ public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
     @Override
     public int update(Long id, SmsHomeAdvertise advertise) {
         advertise.setId(id);
+        feignRedisService.delete(RedisKeys.HOME_ADVERTISE.getKey());
         return advertiseMapper.updateByPrimaryKeySelective(advertise);
     }
 

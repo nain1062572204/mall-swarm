@@ -38,4 +38,11 @@ public class RedisController {
         redisService.flushAll();
         return CommonResult.success("清空成功");
     }
+
+    @ApiOperation("删除数据")
+    @DeleteMapping("/delete/{key}")
+    public CommonResult delete(@PathVariable String key) {
+        redisService.delete(key);
+        return CommonResult.success(key);
+    }
 }

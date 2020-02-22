@@ -5,6 +5,8 @@ import com.wang.mall.admin.dao.PmsProductCategoryAttributeRelationDao;
 import com.wang.mall.admin.dao.PmsProductCategoryDao;
 import com.wang.mall.admin.dto.PmsProductCategoryParam;
 import com.wang.mall.admin.dto.PmsProductCategoryWithChildrenItem;
+import com.wang.mall.admin.feign.FeignRedisService;
+import com.wang.mall.common.rediskey.RedisKeys;
 import com.wang.mall.mapper.PmsProductCategoryAttributeRelationMapper;
 import com.wang.mall.mapper.PmsProductCategoryMapper;
 import com.wang.mall.mapper.PmsProductMapper;
@@ -35,9 +37,12 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
     private PmsProductCategoryAttributeRelationMapper productCategoryAttributeRelationMapper;
     @Autowired
     private PmsProductCategoryDao productCategoryDao;
+    @Autowired
+    private FeignRedisService feignRedisService;
 
     @Override
     public int create(PmsProductCategoryParam productCategoryParam) {
+        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
         PmsProductCategory productCategory = PmsProductCategory.builder()
                 .productCount(0)
                 .build();
@@ -72,6 +77,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int update(Long id, PmsProductCategoryParam productCategoryParam) {
+        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setId(id);
         BeanUtils.copyProperties(productCategoryParam, productCategory);
@@ -107,6 +113,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int delete(Long id) {
+        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
         return productCategoryMapper.deleteByPrimaryKey(id);
     }
 
@@ -117,6 +124,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int updateNavStatus(List<Long> ids, Integer navStatus) {
+        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setNavStatus(navStatus);
         PmsProductCategoryExample example = new PmsProductCategoryExample();
@@ -126,6 +134,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
+        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setShowStatus(showStatus);
         PmsProductCategoryExample example = new PmsProductCategoryExample();
@@ -135,6 +144,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int updateRecommandStatus(List<Long> ids, Integer recommandStatus) {
+        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
         PmsProductCategory productCategory = PmsProductCategory.builder().recommandStatus(recommandStatus).build();
         PmsProductCategoryExample example = new PmsProductCategoryExample();
         example.createCriteria().andIdIn(ids);

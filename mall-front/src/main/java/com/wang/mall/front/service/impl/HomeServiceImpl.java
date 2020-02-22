@@ -114,9 +114,11 @@ public class HomeServiceImpl implements HomeService {
             //redis内容为空，从mysql中获取
             SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
             Date currentDate = new Date();
-            example.createCriteria().andStatusEqualTo(1)
+            example.createCriteria()
+                    .andStatusEqualTo(1)
                     .andStartTimeLessThan(currentDate)
                     .andEndTimeGreaterThan(currentDate);
+            example.setOrderByClause("sort desc");
             List<SmsHomeAdvertise> advertises = advertiseMapper.selectByExample(example);
             result = new HashMap<>(4);
             result.put(CAROUSEL, advertises.stream().filter(advertise -> advertise.getType() == 0).collect(Collectors.toList()));
