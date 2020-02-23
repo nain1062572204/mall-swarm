@@ -1,6 +1,6 @@
 package com.wang.mall.search.domain;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -15,8 +15,12 @@ import java.util.List;
  * @create 2020-01-28 19:38
  * 搜索中的商品信息
  */
-@Data
+@Builder
 @Document(indexName = "pms", type = "product", shards = 1, replicas = 0)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class EsProduct implements Serializable {
     private static final long serialVersionUID = -4475476547105423116L;
 
@@ -43,4 +47,5 @@ public class EsProduct implements Serializable {
     private Integer sort;
     @Field(type = FieldType.Nested)
     private List<EsProductAttributeValue> attrValueList;
+
 }

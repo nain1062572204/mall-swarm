@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-02-22 22:19
+ * Created by Mybatis Generator 2020-02-23 20:01
  */
 @Data
 @Builder
@@ -24,7 +24,7 @@ public class UmsRole implements Serializable {
     @ApiModelProperty(value = "描述")
     private String description;
 
-    @ApiModelProperty(value = "后台用户数量")
+    @ApiModelProperty(value = "拥有该权限的后台用户数量")
     private Integer adminCount;
 
     @ApiModelProperty(value = "创建时间")
@@ -33,6 +33,7 @@ public class UmsRole implements Serializable {
     @ApiModelProperty(value = "启用状态：0->禁用；1->启用")
     private Integer status;
 
+    @ApiModelProperty(value = "排序")
     private Integer sort;
 
     private static final long serialVersionUID = 1L;

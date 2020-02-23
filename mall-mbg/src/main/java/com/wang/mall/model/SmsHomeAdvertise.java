@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-02-22 22:19
+ * Created by Mybatis Generator 2020-02-23 20:01
  */
 @Data
 @Builder
@@ -21,7 +21,7 @@ public class SmsHomeAdvertise implements Serializable {
     @ApiModelProperty(value = "名称")
     private String name;
 
-    @ApiModelProperty(value = "广告位置：0->首页轮播；1->轮播下的促销；2->中间横向广告")
+    @ApiModelProperty(value = "广告位置：0->首页轮播；1->轮播下的促销；2->中间横向广告；3->搜索框广告")
     private Integer type;
 
     private String pic;

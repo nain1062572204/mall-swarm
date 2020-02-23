@@ -35,15 +35,13 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
+ * 商品搜索管理Service实现类
+ *
  * @author 王念
  * @create 2020-01-28 20:21
- * 商品搜索管理Service实现类
  */
 @Service
 @Slf4j
@@ -55,10 +53,11 @@ public class EsProductServiceImpl implements EsProductService {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+
     @Override
     public int importAll() {
-        List<EsProduct> esProducts = productDao.getAllEsProductList(null);
-        Iterable<EsProduct> esProductIterable = productRepository.saveAll(esProducts);
+        List<EsProduct> products = productDao.getAllEsProductList(null);
+        Iterable<EsProduct> esProductIterable = productRepository.saveAll(products);
         Iterator<EsProduct> iterator = esProductIterable.iterator();
         int result = 0;
         while (iterator.hasNext()) {
@@ -75,11 +74,10 @@ public class EsProductServiceImpl implements EsProductService {
 
     @Override
     public EsProduct create(Long id) {
+        List<EsProduct> products = productDao.getAllEsProductList(id);
         EsProduct result = null;
-        List<EsProduct> esProducts = productDao.getAllEsProductList(id);
-        if (esProducts.size() > 0) {
-            result = esProducts.get(0);
-
+        if (!CollectionUtils.isEmpty(products)) {
+            result = productRepository.save(products.get(0));
         }
         return result;
     }
@@ -87,13 +85,12 @@ public class EsProductServiceImpl implements EsProductService {
     @Override
     public void delete(List<Long> ids) {
         if (!CollectionUtils.isEmpty(ids)) {
-            List<EsProduct> esProducts = new ArrayList<>();
+            List<EsProduct> products = new ArrayList<>();
             for (Long id : ids) {
-                EsProduct esProduct = new EsProduct();
-                esProduct.setId(id);
-                esProducts.add(esProduct);
+                EsProduct product = EsProduct.builder().id(id).build();
+                products.add(product);
             }
-            productRepository.deleteAll(esProducts);
+            productRepository.deleteAll(products);
         }
     }
 
@@ -117,7 +114,7 @@ public class EsProductServiceImpl implements EsProductService {
         }
         //搜索
         if (StringUtils.isEmpty(keyword)) {
-            nativeSearchQueryBuilder.withFilter(QueryBuilders.matchAllQuery());
+            nativeSearchQueryBuilder.withQuery(QueryBuilders.matchAllQuery());
         } else {
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("name", keyword),
@@ -225,12 +222,6 @@ public class EsProductServiceImpl implements EsProductService {
     private EsProductRelatedInfo convertProductRelatedInfo(SearchResponse response) {
         EsProductRelatedInfo productRelatedInfo = new EsProductRelatedInfo();
         Map<String, Aggregation> aggregationMap = response.getAggregations().getAsMap();
-        //设置品牌
-        Aggregation brandNames = aggregationMap.get("brandNames");
-        List<String> brandNameList = new ArrayList<>();
-        for (int i = 0; i < ((Terms) brandNames).getBuckets().size(); i++) {
-            brandNameList.add(((Terms) brandNames).getBuckets().get(i).getKeyAsString());
-        }
         //设置分类
         Aggregation productCategoryNames = aggregationMap.get("productCategoryNames");
         List<String> productCategoryNameList = new ArrayList<>();

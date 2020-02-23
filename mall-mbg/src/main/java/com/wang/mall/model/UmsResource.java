@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-02-22 22:19
+ * Created by Mybatis Generator 2020-02-23 20:01
  */
 @Data
 @Builder
@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UmsResource implements Serializable {
     private Long id;
+
+    @ApiModelProperty(value = "资源分类ID")
+    private Long categoryId;
 
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
@@ -29,9 +32,6 @@ public class UmsResource implements Serializable {
 
     @ApiModelProperty(value = "描述")
     private String description;
-
-    @ApiModelProperty(value = "资源分类ID")
-    private Long categoryId;
 
     private static final long serialVersionUID = 1L;
 }
