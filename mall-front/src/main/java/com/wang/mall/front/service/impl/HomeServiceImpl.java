@@ -3,8 +3,11 @@ package com.wang.mall.front.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wang.mall.common.rediskey.RedisKeys;
+import com.wang.mall.front.dao.PmsProductCategoryDao;
 import com.wang.mall.front.dao.SmsFlashPromotionProductRelationDao;
 import com.wang.mall.front.domain.HomeContentResult;
+import com.wang.mall.front.domain.TopBarContentResult;
 import com.wang.mall.front.dto.PmsProductCategoryWithChildrenItem;
 import com.wang.mall.front.dto.PmsProductCategoryWithProduct;
 import com.wang.mall.front.dto.SmsFlashPromotionWithProduct;
@@ -38,15 +41,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class HomeServiceImpl implements HomeService {
-
-    @Value("${spring.redis.key.category}")
-    private String REDIS_KEY_CATEGORY;
-    @Value("${spring.redis.key.homeAdvertise}")
-    private String REDIS_KEY_HOME_ADVERTISE;
-    @Value("${spring.redis.key.flashPromotion}")
-    private String REDIS_KEY_FLASH_PROMOTION;
-    @Value("${spring.redis.key.homeProduct}")
-    private String REDIS_KEY_HOME_PRODUCT;
     @Value("${spring.redis.expireTime}")
     private Integer expireTime;
 
@@ -66,13 +60,13 @@ public class HomeServiceImpl implements HomeService {
     private SmsFlashPromotionSessionMapper flashPromotionSessionMapper;
     @Autowired
     private SmsFlashPromotionProductRelationDao flashPromotionProductRelationDao;
+    @Autowired
+    private PmsProductCategoryDao productCategoryDao;
 
     @Override
     public HomeContentResult content() {
         //广告信息
         Map<String, List<SmsHomeAdvertise>> advertises = null;
-        //分类信息
-        List<PmsProductCategoryWithChildrenItem> categories = null;
         //推荐商品
         List<PmsProductCategoryWithProduct> recommendProducts = null;
         //秒杀
@@ -80,12 +74,10 @@ public class HomeServiceImpl implements HomeService {
 
         Future<Map<String, List<SmsHomeAdvertise>>> advertiseFuture = executor.submit(this::getAdvertise);
         Future<List<PmsProductCategoryWithProduct>> recommendProductFuture = executor.submit(this::getRecommendProduct);
-        Future<List<PmsProductCategoryWithChildrenItem>> categoriesFuture = executor.submit(this::getRecommendCategories);
         Future<SmsFlashPromotionWithProduct> flashFuture = executor.submit(this::getFlash);
         try {
             advertises = advertiseFuture.get();
             recommendProducts = recommendProductFuture.get();
-            categories = categoriesFuture.get();
             flash = flashFuture.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -95,9 +87,29 @@ public class HomeServiceImpl implements HomeService {
 
         return HomeContentResult.builder()
                 .advertises(advertises)
-                .categories(categories)
                 .recommendProducts(recommendProducts)
                 .flashPromotion(flash)
+                .build();
+    }
+
+    @Override
+    public TopBarContentResult topBarContent() {
+        List<SmsHomeAdvertise> advertises = null;
+        List<PmsProductCategoryWithProduct> categories = null;
+        List<PmsProductCategory> navProductCategories = null;
+        try {
+            categories = executor.submit(this::getHomeCategories).get();
+            navProductCategories = executor.submit(this::getNavProductCategory).get();
+            advertises = executor.submit(this::getSearchAdvertise).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return TopBarContentResult.builder()
+                .categories(categories)
+                .navProductCategories(navProductCategories)
+                .advertises(advertises)
                 .build();
     }
 
@@ -109,7 +121,7 @@ public class HomeServiceImpl implements HomeService {
         final String PROMO = "promo";
         final String BANNER = "banner";
         Map<String, List<SmsHomeAdvertise>> result = null;
-        String advertiseJson = redisService.get(REDIS_KEY_HOME_ADVERTISE);
+        String advertiseJson = redisService.get(RedisKeys.HOME_ADVERTISE.getKey());
         if (StringUtils.isEmpty(advertiseJson)) {
             //redis内容为空，从mysql中获取
             SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
@@ -118,15 +130,15 @@ public class HomeServiceImpl implements HomeService {
                     .andStatusEqualTo(1)
                     .andStartTimeLessThan(currentDate)
                     .andEndTimeGreaterThan(currentDate);
-            example.setOrderByClause("sort desc");
+            example.setOrderByClause("sort ASC");
             List<SmsHomeAdvertise> advertises = advertiseMapper.selectByExample(example);
             result = new HashMap<>(4);
             result.put(CAROUSEL, advertises.stream().filter(advertise -> advertise.getType() == 0).collect(Collectors.toList()));
             result.put(PROMO, advertises.stream().filter(advertise -> advertise.getType() == 1).collect(Collectors.toList()));
             result.put(BANNER, advertises.stream().filter(advertise -> advertise.getType() == 2).collect(Collectors.toList()));
             try {
-                redisService.set(REDIS_KEY_HOME_ADVERTISE, objectMapper.writeValueAsString(result));
-                redisService.expire(REDIS_KEY_HOME_ADVERTISE, expireTime);
+                redisService.set(RedisKeys.HOME_ADVERTISE.getKey(), objectMapper.writeValueAsString(result));
+                redisService.expire(RedisKeys.HOME_ADVERTISE.getKey(), expireTime);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -147,7 +159,7 @@ public class HomeServiceImpl implements HomeService {
      */
     private List<PmsProductCategoryWithProduct> getRecommendProduct() {
         List<PmsProductCategoryWithProduct> result = null;
-        String productJson = redisService.get(REDIS_KEY_HOME_PRODUCT);
+        String productJson = redisService.get(RedisKeys.HOME_PRODUCT.getKey());
         if (StringUtils.isEmpty(productJson)) {
             //获取推荐分类
             PmsProductCategoryExample example = new PmsProductCategoryExample();
@@ -178,8 +190,8 @@ public class HomeServiceImpl implements HomeService {
             }
             try {
                 //放入redis
-                redisService.set(REDIS_KEY_HOME_PRODUCT, objectMapper.writeValueAsString(result));
-                redisService.expire(REDIS_KEY_HOME_PRODUCT, expireTime);
+                redisService.set(RedisKeys.HOME_PRODUCT.getKey(), objectMapper.writeValueAsString(result));
+                redisService.expire(RedisKeys.HOME_PRODUCT.getKey(), expireTime);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -198,37 +210,40 @@ public class HomeServiceImpl implements HomeService {
     /**
      * 获取首页分类
      */
-    private List<PmsProductCategoryWithChildrenItem> getRecommendCategories() {
-        List<PmsProductCategoryWithChildrenItem> result = null;
-        String categoryJson = redisService.get(REDIS_KEY_CATEGORY);
+    private List<PmsProductCategoryWithProduct> getHomeCategories() {
+        List<PmsProductCategoryWithProduct> result = new ArrayList<>();
+        String categoryJson = redisService.get(RedisKeys.CATEGORY.getKey());
         if (StringUtils.isEmpty(categoryJson)) {
-            PmsProductCategoryExample parentExample = new PmsProductCategoryExample();
-            parentExample.createCriteria()
-                    .andParentIdEqualTo(0L)
-                    .andShowStatusEqualTo(1);
-            PmsProductCategoryExample showExample = new PmsProductCategoryExample();
-            showExample.createCriteria()
-                    .andParentIdNotEqualTo(0L)
-                    .andShowStatusEqualTo(1);
-            List<PmsProductCategory> parentList = productCategoryMapper.selectByExample(parentExample);
-            List<PmsProductCategory> showList = productCategoryMapper.selectByExample(showExample);
-            result = new ArrayList<>();
-            for (PmsProductCategory productCategory : parentList) {
-                PmsProductCategoryWithChildrenItem item = new PmsProductCategoryWithChildrenItem();
-                BeanUtils.copyProperties(productCategory, item);
-                item.setChildren(showList.stream().filter(c -> c.getParentId().equals(productCategory.getId())).collect(Collectors.toList()));
-                result.add(item);
+            //获取商品分类及子分类
+            List<PmsProductCategoryWithChildrenItem> productCategoryWithChildrenItems = productCategoryDao.listShowStatusWithChildren();
+            for (PmsProductCategoryWithChildrenItem productCategoryWithChildrenItem : productCategoryWithChildrenItems) {
+                PmsProductCategoryWithProduct item = new PmsProductCategoryWithProduct();
+                item.setId(productCategoryWithChildrenItem.getId());
+                item.setName(productCategoryWithChildrenItem.getName());
+                PmsProductExample example = new PmsProductExample();
+                List<Long> ids = productCategoryWithChildrenItem.getChildren().stream().map(PmsProductCategory::getId).collect(Collectors.toList());
+                //子id为空不查询
+                if (!CollectionUtils.isEmpty(ids)) {
+                    example.createCriteria()
+                            .andRecommandStatusEqualTo(1)
+                            .andDeleteStatusEqualTo(0)
+                            .andPublishStatusEqualTo(1)
+                            .andVerifyStatusEqualTo(1)
+                            .andProductCategoryIdIn(ids);
+                    item.setPmsProducts(productMapper.selectByExample(example));
+                    result.add(item);
+                }
             }
             try {
-                redisService.set(REDIS_KEY_CATEGORY, objectMapper.writeValueAsString(result));
-                redisService.expire(REDIS_KEY_CATEGORY, expireTime);
+                redisService.set(RedisKeys.CATEGORY.getKey(), objectMapper.writeValueAsString(result));
+                redisService.expire(RedisKeys.CATEGORY.getKey(), expireTime);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
             return result;
         } else {
             try {
-                result = objectMapper.readValue(categoryJson, new TypeReference<List<PmsProductCategoryWithChildrenItem>>() {
+                result = objectMapper.readValue(categoryJson, new TypeReference<List<PmsProductCategoryWithProduct>>() {
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -260,5 +275,47 @@ public class HomeServiceImpl implements HomeService {
         return flashPromotionWithProduct;
     }
 
+    /**
+     * 获取导航栏分类
+     */
+    private List<PmsProductCategory> getNavProductCategory() {
+        String navProductCategoryJson = redisService.get(RedisKeys.NAV_CATEGORY.getKey());
+        List<PmsProductCategory> result = null;
+        if (StringUtils.isEmpty(navProductCategoryJson)) {
+            //从数据库获取导航栏商品分类
+            PmsProductCategoryExample example = new PmsProductCategoryExample();
+            example.createCriteria()
+                    .andNavStatusEqualTo(1);
+            example.setOrderByClause("sort ASC");
+            result = productCategoryMapper.selectByExample(example);
+            //放入redis
+            try {
+                redisService.set(RedisKeys.NAV_CATEGORY.getKey(), objectMapper.writeValueAsString(result));
+                redisService.expire(RedisKeys.NAV_CATEGORY.getKey(), expireTime);
+            } catch (JsonProcessingException e) {
+                log.error("json转换异常：{}", e.getMessage());
+            }
+        } else {
+            try {
+                result = objectMapper.readValue(navProductCategoryJson, new TypeReference<List<PmsProductCategory>>() {
+                });
+            } catch (IOException e) {
+                log.error("对象转换异常：{}", e.getMessage());
+            }
+        }
+        return result;
+    }
 
+    /**
+     * 获取搜索框广告
+     */
+    private List<SmsHomeAdvertise> getSearchAdvertise() {
+        Date currentTime = new Date();
+        SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
+        example.createCriteria().andTypeEqualTo(3)
+                .andStartTimeLessThanOrEqualTo(currentTime)
+                .andEndTimeGreaterThanOrEqualTo(currentTime);
+        example.setOrderByClause("sort ASC");
+        return advertiseMapper.selectByExample(example);
+    }
 }

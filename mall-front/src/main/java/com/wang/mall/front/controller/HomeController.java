@@ -25,4 +25,10 @@ public class HomeController {
     public CommonResult homeInfo() {
         return CommonResult.success(homeService.content());
     }
+
+    @ApiOperation("获取导航条数据")
+    @GetMapping("/topBar")
+    public CommonResult topBar() {
+        return CommonResult.success(homeService.topBarContent());
+    }
 }

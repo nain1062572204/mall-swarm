@@ -6,6 +6,7 @@ import com.wang.mall.admin.dto.PmsProductParam;
 import com.wang.mall.admin.dto.PmsProductQueryParam;
 import com.wang.mall.admin.dto.PmsProductResult;
 import com.wang.mall.admin.feign.FeignRedisService;
+import com.wang.mall.admin.util.RedisUtil;
 import com.wang.mall.common.rediskey.RedisKeys;
 import com.wang.mall.mapper.*;
 import com.wang.mall.model.*;
@@ -55,17 +56,21 @@ public class PmsProductServiceImpl implements PmsProductService {
     @Autowired
     private PmsProductVerifyRecordDao productVerifyRecordDao;
     @Autowired
-    private FeignRedisService feignRedisService;
+    private RedisUtil redisUtil;
 
     @Override
     public int create(PmsProductParam productParam) {
-        feignRedisService.delete(RedisKeys.HOME_PRODUCT.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.CATEGORY.getKey()
+        });
         for (PmsSkuStock skuStock : productParam.getSkuStockList()) {
             System.out.println(skuStock);
         }
         //创建商品
         PmsProduct product = productParam;
         product.setId(null);
+        product.setVerifyStatus(1);
         productMapper.insertSelective(product);
         //设置满减价格、阶梯价格
         Long productId = product.getId();
@@ -107,7 +112,10 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int update(Long id, PmsProductParam productParam) {
-        feignRedisService.delete(RedisKeys.HOME_PRODUCT.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.CATEGORY.getKey()
+        });
         PmsProduct product = productParam;
         product.setId(id);
         productMapper.updateByPrimaryKeySelective(product);
@@ -156,7 +164,10 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int updateVerifyStatus(List<Long> ids, Integer verifyStatus, String detail) {
-        feignRedisService.delete(RedisKeys.HOME_PRODUCT.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.CATEGORY.getKey()
+        });
         PmsProduct product = PmsProduct.builder().verifyStatus(verifyStatus).build();
         PmsProductExample example = new PmsProductExample();
         example.createCriteria().andIdIn(ids);
@@ -178,7 +189,10 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int updatePublishStatus(List<Long> ids, Integer publishStatus) {
-        feignRedisService.delete(RedisKeys.HOME_PRODUCT.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.CATEGORY.getKey()
+        });
         PmsProduct record = PmsProduct.builder().publishStatus(publishStatus).build();
         PmsProductExample example = new PmsProductExample();
         example.createCriteria().andIdIn(ids);
@@ -187,7 +201,10 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int updateRecommendStatus(List<Long> ids, Integer recommendStatus) {
-        feignRedisService.delete(RedisKeys.HOME_PRODUCT.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.CATEGORY.getKey()
+        });
         PmsProduct record = new PmsProduct();
         record.setRecommandStatus(recommendStatus);
         PmsProductExample example = new PmsProductExample();
@@ -197,7 +214,6 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int updateNewStatus(List<Long> ids, Integer newStatus) {
-        feignRedisService.delete(RedisKeys.HOME_PRODUCT.getKey());
         PmsProduct record = new PmsProduct();
         record.setNewStatus(newStatus);
         PmsProductExample example = new PmsProductExample();
@@ -207,7 +223,10 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int updateDeleteStatus(List<Long> ids, Integer deleteStatus) {
-        feignRedisService.delete(RedisKeys.HOME_PRODUCT.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.CATEGORY.getKey()
+        });
         PmsProduct record = new PmsProduct();
         record.setDeleteStatus(deleteStatus);
         PmsProductExample example = new PmsProductExample();
@@ -246,13 +265,7 @@ public class PmsProductServiceImpl implements PmsProductService {
             }
             Method insertList = dao.getClass().getMethod("insertList", List.class);
             insertList.invoke(dao, dataList);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            throw new RuntimeException("创建商品失败");
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            throw new RuntimeException("创建商品失败");
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             throw new RuntimeException("创建商品失败");
         }

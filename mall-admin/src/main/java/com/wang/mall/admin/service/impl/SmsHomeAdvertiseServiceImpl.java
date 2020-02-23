@@ -1,7 +1,7 @@
 package com.wang.mall.admin.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.wang.mall.admin.feign.FeignRedisService;
+import com.wang.mall.admin.util.RedisUtil;
 import com.wang.mall.common.rediskey.RedisKeys;
 import com.wang.mall.mapper.SmsHomeAdvertiseMapper;
 import com.wang.mall.model.SmsHomeAdvertise;
@@ -27,28 +27,28 @@ public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
     @Autowired
     private SmsHomeAdvertiseMapper advertiseMapper;
     @Autowired
-    private FeignRedisService feignRedisService;
+    private RedisUtil redisUtil;
 
     @Override
     public int create(SmsHomeAdvertise advertise) {
-        feignRedisService.delete(RedisKeys.HOME_ADVERTISE.getKey());
+        redisUtil.deleteAll(new String[]{RedisKeys.HOME_ADVERTISE.getKey()});
         return advertiseMapper.insert(advertise);
     }
 
     @Override
     public int delete(List<Long> ids) {
+        redisUtil.deleteAll(new String[]{RedisKeys.HOME_ADVERTISE.getKey()});
         SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
         example.createCriteria().andIdIn(ids);
-        feignRedisService.delete(RedisKeys.HOME_ADVERTISE.getKey());
         return advertiseMapper.deleteByExample(example);
     }
 
     @Override
     public int updateStatus(Long id, Integer status) {
+        redisUtil.deleteAll(new String[]{RedisKeys.HOME_ADVERTISE.getKey()});
         SmsHomeAdvertise advertise = new SmsHomeAdvertise();
         advertise.setId(id);
         advertise.setStatus(status);
-        feignRedisService.delete(RedisKeys.HOME_ADVERTISE.getKey());
         return advertiseMapper.updateByPrimaryKeySelective(advertise);
     }
 
@@ -59,8 +59,8 @@ public class SmsHomeAdvertiseServiceImpl implements SmsHomeAdvertiseService {
 
     @Override
     public int update(Long id, SmsHomeAdvertise advertise) {
+        redisUtil.deleteAll(new String[]{RedisKeys.HOME_ADVERTISE.getKey()});
         advertise.setId(id);
-        feignRedisService.delete(RedisKeys.HOME_ADVERTISE.getKey());
         return advertiseMapper.updateByPrimaryKeySelective(advertise);
     }
 

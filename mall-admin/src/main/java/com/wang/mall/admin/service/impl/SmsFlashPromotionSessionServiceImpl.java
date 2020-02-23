@@ -3,6 +3,7 @@ package com.wang.mall.admin.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.wang.mall.admin.dto.SmsFlashPromotionSessionDetail;
 import com.wang.mall.admin.feign.FeignRedisService;
+import com.wang.mall.admin.util.RedisUtil;
 import com.wang.mall.common.rediskey.RedisKeys;
 import com.wang.mall.mapper.SmsFlashPromotionSessionMapper;
 import com.wang.mall.model.SmsFlashPromotionSession;
@@ -30,24 +31,25 @@ public class SmsFlashPromotionSessionServiceImpl implements SmsFlashPromotionSes
     @Autowired
     private SmsFlashPromotionProductRelationService relationService;
     @Autowired
-    private FeignRedisService feignRedisService;
+    private RedisUtil redisUtil;
+
     @Override
     public int create(SmsFlashPromotionSession promotionSession) {
-        feignRedisService.delete(RedisKeys.FLASH_PROMOTION.getKey());
+        redisUtil.deleteAll(new String[]{RedisKeys.FLASH_PROMOTION.getKey()});
         promotionSession.setCreateTime(new Date());
         return promotionSessionMapper.insert(promotionSession);
     }
 
     @Override
     public int update(Long id, SmsFlashPromotionSession promotionSession) {
-        feignRedisService.delete(RedisKeys.FLASH_PROMOTION.getKey());
+        redisUtil.deleteAll(new String[]{RedisKeys.FLASH_PROMOTION.getKey()});
         promotionSession.setId(id);
         return promotionSessionMapper.updateByPrimaryKeySelective(promotionSession);
     }
 
     @Override
     public int updateStatus(Long id, Integer status) {
-        feignRedisService.delete(RedisKeys.FLASH_PROMOTION.getKey());
+        redisUtil.deleteAll(new String[]{RedisKeys.FLASH_PROMOTION.getKey()});
         SmsFlashPromotionSession promotionSession = new SmsFlashPromotionSessionDetail();
         promotionSession.setId(id);
         promotionSession.setStatus(status);
@@ -56,7 +58,7 @@ public class SmsFlashPromotionSessionServiceImpl implements SmsFlashPromotionSes
 
     @Override
     public int delete(Long id) {
-        feignRedisService.delete(RedisKeys.FLASH_PROMOTION.getKey());
+        redisUtil.deleteAll(new String[]{RedisKeys.FLASH_PROMOTION.getKey()});
         return promotionSessionMapper.deleteByPrimaryKey(id);
     }
 

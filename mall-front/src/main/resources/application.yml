@@ -83,3 +83,7 @@ threadPool:
   queue-size: 9999
   #线程前缀
   thread-name-prefix: mall-front-service-
+logging:
+  level:
+    com.wang.mall.mapper: debug
+    com.wang.mall.front.dao: debug

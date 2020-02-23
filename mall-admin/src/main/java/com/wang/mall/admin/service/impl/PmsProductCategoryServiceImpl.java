@@ -5,7 +5,7 @@ import com.wang.mall.admin.dao.PmsProductCategoryAttributeRelationDao;
 import com.wang.mall.admin.dao.PmsProductCategoryDao;
 import com.wang.mall.admin.dto.PmsProductCategoryParam;
 import com.wang.mall.admin.dto.PmsProductCategoryWithChildrenItem;
-import com.wang.mall.admin.feign.FeignRedisService;
+import com.wang.mall.admin.util.RedisUtil;
 import com.wang.mall.common.rediskey.RedisKeys;
 import com.wang.mall.mapper.PmsProductCategoryAttributeRelationMapper;
 import com.wang.mall.mapper.PmsProductCategoryMapper;
@@ -38,11 +38,15 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
     @Autowired
     private PmsProductCategoryDao productCategoryDao;
     @Autowired
-    private FeignRedisService feignRedisService;
+    private RedisUtil redisUtil;
 
     @Override
     public int create(PmsProductCategoryParam productCategoryParam) {
-        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.CATEGORY.getKey(),
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.NAV_CATEGORY.getKey()
+        });
         PmsProductCategory productCategory = PmsProductCategory.builder()
                 .productCount(0)
                 .build();
@@ -77,7 +81,11 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int update(Long id, PmsProductCategoryParam productCategoryParam) {
-        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.CATEGORY.getKey(),
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.NAV_CATEGORY.getKey()
+        });
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setId(id);
         BeanUtils.copyProperties(productCategoryParam, productCategory);
@@ -113,7 +121,11 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int delete(Long id) {
-        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.CATEGORY.getKey(),
+                RedisKeys.HOME_PRODUCT.getKey(),
+                RedisKeys.NAV_CATEGORY.getKey()
+        });
         return productCategoryMapper.deleteByPrimaryKey(id);
     }
 
@@ -124,7 +136,9 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int updateNavStatus(List<Long> ids, Integer navStatus) {
-        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.NAV_CATEGORY.getKey()
+        });
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setNavStatus(navStatus);
         PmsProductCategoryExample example = new PmsProductCategoryExample();
@@ -134,7 +148,9 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int updateShowStatus(List<Long> ids, Integer showStatus) {
-        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.CATEGORY.getKey()
+        });
         PmsProductCategory productCategory = new PmsProductCategory();
         productCategory.setShowStatus(showStatus);
         PmsProductCategoryExample example = new PmsProductCategoryExample();
@@ -144,7 +160,9 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
 
     @Override
     public int updateRecommandStatus(List<Long> ids, Integer recommandStatus) {
-        feignRedisService.delete(RedisKeys.CATEGORY.getKey());
+        redisUtil.deleteAll(new String[]{
+                RedisKeys.HOME_PRODUCT.getKey()
+        });
         PmsProductCategory productCategory = PmsProductCategory.builder().recommandStatus(recommandStatus).build();
         PmsProductCategoryExample example = new PmsProductCategoryExample();
         example.createCriteria().andIdIn(ids);

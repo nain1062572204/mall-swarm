@@ -1,4 +1,4 @@
-package com.wang.mall;
+package com.wang.mall.front;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.wang.mall.admin.dao.SmsFlashPromotionProductRelationDao;
 import com.wang.mall.admin.dto.SmsFlashPromotionProduct;
 import com.wang.mall.admin.feign.FeignRedisService;
+import com.wang.mall.admin.util.RedisUtil;
 import com.wang.mall.common.rediskey.RedisKeys;
 import com.wang.mall.mapper.SmsFlashPromotionProductRelationMapper;
 import com.wang.mall.model.SmsFlashPromotionProductRelation;
@@ -27,11 +28,11 @@ public class SmsFlashPromotionProductRelationServiceImpl implements SmsFlashProm
     @Autowired
     private SmsFlashPromotionProductRelationDao relationDao;
     @Autowired
-    private FeignRedisService feignRedisService;
+    private RedisUtil redisUtil;
 
     @Override
     public int create(List<SmsFlashPromotionProductRelation> relations) {
-        feignRedisService.delete(RedisKeys.FLASH_PROMOTION.getKey());
+        redisUtil.deleteAll(new String[]{RedisKeys.FLASH_PROMOTION.getKey()});
         for (SmsFlashPromotionProductRelation relation : relations) {
             relationMapper.insert(relation);
         }
@@ -40,14 +41,14 @@ public class SmsFlashPromotionProductRelationServiceImpl implements SmsFlashProm
 
     @Override
     public int update(Long id, SmsFlashPromotionProductRelation relation) {
-        feignRedisService.delete(RedisKeys.FLASH_PROMOTION.getKey());
+        redisUtil.deleteAll(new String[]{RedisKeys.FLASH_PROMOTION.getKey()});
         relation.setId(id);
         return relationMapper.updateByPrimaryKeySelective(relation);
     }
 
     @Override
     public int delete(Long id) {
-        feignRedisService.delete(RedisKeys.FLASH_PROMOTION.getKey());
+        redisUtil.deleteAll(new String[]{RedisKeys.FLASH_PROMOTION.getKey()});
         return relationMapper.deleteByPrimaryKey(id);
     }
 
