@@ -1,18 +1,22 @@
 package com.wang.mall.search.controller;
 
+import cn.hutool.core.thread.ThreadUtil;
 import com.wang.mall.common.api.CommonPage;
 import com.wang.mall.common.api.CommonResult;
 import com.wang.mall.search.domain.EsProduct;
 import com.wang.mall.search.domain.EsProductRelatedInfo;
+import com.wang.mall.search.domain.SearchResult;
 import com.wang.mall.search.service.EsProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 王念
@@ -59,11 +63,10 @@ public class EsProductController {
 
     @ApiOperation(value = "简单搜索")
     @GetMapping("/search/simple")
-    public CommonResult<CommonPage<EsProduct>> search(@RequestParam(required = false) String keyword,
-                                                      @RequestParam(required = false, defaultValue = "0") Integer pageNum,
-                                                      @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
-        Page<EsProduct> esProductPage = esProductService.search(keyword, pageNum, pageSize);
-        return CommonResult.success(CommonPage.restPage(esProductPage));
+    public CommonResult<SearchResult> search(@RequestParam(required = false) String keyword,
+                                             @RequestParam(required = false, defaultValue = "0") Integer pageNum,
+                                             @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
+        return CommonResult.success(esProductService.search(keyword, pageNum - 1, pageSize));
     }
 
     @ApiOperation(value = "综合搜索、筛选、排序")
@@ -75,7 +78,7 @@ public class EsProductController {
                                                       @RequestParam(required = false, defaultValue = "0") Integer pageNum,
                                                       @RequestParam(required = false, defaultValue = "5") Integer pageSize,
                                                       @RequestParam(required = false, defaultValue = "0") Integer sort) {
-        Page<EsProduct> esProductPage = esProductService.search(keyword, productCategoryId, pageNum, pageSize, sort);
+        Page<EsProduct> esProductPage = esProductService.search(keyword, productCategoryId, pageNum - 1, pageSize, sort);
         return CommonResult.success(CommonPage.restPage(esProductPage));
     }
 
@@ -93,5 +96,12 @@ public class EsProductController {
     public CommonResult<EsProductRelatedInfo> searchRelatedInfo(@RequestParam(required = false) String keyword) {
         EsProductRelatedInfo productRelatedInfo = esProductService.searchRelatedInfo(keyword);
         return CommonResult.success(productRelatedInfo);
+    }
+
+    @ApiOperation("删除所有商品")
+    @DeleteMapping("/deleteAll")
+    public CommonResult deleteAll() {
+        esProductService.deleteAll();
+        return CommonResult.success("");
     }
 }

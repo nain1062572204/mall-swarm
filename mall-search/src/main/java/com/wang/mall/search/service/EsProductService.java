@@ -2,6 +2,7 @@ package com.wang.mall.search.service;
 
 import com.wang.mall.search.domain.EsProduct;
 import com.wang.mall.search.domain.EsProductRelatedInfo;
+import com.wang.mall.search.domain.SearchResult;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -31,11 +32,15 @@ public interface EsProductService {
      * 批量删除商品
      */
     void delete(List<Long> ids);
+    /**
+     * 删除所有商品
+     */
+    void deleteAll();
 
     /**
      * 根据关键字搜索名称或者副标题
      */
-    Page<EsProduct> search(String keyword, Integer pageNum, Integer pageSize);
+    SearchResult search(String keyword, Integer pageNum, Integer pageSize);
 
     /**
      * 根据关键字搜索名称或者副标题复合查询

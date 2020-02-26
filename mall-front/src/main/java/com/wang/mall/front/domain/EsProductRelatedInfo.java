@@ -1,4 +1,4 @@
-package com.wang.mall.search.domain;
+package com.wang.mall.front.domain;
 
 
 import java.util.List;

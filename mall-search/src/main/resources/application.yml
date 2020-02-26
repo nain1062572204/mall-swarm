@@ -33,3 +33,12 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
   instance:
     prefer-ip-address: true
+threadPool:
+  #核心线程数
+  core-pool-size: 5
+  #最大线程数
+  max-pool-size: 5
+  #配置队列大小
+  queue-size: 9999
+  #线程前缀
+  thread-name-prefix: mall-search-service-

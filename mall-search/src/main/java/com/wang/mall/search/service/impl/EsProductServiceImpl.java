@@ -1,8 +1,10 @@
 package com.wang.mall.search.service.impl;
 
+import com.wang.mall.common.api.CommonPage;
 import com.wang.mall.search.dao.EsProductDao;
 import com.wang.mall.search.domain.EsProduct;
 import com.wang.mall.search.domain.EsProductRelatedInfo;
+import com.wang.mall.search.domain.SearchResult;
 import com.wang.mall.search.repository.EsProductRepository;
 import com.wang.mall.search.service.EsProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +32,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 商品搜索管理Service实现类
@@ -52,7 +58,8 @@ public class EsProductServiceImpl implements EsProductService {
     private EsProductRepository productRepository;
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
-
+    @Autowired
+    private ThreadPoolTaskExecutor executor;
 
     @Override
     public int importAll() {
@@ -95,9 +102,29 @@ public class EsProductServiceImpl implements EsProductService {
     }
 
     @Override
-    public Page<EsProduct> search(String keyword, Integer pageNum, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
-        return productRepository.findByNameOrSubTitleOrKeywords(keyword, keyword, keyword, pageable);
+    public void deleteAll() {
+        productRepository.deleteAll();
+    }
+
+    @Override
+    public SearchResult search(String keyword, Integer pageNum, Integer pageSize) {
+        try {
+            //获取商品
+            Pageable pageable = PageRequest.of(pageNum, pageSize);
+            Page<EsProduct> esProducts = executor.submit(() -> {
+                return productRepository.findByNameOrSubTitleOrKeywords(keyword, keyword, keyword, pageable);
+            }).get();
+            //获取分类、属性相关信息
+            EsProductRelatedInfo relatedInfo = executor.submit(() -> searchRelatedInfo(keyword)).get();
+            return SearchResult.builder()
+                    .products(CommonPage.restPage(esProducts))
+                    .productRelatedInfo(relatedInfo)
+                    .build();
+        } catch (InterruptedException | ExecutionException e) {
+            log.error("搜索商品出错：{}", e.getMessage());
+        }
+
+        return null;
     }
 
     @Override
@@ -161,7 +188,7 @@ public class EsProductServiceImpl implements EsProductService {
             EsProduct esProduct = esProductList.get(0);
             String keyword = esProduct.getName();
             Long productCategoryId = esProduct.getProductCategoryId();
-            //根据商品标题、品牌、分类进行搜索
+            //根据商品标题、分类进行搜索
             List<FunctionScoreQueryBuilder.FilterFunctionBuilder> filterFunctionBuilders = new ArrayList<>();
             filterFunctionBuilders.add(new FunctionScoreQueryBuilder.FilterFunctionBuilder(QueryBuilders.matchQuery("name", keyword),
                     ScoreFunctionBuilders.weightFactorFunction(8)));
@@ -195,8 +222,6 @@ public class EsProductServiceImpl implements EsProductService {
         } else {
             builder.withQuery(QueryBuilders.multiMatchQuery(keyword, "name", "subTitle", "keywords"));
         }
-        //聚合搜索品牌名称
-        builder.addAggregation(AggregationBuilders.terms("brandNames").field("brandName"));
         //集合搜索分类名称
         builder.addAggregation(AggregationBuilders.terms("productCategoryNames").field("productCategoryName"));
         //聚合搜索商品属性，去除type=1的属性
@@ -243,6 +268,7 @@ public class EsProductServiceImpl implements EsProductService {
                 attrValueList.add(attrValue.getKeyAsString());
             }
             attr.setAttrValues(attrValueList);
+            attr.setShowLess(true);
             if (!CollectionUtils.isEmpty(attrNames)) {
                 String attrName = attrNames.get(0).getKeyAsString();
                 attr.setAttrName(attrName);
