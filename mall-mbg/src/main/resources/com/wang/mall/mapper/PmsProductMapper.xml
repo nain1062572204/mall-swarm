@@ -30,6 +30,7 @@
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.wang.mall.model.PmsProduct">
     <result column="detail_html" jdbcType="LONGVARCHAR" property="detailHtml" />
+    <result column="param_html" jdbcType="LONGVARCHAR" property="paramHtml" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -96,7 +97,7 @@
     keywords, album_pics, product_category_name
   </sql>
   <sql id="Blob_Column_List">
-    detail_html
+    detail_html, param_html
   </sql>
   <select id="selectByExampleWithBLOBs" parameterType="com.wang.mall.model.PmsProductExample" resultMap="ResultMapWithBLOBs">
     select
@@ -158,7 +159,8 @@
       promotion_price, description, orginal_price, 
       stock, unit, weight, 
       services_ids, keywords, album_pics, 
-      product_category_name, detail_html)
+      product_category_name, detail_html, param_html
+      )
     values (#{productAttributeCategoryId,jdbcType=BIGINT}, #{productCategoryId,jdbcType=BIGINT}, 
       #{name,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, 
       #{productSn,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=INTEGER}, #{publishStatus,jdbcType=INTEGER}, 
@@ -167,7 +169,8 @@
       #{promotionPrice,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{orginalPrice,jdbcType=DECIMAL}, 
       #{stock,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR}, #{weight,jdbcType=DECIMAL}, 
       #{servicesIds,jdbcType=VARCHAR}, #{keywords,jdbcType=VARCHAR}, #{albumPics,jdbcType=VARCHAR}, 
-      #{productCategoryName,jdbcType=VARCHAR}, #{detailHtml,jdbcType=LONGVARCHAR})
+      #{productCategoryName,jdbcType=VARCHAR}, #{detailHtml,jdbcType=LONGVARCHAR}, #{paramHtml,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wang.mall.model.PmsProduct">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -250,6 +253,9 @@
       <if test="detailHtml != null">
         detail_html,
       </if>
+      <if test="paramHtml != null">
+        param_html,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="productAttributeCategoryId != null">
@@ -326,6 +332,9 @@
       </if>
       <if test="detailHtml != null">
         #{detailHtml,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="paramHtml != null">
+        #{paramHtml,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -416,6 +425,9 @@
       <if test="record.detailHtml != null">
         detail_html = #{record.detailHtml,jdbcType=LONGVARCHAR},
       </if>
+      <if test="record.paramHtml != null">
+        param_html = #{record.paramHtml,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -448,7 +460,8 @@
       keywords = #{record.keywords,jdbcType=VARCHAR},
       album_pics = #{record.albumPics,jdbcType=VARCHAR},
       product_category_name = #{record.productCategoryName,jdbcType=VARCHAR},
-      detail_html = #{record.detailHtml,jdbcType=LONGVARCHAR}
+      detail_html = #{record.detailHtml,jdbcType=LONGVARCHAR},
+      param_html = #{record.paramHtml,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -562,6 +575,9 @@
       <if test="detailHtml != null">
         detail_html = #{detailHtml,jdbcType=LONGVARCHAR},
       </if>
+      <if test="paramHtml != null">
+        param_html = #{paramHtml,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -591,7 +607,8 @@
       keywords = #{keywords,jdbcType=VARCHAR},
       album_pics = #{albumPics,jdbcType=VARCHAR},
       product_category_name = #{productCategoryName,jdbcType=VARCHAR},
-      detail_html = #{detailHtml,jdbcType=LONGVARCHAR}
+      detail_html = #{detailHtml,jdbcType=LONGVARCHAR},
+      param_html = #{paramHtml,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wang.mall.model.PmsProduct">

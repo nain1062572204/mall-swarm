@@ -30,7 +30,7 @@ public class EsProductController {
     public CommonResult search(@RequestParam(required = false) String keyword,
                                @RequestParam(required = false, defaultValue = "0") Integer pageNum,
                                @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
-        ThreadUtil.sleep(2, TimeUnit.SECONDS);
+        //ThreadUtil.sleep(2, TimeUnit.SECONDS);
         return searchService.search(keyword, pageNum, pageSize);
     }
 

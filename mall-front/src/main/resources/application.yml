@@ -75,6 +75,7 @@ secure:
       - /home/**
       - /redis/**
       - /esProduct/**
+      - /product/**
 threadPool:
   #核心线程数
   core-pool-size: 5
