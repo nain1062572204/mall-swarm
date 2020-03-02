@@ -934,6 +934,76 @@ public class PmsSkuStockExample {
             addCriterion("lock_stock not between", value1, value2, "lockStock");
             return (Criteria) this;
         }
+
+        public Criteria andSpDataIsNull() {
+            addCriterion("sp_data is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataIsNotNull() {
+            addCriterion("sp_data is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataEqualTo(String value) {
+            addCriterion("sp_data =", value, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataNotEqualTo(String value) {
+            addCriterion("sp_data <>", value, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataGreaterThan(String value) {
+            addCriterion("sp_data >", value, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataGreaterThanOrEqualTo(String value) {
+            addCriterion("sp_data >=", value, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataLessThan(String value) {
+            addCriterion("sp_data <", value, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataLessThanOrEqualTo(String value) {
+            addCriterion("sp_data <=", value, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataLike(String value) {
+            addCriterion("sp_data like", value, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataNotLike(String value) {
+            addCriterion("sp_data not like", value, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataIn(List<String> values) {
+            addCriterion("sp_data in", values, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataNotIn(List<String> values) {
+            addCriterion("sp_data not in", values, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataBetween(String value1, String value2) {
+            addCriterion("sp_data between", value1, value2, "spData");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpDataNotBetween(String value1, String value2) {
+            addCriterion("sp_data not between", value1, value2, "spData");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

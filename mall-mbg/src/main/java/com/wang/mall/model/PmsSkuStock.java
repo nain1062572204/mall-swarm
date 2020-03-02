@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-02-23 20:01
+ * Created by Mybatis Generator 2020-03-02 20:05
  */
 @Data
 @Builder
@@ -49,6 +49,8 @@ public class PmsSkuStock implements Serializable {
 
     @ApiModelProperty(value = "锁定库存")
     private Integer lockStock;
+
+    private String spData;
 
     private static final long serialVersionUID = 1L;
 }

@@ -1,9 +1,6 @@
 package com.wang.mall.front.feign;
 
-import com.wang.mall.common.api.CommonPage;
 import com.wang.mall.common.api.CommonResult;
-import com.wang.mall.front.domain.EsProduct;
-import com.wang.mall.front.domain.EsProductRelatedInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
