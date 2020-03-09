@@ -18,10 +18,7 @@
 		pss.pic sku_pic,
 	    pss.price sku_price,
 	    pss.stock sku_stock,
-	    pss.sp1 sku_sp1,
-	    pss.sp2 sku_sp2,
-	    pss.sp3 sku_sp3,
-	    pss.sale sku_sp3
+	    pss.sp_data sku_sp_data
 	  FROM
 		 pms_sku_stock pss
 	  LEFT JOIN   pms_product p ON pss.product_id=p.id

@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-02-28 17:36
+ * Created by Mybatis Generator 2020-03-05 22:39
  */
 @Data
 @Builder
@@ -92,7 +92,7 @@ public class PmsProduct implements Serializable {
     @ApiModelProperty(value = "产品详情")
     private String detailHtml;
 
-    @ApiModelProperty(value = "参数详情")
+    @ApiModelProperty(value = "商品参数")
     private String paramHtml;
 
     private static final long serialVersionUID = 1L;

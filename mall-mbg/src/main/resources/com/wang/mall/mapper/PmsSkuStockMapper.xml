@@ -8,9 +8,6 @@
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="stock" jdbcType="INTEGER" property="stock" />
     <result column="low_stock" jdbcType="INTEGER" property="lowStock" />
-    <result column="sp1" jdbcType="VARCHAR" property="sp1" />
-    <result column="sp2" jdbcType="VARCHAR" property="sp2" />
-    <result column="sp3" jdbcType="VARCHAR" property="sp3" />
     <result column="pic" jdbcType="VARCHAR" property="pic" />
     <result column="sale" jdbcType="INTEGER" property="sale" />
     <result column="promotion_price" jdbcType="DECIMAL" property="promotionPrice" />
@@ -76,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, product_id, sku_code, price, stock, low_stock, sp1, sp2, sp3, pic, sale, promotion_price, 
-    lock_stock, sp_data
+    id, product_id, sku_code, price, stock, low_stock, pic, sale, promotion_price, lock_stock, 
+    sp_data
   </sql>
   <select id="selectByExample" parameterType="com.wang.mall.model.PmsSkuStockExample" resultMap="BaseResultMap">
     select
@@ -114,15 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into pms_sku_stock (product_id, sku_code, price, 
-      stock, low_stock, sp1, 
-      sp2, sp3, pic, sale, 
-      promotion_price, lock_stock, sp_data
-      )
+      stock, low_stock, pic, 
+      sale, promotion_price, lock_stock, 
+      sp_data)
     values (#{productId,jdbcType=BIGINT}, #{skuCode,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
-      #{stock,jdbcType=INTEGER}, #{lowStock,jdbcType=INTEGER}, #{sp1,jdbcType=VARCHAR}, 
-      #{sp2,jdbcType=VARCHAR}, #{sp3,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{sale,jdbcType=INTEGER}, 
-      #{promotionPrice,jdbcType=DECIMAL}, #{lockStock,jdbcType=INTEGER}, #{spData,jdbcType=VARCHAR}
-      )
+      #{stock,jdbcType=INTEGER}, #{lowStock,jdbcType=INTEGER}, #{pic,jdbcType=VARCHAR}, 
+      #{sale,jdbcType=INTEGER}, #{promotionPrice,jdbcType=DECIMAL}, #{lockStock,jdbcType=INTEGER}, 
+      #{spData,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wang.mall.model.PmsSkuStock">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -144,15 +139,6 @@
       </if>
       <if test="lowStock != null">
         low_stock,
-      </if>
-      <if test="sp1 != null">
-        sp1,
-      </if>
-      <if test="sp2 != null">
-        sp2,
-      </if>
-      <if test="sp3 != null">
-        sp3,
       </if>
       <if test="pic != null">
         pic,
@@ -185,15 +171,6 @@
       </if>
       <if test="lowStock != null">
         #{lowStock,jdbcType=INTEGER},
-      </if>
-      <if test="sp1 != null">
-        #{sp1,jdbcType=VARCHAR},
-      </if>
-      <if test="sp2 != null">
-        #{sp2,jdbcType=VARCHAR},
-      </if>
-      <if test="sp3 != null">
-        #{sp3,jdbcType=VARCHAR},
       </if>
       <if test="pic != null">
         #{pic,jdbcType=VARCHAR},
@@ -239,15 +216,6 @@
       <if test="record.lowStock != null">
         low_stock = #{record.lowStock,jdbcType=INTEGER},
       </if>
-      <if test="record.sp1 != null">
-        sp1 = #{record.sp1,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sp2 != null">
-        sp2 = #{record.sp2,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sp3 != null">
-        sp3 = #{record.sp3,jdbcType=VARCHAR},
-      </if>
       <if test="record.pic != null">
         pic = #{record.pic,jdbcType=VARCHAR},
       </if>
@@ -276,9 +244,6 @@
       price = #{record.price,jdbcType=DECIMAL},
       stock = #{record.stock,jdbcType=INTEGER},
       low_stock = #{record.lowStock,jdbcType=INTEGER},
-      sp1 = #{record.sp1,jdbcType=VARCHAR},
-      sp2 = #{record.sp2,jdbcType=VARCHAR},
-      sp3 = #{record.sp3,jdbcType=VARCHAR},
       pic = #{record.pic,jdbcType=VARCHAR},
       sale = #{record.sale,jdbcType=INTEGER},
       promotion_price = #{record.promotionPrice,jdbcType=DECIMAL},
@@ -306,15 +271,6 @@
       <if test="lowStock != null">
         low_stock = #{lowStock,jdbcType=INTEGER},
       </if>
-      <if test="sp1 != null">
-        sp1 = #{sp1,jdbcType=VARCHAR},
-      </if>
-      <if test="sp2 != null">
-        sp2 = #{sp2,jdbcType=VARCHAR},
-      </if>
-      <if test="sp3 != null">
-        sp3 = #{sp3,jdbcType=VARCHAR},
-      </if>
       <if test="pic != null">
         pic = #{pic,jdbcType=VARCHAR},
       </if>
@@ -340,9 +296,6 @@
       price = #{price,jdbcType=DECIMAL},
       stock = #{stock,jdbcType=INTEGER},
       low_stock = #{lowStock,jdbcType=INTEGER},
-      sp1 = #{sp1,jdbcType=VARCHAR},
-      sp2 = #{sp2,jdbcType=VARCHAR},
-      sp3 = #{sp3,jdbcType=VARCHAR},
       pic = #{pic,jdbcType=VARCHAR},
       sale = #{sale,jdbcType=INTEGER},
       promotion_price = #{promotionPrice,jdbcType=DECIMAL},

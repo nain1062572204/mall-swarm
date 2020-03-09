@@ -13,4 +13,6 @@ public interface UmsMemberService {
     UserDetails loadUserByUsername(String username);
 
     String login(String username, String password);
+
+    UmsMember getCurrentMember();
 }

@@ -9,6 +9,8 @@ import com.wang.mall.security.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,5 +64,13 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         token = jwtTokenUtil.generateToken(userDetails);
         return token;
+    }
+
+    @Override
+    public UmsMember getCurrentMember() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication auth = context.getAuthentication();
+        MemberDetails memberDetails = (MemberDetails) auth.getPrincipal();
+        return memberDetails.getUmsMember();
     }
 }
