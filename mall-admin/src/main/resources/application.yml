@@ -72,3 +72,4 @@ logging:
   level:
     com.wang.mall.admin.dao: debug
     com.wang.mall.mapper: debug
+

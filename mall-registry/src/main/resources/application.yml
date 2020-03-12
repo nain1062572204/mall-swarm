@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: mall-registry
+  devtools:
+    restart:
+      enabled: true
+  freemarker:
+    cache: false
 eureka:
   client:
     register-with-eureka: false
@@ -11,4 +16,5 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 
+debug: true
 

@@ -18,7 +18,7 @@ import java.util.List;
  * @author 王念
  * @create 2020-03-05 23:11
  */
-@Api(tags = "OmsCartItemController", description = "购物车操作Controller")
+@Api(tags = "OmsCartItemController", description = "购物车操作")
 @RestController
 @RequestMapping("/cart")
 public class OmsCartItemController {

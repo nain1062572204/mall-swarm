@@ -71,7 +71,7 @@ secure:
       - /webjars/springfox-swagger-ui/**
       - /druid/**
       - /actuator/**
-      - /sso/**
+      - /sso/login
       - /home/**
       - /redis/**
       - /esProduct/**

@@ -43,8 +43,10 @@ public interface OmsCartItemService {
      * 清空购物车
      */
     int clear(Long memberId);
+
     /**
-     * 根据id获取商品
+     * 查询指定用户购物车商品数量
      */
+    int total();
 
 }

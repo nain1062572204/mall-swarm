@@ -1,6 +1,7 @@
 package com.wang.mall.front.controller;
 
 import com.wang.mall.common.api.CommonResult;
+import com.wang.mall.front.service.OmsCartItemService;
 import com.wang.mall.front.service.UmsMemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +24,8 @@ import java.util.Map;
 public class UmsMemberController {
     @Autowired
     private UmsMemberService memberService;
+    @Autowired
+    private OmsCartItemService cartItemService;
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
@@ -36,6 +40,15 @@ public class UmsMemberController {
         Map<String, String> map = new HashMap<>(2);
         map.put("token", token);
         map.put("tokenHead", tokenHead);
+        return CommonResult.success(map);
+    }
+
+    @ApiOperation("获取用户信息")
+    @GetMapping("/info")
+    public CommonResult info(Principal principal) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("memberName", memberService.getCurrentMember().getUsername());
+        map.put("total", cartItemService.total());
         return CommonResult.success(map);
     }
 }

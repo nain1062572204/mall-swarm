@@ -47,5 +47,5 @@ public class EsProduct implements Serializable {
     private Integer sort;
     @Field(type = FieldType.Nested)
     private List<EsProductAttributeValue> attrValueList;
-    private List<EsSkuStock> skuStockList;
+    /*private List<EsSkuStock> skuStockList;*/
 }
