@@ -120,9 +120,8 @@ public class HomeServiceImpl implements HomeService {
         final String CAROUSEL = "carousel";
         final String PROMO = "promo";
         final String BANNER = "banner";
-        Map<String, List<SmsHomeAdvertise>> result = null;
-        String advertiseJson = redisService.get(RedisKeys.HOME_ADVERTISE.getKey());
-        if (StringUtils.isEmpty(advertiseJson)) {
+        Map<String, List<SmsHomeAdvertise>> result = (Map<String, List<SmsHomeAdvertise>>) redisService.get(RedisKeys.HOME_ADVERTISE.getKey());
+        if (CollectionUtils.isEmpty(result)) {
             //redis内容为空，从mysql中获取
             SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
             Date currentDate = new Date();
@@ -136,20 +135,8 @@ public class HomeServiceImpl implements HomeService {
             result.put(CAROUSEL, advertises.stream().filter(advertise -> advertise.getType() == 0).collect(Collectors.toList()));
             result.put(PROMO, advertises.stream().filter(advertise -> advertise.getType() == 1).collect(Collectors.toList()));
             result.put(BANNER, advertises.stream().filter(advertise -> advertise.getType() == 2).collect(Collectors.toList()));
-            try {
-                redisService.set(RedisKeys.HOME_ADVERTISE.getKey(), objectMapper.writeValueAsString(result));
-                redisService.expire(RedisKeys.HOME_ADVERTISE.getKey(), expireTime);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
+            redisService.set(RedisKeys.HOME_ADVERTISE.getKey(), result, expireTime);
             return result;
-        } else {
-            try {
-                result = objectMapper.readValue(advertiseJson, new TypeReference<Map<String, List<SmsHomeAdvertise>>>() {
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return result;
     }
@@ -158,9 +145,9 @@ public class HomeServiceImpl implements HomeService {
      * 获取推荐商品
      */
     private List<PmsProductCategoryWithProduct> getRecommendProduct() {
-        List<PmsProductCategoryWithProduct> result = null;
-        String productJson = redisService.get(RedisKeys.HOME_PRODUCT.getKey());
-        if (StringUtils.isEmpty(productJson)) {
+        List<PmsProductCategoryWithProduct> result =
+                (List<PmsProductCategoryWithProduct>) redisService.get(RedisKeys.HOME_PRODUCT.getKey());
+        if (StringUtils.isEmpty(result)) {
             //获取推荐分类
             PmsProductCategoryExample example = new PmsProductCategoryExample();
             example.createCriteria().andShowStatusEqualTo(1)
@@ -188,21 +175,8 @@ public class HomeServiceImpl implements HomeService {
                     result.add(item);
                 }
             }
-            try {
-                //放入redis
-                redisService.set(RedisKeys.HOME_PRODUCT.getKey(), objectMapper.writeValueAsString(result));
-                redisService.expire(RedisKeys.HOME_PRODUCT.getKey(), expireTime);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            try {
-                result = objectMapper.readValue(productJson, new TypeReference<List<PmsProductCategoryWithProduct>>() {
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //放入redis
+            redisService.set(RedisKeys.HOME_PRODUCT.getKey(), result, expireTime);
         }
         return result;
     }
@@ -211,9 +185,9 @@ public class HomeServiceImpl implements HomeService {
      * 获取首页分类
      */
     private List<PmsProductCategoryWithProduct> getHomeCategories() {
-        List<PmsProductCategoryWithProduct> result = new ArrayList<>();
-        String categoryJson = redisService.get(RedisKeys.CATEGORY.getKey());
-        if (StringUtils.isEmpty(categoryJson)) {
+        List<PmsProductCategoryWithProduct> result = (List<PmsProductCategoryWithProduct>) redisService.get(RedisKeys.CATEGORY.getKey());
+        if (StringUtils.isEmpty(result)) {
+            result = new ArrayList<>();
             //获取商品分类及子分类
             List<PmsProductCategoryWithChildrenItem> productCategoryWithChildrenItems = productCategoryDao.listShowStatusWithChildren();
             for (PmsProductCategoryWithChildrenItem productCategoryWithChildrenItem : productCategoryWithChildrenItems) {
@@ -234,23 +208,11 @@ public class HomeServiceImpl implements HomeService {
                     result.add(item);
                 }
             }
-            try {
-                redisService.set(RedisKeys.CATEGORY.getKey(), objectMapper.writeValueAsString(result));
-                redisService.expire(RedisKeys.CATEGORY.getKey(), expireTime);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            return result;
-        } else {
-            try {
-                result = objectMapper.readValue(categoryJson, new TypeReference<List<PmsProductCategoryWithProduct>>() {
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            redisService.set(RedisKeys.CATEGORY.getKey(), result, expireTime);
             return result;
         }
-
+        return result;
     }
 
     /**
@@ -279,9 +241,9 @@ public class HomeServiceImpl implements HomeService {
      * 获取导航栏分类
      */
     private List<PmsProductCategory> getNavProductCategory() {
-        String navProductCategoryJson = redisService.get(RedisKeys.NAV_CATEGORY.getKey());
-        List<PmsProductCategory> result = null;
-        if (StringUtils.isEmpty(navProductCategoryJson)) {
+        List<PmsProductCategory> result = (List<PmsProductCategory>) redisService.get(RedisKeys.NAV_CATEGORY.getKey());
+
+        if (StringUtils.isEmpty(result)) {
             //从数据库获取导航栏商品分类
             PmsProductCategoryExample example = new PmsProductCategoryExample();
             example.createCriteria()
@@ -289,19 +251,9 @@ public class HomeServiceImpl implements HomeService {
             example.setOrderByClause("sort ASC");
             result = productCategoryMapper.selectByExample(example);
             //放入redis
-            try {
-                redisService.set(RedisKeys.NAV_CATEGORY.getKey(), objectMapper.writeValueAsString(result));
-                redisService.expire(RedisKeys.NAV_CATEGORY.getKey(), expireTime);
-            } catch (JsonProcessingException e) {
-                log.error("json转换异常：{}", e.getMessage());
-            }
-        } else {
-            try {
-                result = objectMapper.readValue(navProductCategoryJson, new TypeReference<List<PmsProductCategory>>() {
-                });
-            } catch (IOException e) {
-                log.error("对象转换异常：{}", e.getMessage());
-            }
+
+            redisService.set(RedisKeys.NAV_CATEGORY.getKey(), result, expireTime);
+
         }
         return result;
     }

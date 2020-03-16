@@ -17,7 +17,6 @@
         <module>mall-front</module>
         <module>mall-gateway</module>
         <module>mall-security</module>
-        <module>mall-demo</module>
     </modules>
 
     <parent>

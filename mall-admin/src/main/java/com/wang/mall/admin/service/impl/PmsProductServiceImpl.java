@@ -5,7 +5,6 @@ import com.wang.mall.admin.dao.*;
 import com.wang.mall.admin.dto.PmsProductParam;
 import com.wang.mall.admin.dto.PmsProductQueryParam;
 import com.wang.mall.admin.dto.PmsProductResult;
-import com.wang.mall.admin.feign.FeignRedisService;
 import com.wang.mall.admin.util.RedisUtil;
 import com.wang.mall.common.rediskey.RedisKeys;
 import com.wang.mall.mapper.*;

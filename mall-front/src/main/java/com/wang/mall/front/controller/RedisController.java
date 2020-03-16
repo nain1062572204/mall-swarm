@@ -42,7 +42,7 @@ public class RedisController {
     @ApiOperation("删除数据")
     @DeleteMapping("/delete/{key}")
     public CommonResult delete(@PathVariable String key) {
-        redisService.delete(key);
+        redisService.del(key);
         return CommonResult.success(key);
     }
 }

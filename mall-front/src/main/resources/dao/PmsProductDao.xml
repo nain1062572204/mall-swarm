@@ -8,6 +8,7 @@
 	    p.sub_title,
 	    p.pic,
 	    p.price,
+	    p.product_sn,
 	    p.promotion_price,
 	    p.description,
 	    p.album_pics,

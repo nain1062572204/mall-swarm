@@ -110,6 +110,7 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
         return productCategoryMapper.updateByPrimaryKeySelective(productCategory);
     }
 
+
     @Override
     public List<PmsProductCategory> list(Long parentId, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
