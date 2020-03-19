@@ -9,11 +9,12 @@ package com.wang.mall.common.rediskey;
  * homeProduct: "home:product" #首页推荐商品
  */
 public enum RedisKeys {
-    HOME_ADVERTISE("home:advertise"),
-    CATEGORY("home:category"),
-    FLASH_PROMOTION("home:flash"),
-    HOME_PRODUCT("home:product"),
-    NAV_CATEGORY("nav:category");
+    OMS_CART_ITEM("mall::oms:cartItem:"),
+    HOME_ADVERTISE("mall::home:advertise"),
+    CATEGORY("mall::home:category"),
+    FLASH_PROMOTION("mall::home:flash"),
+    HOME_PRODUCT("mall::home:product"),
+    NAV_CATEGORY("mall::nav:category");
 
     private String key;
 

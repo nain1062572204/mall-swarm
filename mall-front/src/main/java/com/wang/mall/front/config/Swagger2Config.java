@@ -57,6 +57,7 @@ public class Swagger2Config {
         List<SecurityContext> result = new ArrayList<>();
         result.add(getContextByPath("/cart/.*"));
         result.add(getContextByPath("/sso/info"));
+        result.add(getContextByPath("/member/address/.*"));
         return result;
     }
 

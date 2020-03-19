@@ -1,15 +1,20 @@
 package com.wang.mall.front.service.impl;
 
+import com.netflix.discovery.converters.Auto;
+import com.wang.mall.common.rediskey.RedisKeys;
+import com.wang.mall.front.config.RedisConfig;
 import com.wang.mall.front.dao.PmsProductDao;
 import com.wang.mall.front.service.OmsCartItemService;
+import com.wang.mall.front.service.RedisService;
 import com.wang.mall.front.service.UmsMemberService;
 import com.wang.mall.mapper.OmsCartItemMapper;
 import com.wang.mall.model.OmsCartItem;
 import com.wang.mall.model.OmsCartItemExample;
-import com.wang.mall.model.OmsOrderItemExample;
 import com.wang.mall.model.UmsMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -29,14 +34,15 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
     @Autowired
     private OmsCartItemMapper cartItemMapper;
     @Autowired
-    private PmsProductDao productDao;
-    @Autowired
     private UmsMemberService memberService;
+    @Autowired
+    private RedisService redisService;
 
     @Override
     public int add(OmsCartItem cartItem) {
         int count;
         UmsMember currentMember = memberService.getCurrentMember();
+        redisService.del(RedisKeys.OMS_CART_ITEM.getKey() + currentMember.getId());
         cartItem.setMemberId(currentMember.getId());
         cartItem.setDeleteStatus(0);
         OmsCartItem existCartItem = getCartItem(cartItem);
@@ -68,15 +74,24 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<OmsCartItem> list(Long memberId) {
-        OmsCartItemExample example = new OmsCartItemExample();
-        example.createCriteria().andDeleteStatusEqualTo(0)
-                .andMemberIdEqualTo(memberId);
-        return cartItemMapper.selectByExample(example);
+        List<OmsCartItem> result = (List<OmsCartItem>) redisService.get(RedisKeys.OMS_CART_ITEM.getKey() + memberId);
+        if (CollectionUtils.isEmpty(result)) {//没有缓存从数据中取
+            OmsCartItemExample example = new OmsCartItemExample();
+            example.createCriteria().andDeleteStatusEqualTo(0)
+                    .andMemberIdEqualTo(memberId);
+            result = cartItemMapper.selectByExample(example);
+            redisService.set(RedisKeys.OMS_CART_ITEM.getKey() + memberId, result, 60 * 60 * 24);
+            return result;
+        }
+        return result;
+
     }
 
     @Override
     public int updateQuantity(Long id, Long memberId, Integer quantity) {
+        redisService.del(RedisKeys.OMS_CART_ITEM.getKey() + memberId);
         OmsCartItem cartItem = OmsCartItem.builder()
                 .memberId(memberId)
                 .quantity(quantity)
@@ -91,6 +106,7 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
 
     @Override
     public int delete(Long memberId, List<Long> ids) {
+        redisService.del(RedisKeys.OMS_CART_ITEM.getKey() + memberId);
         OmsCartItem record = OmsCartItem.builder()
                 .deleteStatus(1).build();
         OmsCartItemExample example = new OmsCartItemExample();
@@ -100,6 +116,7 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
 
     @Override
     public int updateAttr(OmsCartItem cartItem) {
+        redisService.del(RedisKeys.OMS_CART_ITEM.getKey() + cartItem.getMemberId());
         //删除原有信息
         OmsCartItem updateCart = OmsCartItem.builder()
                 .id(cartItem.getId())
@@ -113,6 +130,7 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
 
     @Override
     public int clear(Long memberId) {
+        redisService.del(RedisKeys.OMS_CART_ITEM.getKey() + memberId);
         OmsCartItem record = new OmsCartItem();
         record.setDeleteStatus(1);
         OmsCartItemExample example = new OmsCartItemExample();

@@ -35,8 +35,8 @@ public class RedisController {
     @ApiOperation("/删除所有数据")
     @DeleteMapping("/flushAll")
     public CommonResult flushAll() {
-        redisService.flushAll();
-        return CommonResult.success("清空成功");
+
+        return CommonResult.success(redisService.flushAll());
     }
 
     @ApiOperation("删除数据")

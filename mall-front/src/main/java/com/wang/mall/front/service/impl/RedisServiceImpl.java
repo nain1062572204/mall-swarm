@@ -201,7 +201,9 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public void flushAll() {
-
+    public Set<String> flushAll() {
+        Set<String> keys = redisTemplate.keys("*");
+        redisTemplate.delete(keys);
+        return keys;
     }
 }

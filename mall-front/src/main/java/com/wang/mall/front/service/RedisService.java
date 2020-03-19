@@ -190,5 +190,5 @@ public interface RedisService {
     /**
      * 清除所有数据
      */
-    void flushAll();
+    Set<String> flushAll();
 }
