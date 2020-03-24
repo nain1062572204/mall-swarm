@@ -58,6 +58,7 @@ public class Swagger2Config {
         result.add(getContextByPath("/cart/.*"));
         result.add(getContextByPath("/sso/info"));
         result.add(getContextByPath("/member/address/.*"));
+        result.add(getContextByPath("/order/.*"));
         return result;
     }
 

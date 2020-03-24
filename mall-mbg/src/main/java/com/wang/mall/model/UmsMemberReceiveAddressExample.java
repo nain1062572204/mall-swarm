@@ -634,6 +634,76 @@ public class UmsMemberReceiveAddressExample {
             return (Criteria) this;
         }
 
+        public Criteria andStreetIsNull() {
+            addCriterion("street is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetIsNotNull() {
+            addCriterion("street is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetEqualTo(String value) {
+            addCriterion("street =", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNotEqualTo(String value) {
+            addCriterion("street <>", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetGreaterThan(String value) {
+            addCriterion("street >", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetGreaterThanOrEqualTo(String value) {
+            addCriterion("street >=", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetLessThan(String value) {
+            addCriterion("street <", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetLessThanOrEqualTo(String value) {
+            addCriterion("street <=", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetLike(String value) {
+            addCriterion("street like", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNotLike(String value) {
+            addCriterion("street not like", value, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetIn(List<String> values) {
+            addCriterion("street in", values, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNotIn(List<String> values) {
+            addCriterion("street not in", values, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetBetween(String value1, String value2) {
+            addCriterion("street between", value1, value2, "street");
+            return (Criteria) this;
+        }
+
+        public Criteria andStreetNotBetween(String value1, String value2) {
+            addCriterion("street not between", value1, value2, "street");
+            return (Criteria) this;
+        }
+
         public Criteria andDetailAddressIsNull() {
             addCriterion("detail_address is null");
             return (Criteria) this;
@@ -701,6 +771,76 @@ public class UmsMemberReceiveAddressExample {
 
         public Criteria andDetailAddressNotBetween(String value1, String value2) {
             addCriterion("detail_address not between", value1, value2, "detailAddress");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagIsNull() {
+            addCriterion("tag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagIsNotNull() {
+            addCriterion("tag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagEqualTo(String value) {
+            addCriterion("tag =", value, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagNotEqualTo(String value) {
+            addCriterion("tag <>", value, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagGreaterThan(String value) {
+            addCriterion("tag >", value, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagGreaterThanOrEqualTo(String value) {
+            addCriterion("tag >=", value, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagLessThan(String value) {
+            addCriterion("tag <", value, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagLessThanOrEqualTo(String value) {
+            addCriterion("tag <=", value, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagLike(String value) {
+            addCriterion("tag like", value, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagNotLike(String value) {
+            addCriterion("tag not like", value, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagIn(List<String> values) {
+            addCriterion("tag in", values, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagNotIn(List<String> values) {
+            addCriterion("tag not in", values, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagBetween(String value1, String value2) {
+            addCriterion("tag between", value1, value2, "tag");
+            return (Criteria) this;
+        }
+
+        public Criteria andTagNotBetween(String value1, String value2) {
+            addCriterion("tag not between", value1, value2, "tag");
             return (Criteria) this;
         }
     }

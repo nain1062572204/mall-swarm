@@ -6,7 +6,7 @@ import com.wang.mall.admin.dao.PmsProductCategoryDao;
 import com.wang.mall.admin.dto.PmsProductCategoryParam;
 import com.wang.mall.admin.dto.PmsProductCategoryWithChildrenItem;
 import com.wang.mall.admin.util.RedisUtil;
-import com.wang.mall.common.rediskey.RedisKeys;
+import com.wang.mall.cache.keys.RedisKeys;
 import com.wang.mall.mapper.PmsProductCategoryAttributeRelationMapper;
 import com.wang.mall.mapper.PmsProductCategoryMapper;
 import com.wang.mall.mapper.PmsProductMapper;

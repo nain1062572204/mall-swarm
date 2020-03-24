@@ -1,6 +1,7 @@
 package com.wang.mall.front.service.impl;
 
 import com.wang.mall.front.domain.MemberDetails;
+import com.wang.mall.front.service.FrontCacheService;
 import com.wang.mall.mapper.UmsMemberMapper;
 import com.wang.mall.model.UmsMember;
 import com.wang.mall.model.UmsMemberExample;
@@ -32,16 +33,24 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private FrontCacheService frontCacheService;
 
     @Override
     public UmsMember getByUsername(String username) {
+        //先从缓存中获取用户信息
+        UmsMember member = frontCacheService.getMember(username);
+        if (member != null) {
+            return member;
+        }
         UmsMemberExample example = new UmsMemberExample();
         example.createCriteria().andUsernameEqualTo(username);
         List<UmsMember> memberList = memberMapper.selectByExample(example);
         if (!CollectionUtils.isEmpty(memberList)) {
-            return memberList.get(0);
+            member = memberList.get(0);
+            frontCacheService.setMember(member);
         }
-        return null;
+        return member;
     }
 
 

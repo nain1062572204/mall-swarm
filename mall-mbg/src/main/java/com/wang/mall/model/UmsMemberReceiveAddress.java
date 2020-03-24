@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-03-19 22:49
+ * Created by Mybatis Generator 2020-03-20 22:42
  */
 @Data
 @Builder
@@ -37,8 +37,14 @@ public class UmsMemberReceiveAddress implements Serializable {
     @ApiModelProperty(value = "区")
     private String region;
 
+    @ApiModelProperty(value = "街道")
+    private String street;
+
     @ApiModelProperty(value = "详细地址（街道）")
     private String detailAddress;
+
+    @ApiModelProperty(value = "标签")
+    private String tag;
 
     private static final long serialVersionUID = 1L;
 }

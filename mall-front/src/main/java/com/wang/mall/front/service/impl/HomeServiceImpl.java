@@ -1,9 +1,7 @@
 package com.wang.mall.front.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wang.mall.common.rediskey.RedisKeys;
+import com.wang.mall.cache.keys.RedisKeys;
+import com.wang.mall.cache.service.RedisService;
 import com.wang.mall.front.dao.PmsProductCategoryDao;
 import com.wang.mall.front.dao.SmsFlashPromotionProductRelationDao;
 import com.wang.mall.front.domain.HomeContentResult;
@@ -11,13 +9,13 @@ import com.wang.mall.front.domain.TopBarContentResult;
 import com.wang.mall.front.dto.PmsProductCategoryWithChildrenItem;
 import com.wang.mall.front.dto.PmsProductCategoryWithProduct;
 import com.wang.mall.front.dto.SmsFlashPromotionWithProduct;
+import com.wang.mall.front.service.FrontCacheService;
 import com.wang.mall.mapper.PmsProductCategoryMapper;
 import com.wang.mall.mapper.PmsProductMapper;
 import com.wang.mall.mapper.SmsFlashPromotionSessionMapper;
 import com.wang.mall.mapper.SmsHomeAdvertiseMapper;
 import com.wang.mall.model.*;
 import com.wang.mall.front.service.HomeService;
-import com.wang.mall.front.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -41,8 +38,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class HomeServiceImpl implements HomeService {
-    @Value("${spring.redis.expireTime}")
-    private Integer expireTime;
+    /*@Value("${spring.redis.expireTime}")
+    private Integer expireTime;*/
 
     @Autowired
     private ThreadPoolTaskExecutor executor;
@@ -55,13 +52,13 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private PmsProductMapper productMapper;
     @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
     private SmsFlashPromotionSessionMapper flashPromotionSessionMapper;
     @Autowired
     private SmsFlashPromotionProductRelationDao flashPromotionProductRelationDao;
     @Autowired
     private PmsProductCategoryDao productCategoryDao;
+    @Autowired
+    private FrontCacheService frontCacheService;
 
     @Override
     public HomeContentResult content() {
@@ -79,9 +76,7 @@ public class HomeServiceImpl implements HomeService {
             advertises = advertiseFuture.get();
             recommendProducts = recommendProductFuture.get();
             flash = flashFuture.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
@@ -101,9 +96,7 @@ public class HomeServiceImpl implements HomeService {
             categories = executor.submit(this::getHomeCategories).get();
             navProductCategories = executor.submit(this::getNavProductCategory).get();
             advertises = executor.submit(this::getSearchAdvertise).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return TopBarContentResult.builder()
@@ -120,7 +113,7 @@ public class HomeServiceImpl implements HomeService {
         final String CAROUSEL = "carousel";
         final String PROMO = "promo";
         final String BANNER = "banner";
-        Map<String, List<SmsHomeAdvertise>> result = (Map<String, List<SmsHomeAdvertise>>) redisService.get(RedisKeys.HOME_ADVERTISE.getKey());
+        Map<String, List<SmsHomeAdvertise>> result = frontCacheService.getAdvertise();
         if (CollectionUtils.isEmpty(result)) {
             //redis内容为空，从mysql中获取
             SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
@@ -135,7 +128,7 @@ public class HomeServiceImpl implements HomeService {
             result.put(CAROUSEL, advertises.stream().filter(advertise -> advertise.getType() == 0).collect(Collectors.toList()));
             result.put(PROMO, advertises.stream().filter(advertise -> advertise.getType() == 1).collect(Collectors.toList()));
             result.put(BANNER, advertises.stream().filter(advertise -> advertise.getType() == 2).collect(Collectors.toList()));
-            redisService.set(RedisKeys.HOME_ADVERTISE.getKey(), result, expireTime);
+            redisService.set(RedisKeys.HOME_ADVERTISE.getKey(), result, 60 * 64 * 24);
             return result;
         }
         return result;
@@ -145,8 +138,7 @@ public class HomeServiceImpl implements HomeService {
      * 获取推荐商品
      */
     private List<PmsProductCategoryWithProduct> getRecommendProduct() {
-        List<PmsProductCategoryWithProduct> result =
-                (List<PmsProductCategoryWithProduct>) redisService.get(RedisKeys.HOME_PRODUCT.getKey());
+        List<PmsProductCategoryWithProduct> result = frontCacheService.getRecommendProduct();
         if (StringUtils.isEmpty(result)) {
             //获取推荐分类
             PmsProductCategoryExample example = new PmsProductCategoryExample();
@@ -176,7 +168,7 @@ public class HomeServiceImpl implements HomeService {
                 }
             }
             //放入redis
-            redisService.set(RedisKeys.HOME_PRODUCT.getKey(), result, expireTime);
+            redisService.set(RedisKeys.HOME_PRODUCT.getKey(), result, 60 * 60 * 24);
         }
         return result;
     }
@@ -185,7 +177,7 @@ public class HomeServiceImpl implements HomeService {
      * 获取首页分类
      */
     private List<PmsProductCategoryWithProduct> getHomeCategories() {
-        List<PmsProductCategoryWithProduct> result = (List<PmsProductCategoryWithProduct>) redisService.get(RedisKeys.CATEGORY.getKey());
+        List<PmsProductCategoryWithProduct> result = frontCacheService.getHomeCategories();
         if (StringUtils.isEmpty(result)) {
             result = new ArrayList<>();
             //获取商品分类及子分类
@@ -209,7 +201,7 @@ public class HomeServiceImpl implements HomeService {
                 }
             }
 
-            redisService.set(RedisKeys.CATEGORY.getKey(), result, expireTime);
+            redisService.set(RedisKeys.CATEGORY.getKey(), result, 60 * 60 * 24);
             return result;
         }
         return result;
@@ -241,7 +233,7 @@ public class HomeServiceImpl implements HomeService {
      * 获取导航栏分类
      */
     private List<PmsProductCategory> getNavProductCategory() {
-        List<PmsProductCategory> result = (List<PmsProductCategory>) redisService.get(RedisKeys.NAV_CATEGORY.getKey());
+        List<PmsProductCategory> result = frontCacheService.getNavCategoryList();
 
         if (StringUtils.isEmpty(result)) {
             //从数据库获取导航栏商品分类
@@ -252,7 +244,7 @@ public class HomeServiceImpl implements HomeService {
             result = productCategoryMapper.selectByExample(example);
             //放入redis
 
-            redisService.set(RedisKeys.NAV_CATEGORY.getKey(), result, expireTime);
+            redisService.set(RedisKeys.NAV_CATEGORY.getKey(), result, 60 * 60 * 24);
 
         }
         return result;

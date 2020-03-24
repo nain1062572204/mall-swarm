@@ -6,6 +6,7 @@ import com.wang.mall.admin.dao.UmsAdminPermissionRelationDao;
 import com.wang.mall.admin.dao.UmsAdminRoleRelationDao;
 import com.wang.mall.admin.dto.UmsAdminParam;
 import com.wang.mall.admin.dto.UpdateAdminPasswordParam;
+import com.wang.mall.admin.service.UmsAdminCacheService;
 import com.wang.mall.mapper.UmsAdminLoginLogMapper;
 import com.wang.mall.mapper.UmsAdminMapper;
 import com.wang.mall.mapper.UmsAdminPermissionRelationMapper;
@@ -61,15 +62,26 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     private UmsAdminLoginLogMapper loginLogMapper;
     @Autowired
     private UmsAdminPermissionRelationDao adminPermissionRelationDao;
+    @Autowired
+    private UmsAdminCacheService adminCacheService;
 
     @Override
     public UmsAdmin getAdminByUsername(String username) {
+        //先读缓存
+        UmsAdmin admin = adminCacheService.getAdmin(username);
+        if (admin != null)
+            return admin;
+        //没有缓存从数据库中读
         UmsAdminExample example = new UmsAdminExample();
         example.createCriteria()
                 .andUsernameEqualTo(username);
         List<UmsAdmin> admins = adminMapper.selectByExample(example);
-        if (!CollectionUtils.isEmpty(admins))
-            return admins.get(0);
+        if (!CollectionUtils.isEmpty(admins)) {
+            admin = admins.get(0);
+            //将从数据库中拿出的数据放入缓存
+            adminCacheService.setAdmin(admin);
+            return admin;
+        }
         return null;
     }
 
@@ -209,7 +221,18 @@ public class UmsAdminServiceImpl implements UmsAdminService {
 
     @Override
     public List<UmsResource> getResourceList(Long adminId) {
-        return adminRoleRelationDao.getResourceList(adminId);
+        //先从缓存中拿数据
+        List<UmsResource> resourceList = adminCacheService.getResourceList(adminId);
+        if (!CollectionUtils.isEmpty(resourceList))
+            return resourceList;
+        //没有缓存从数据库中拿数据
+
+        resourceList = adminRoleRelationDao.getResourceList(adminId);
+        if (!CollectionUtils.isEmpty(resourceList)) {
+            //将数据放入缓存
+            adminCacheService.setResourceList(adminId, resourceList);
+        }
+        return resourceList;
     }
 
     @Override

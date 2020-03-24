@@ -1,5 +1,6 @@
 package com.wang.mall.front.service;
 
+import com.wang.mall.front.domain.CartPromotionItem;
 import com.wang.mall.model.OmsCartItem;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,11 @@ public interface OmsCartItemService {
      * 根据用户id获取购物车列表
      */
     List<OmsCartItem> list(Long memberId);
+
+    /**
+     * 根绝id获取购物车信息
+     */
+    List<OmsCartItem> list(List<Long> ids);
 
     /**
      * 修改购物车某个商品数量

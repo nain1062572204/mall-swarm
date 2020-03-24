@@ -2,6 +2,7 @@ package com.wang.mall.admin.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
+import com.wang.mall.admin.service.UmsAdminCacheService;
 import com.wang.mall.mapper.UmsResourceMapper;
 import com.wang.mall.model.UmsResource;
 import com.wang.mall.model.UmsResourceExample;
@@ -22,6 +23,8 @@ import java.util.List;
 public class UmsResourceServiceImpl implements UmsResourceService {
     @Autowired
     private UmsResourceMapper resourceMapper;
+    @Autowired
+    private UmsAdminCacheService adminCacheService;
 
     @Override
     public int create(UmsResource resource) {
@@ -32,6 +35,7 @@ public class UmsResourceServiceImpl implements UmsResourceService {
     @Override
     public int update(Long id, UmsResource resource) {
         resource.setId(id);
+        adminCacheService.delResourceListByResource(id);
         return resourceMapper.updateByPrimaryKeySelective(resource);
     }
 
@@ -42,6 +46,7 @@ public class UmsResourceServiceImpl implements UmsResourceService {
 
     @Override
     public int delete(Long id) {
+        adminCacheService.delResourceListByResource(id);
         return resourceMapper.deleteByPrimaryKey(id);
     }
 

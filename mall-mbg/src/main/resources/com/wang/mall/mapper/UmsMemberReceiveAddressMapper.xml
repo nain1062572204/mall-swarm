@@ -10,7 +10,9 @@
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="street" jdbcType="VARCHAR" property="street" />
     <result column="detail_address" jdbcType="VARCHAR" property="detailAddress" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, member_id, name, phone_number, default_status, province, city, region, detail_address
+    id, member_id, name, phone_number, default_status, province, city, region, street, 
+    detail_address, tag
   </sql>
   <select id="selectByExample" parameterType="com.wang.mall.model.UmsMemberReceiveAddressExample" resultMap="BaseResultMap">
     select
@@ -109,10 +112,12 @@
     </selectKey>
     insert into ums_member_receive_address (member_id, name, phone_number, 
       default_status, province, city, 
-      region, detail_address)
+      region, street, detail_address, 
+      tag)
     values (#{memberId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{phoneNumber,jdbcType=VARCHAR}, 
       #{defaultStatus,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
-      #{region,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR})
+      #{region,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{detailAddress,jdbcType=VARCHAR}, 
+      #{tag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wang.mall.model.UmsMemberReceiveAddress">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -141,8 +146,14 @@
       <if test="region != null">
         region,
       </if>
+      <if test="street != null">
+        street,
+      </if>
       <if test="detailAddress != null">
         detail_address,
+      </if>
+      <if test="tag != null">
+        tag,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -167,8 +178,14 @@
       <if test="region != null">
         #{region,jdbcType=VARCHAR},
       </if>
+      <if test="street != null">
+        #{street,jdbcType=VARCHAR},
+      </if>
       <if test="detailAddress != null">
         #{detailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        #{tag,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -205,8 +222,14 @@
       <if test="record.region != null">
         region = #{record.region,jdbcType=VARCHAR},
       </if>
+      <if test="record.street != null">
+        street = #{record.street,jdbcType=VARCHAR},
+      </if>
       <if test="record.detailAddress != null">
         detail_address = #{record.detailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tag != null">
+        tag = #{record.tag,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -223,7 +246,9 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       region = #{record.region,jdbcType=VARCHAR},
-      detail_address = #{record.detailAddress,jdbcType=VARCHAR}
+      street = #{record.street,jdbcType=VARCHAR},
+      detail_address = #{record.detailAddress,jdbcType=VARCHAR},
+      tag = #{record.tag,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -252,8 +277,14 @@
       <if test="region != null">
         region = #{region,jdbcType=VARCHAR},
       </if>
+      <if test="street != null">
+        street = #{street,jdbcType=VARCHAR},
+      </if>
       <if test="detailAddress != null">
         detail_address = #{detailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tag != null">
+        tag = #{tag,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -267,7 +298,9 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       region = #{region,jdbcType=VARCHAR},
-      detail_address = #{detailAddress,jdbcType=VARCHAR}
+      street = #{street,jdbcType=VARCHAR},
+      detail_address = #{detailAddress,jdbcType=VARCHAR},
+      tag = #{tag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

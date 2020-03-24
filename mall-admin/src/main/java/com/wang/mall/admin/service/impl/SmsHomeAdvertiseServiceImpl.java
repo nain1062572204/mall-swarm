@@ -2,7 +2,7 @@ package com.wang.mall.admin.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.wang.mall.admin.util.RedisUtil;
-import com.wang.mall.common.rediskey.RedisKeys;
+import com.wang.mall.cache.keys.RedisKeys;
 import com.wang.mall.mapper.SmsHomeAdvertiseMapper;
 import com.wang.mall.model.SmsHomeAdvertise;
 import com.wang.mall.model.SmsHomeAdvertiseExample;

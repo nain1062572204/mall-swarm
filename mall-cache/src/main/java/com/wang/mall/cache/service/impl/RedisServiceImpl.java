@@ -1,11 +1,9 @@
-package com.wang.mall.front.service.impl;
+package com.wang.mall.cache.service.impl;
 
-import com.wang.mall.front.service.RedisService;
+import com.wang.mall.cache.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -14,14 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author 王念
- * @create 2020-02-09 20:12
- * Redis操作Service实现类
+ * @create 2020-03-23 21:10
  */
 @Service
 public class RedisServiceImpl implements RedisService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-
     @Override
     public void set(String key, Object value, long time) {
         redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);

@@ -2296,6 +2296,76 @@ public class OmsOrderExample {
             return (Criteria) this;
         }
 
+        public Criteria andReceiverStreetIsNull() {
+            addCriterion("receiver_street is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetIsNotNull() {
+            addCriterion("receiver_street is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetEqualTo(String value) {
+            addCriterion("receiver_street =", value, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetNotEqualTo(String value) {
+            addCriterion("receiver_street <>", value, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetGreaterThan(String value) {
+            addCriterion("receiver_street >", value, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetGreaterThanOrEqualTo(String value) {
+            addCriterion("receiver_street >=", value, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetLessThan(String value) {
+            addCriterion("receiver_street <", value, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetLessThanOrEqualTo(String value) {
+            addCriterion("receiver_street <=", value, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetLike(String value) {
+            addCriterion("receiver_street like", value, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetNotLike(String value) {
+            addCriterion("receiver_street not like", value, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetIn(List<String> values) {
+            addCriterion("receiver_street in", values, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetNotIn(List<String> values) {
+            addCriterion("receiver_street not in", values, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetBetween(String value1, String value2) {
+            addCriterion("receiver_street between", value1, value2, "receiverStreet");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverStreetNotBetween(String value1, String value2) {
+            addCriterion("receiver_street not between", value1, value2, "receiverStreet");
+            return (Criteria) this;
+        }
+
         public Criteria andReceiverDetailAddressIsNull() {
             addCriterion("receiver_detail_address is null");
             return (Criteria) this;

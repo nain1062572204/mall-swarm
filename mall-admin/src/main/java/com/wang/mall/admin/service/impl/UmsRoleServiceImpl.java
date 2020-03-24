@@ -3,6 +3,7 @@ package com.wang.mall.admin.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.wang.mall.admin.dao.UmsRoleDao;
 import com.wang.mall.admin.dao.UmsRolePermissionRelationDao;
+import com.wang.mall.admin.service.UmsAdminCacheService;
 import com.wang.mall.mapper.UmsRoleMapper;
 import com.wang.mall.mapper.UmsRoleMenuRelationMapper;
 import com.wang.mall.mapper.UmsRolePermissionRelationMapper;
@@ -37,6 +38,8 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     private UmsRolePermissionRelationDao rolePermissionRelationDao;
     @Autowired
     private UmsRoleDao roleDao;
+    @Autowired
+    private UmsAdminCacheService adminCacheService;
 
     @Override
     public int create(UmsRole role) {
@@ -56,6 +59,7 @@ public class UmsRoleServiceImpl implements UmsRoleService {
     public int delete(List<Long> ids) {
         UmsRoleExample example = new UmsRoleExample();
         example.createCriteria().andIdIn(ids);
+        adminCacheService.delResourceListByRoleIds(ids);
         return roleMapper.deleteByExample(example);
     }
 
@@ -142,6 +146,7 @@ public class UmsRoleServiceImpl implements UmsRoleService {
             relation.setResourceId(resourceId);
             roleResourceRelationMapper.insert(relation);
         }
+        adminCacheService.delResourceListByRole(roleId);
         return resourceIds.size();
     }
 }

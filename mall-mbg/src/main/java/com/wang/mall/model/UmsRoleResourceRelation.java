@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-03-05 22:39
+ * Created by Mybatis Generator 2020-03-20 22:42
  */
 @Data
 @Builder

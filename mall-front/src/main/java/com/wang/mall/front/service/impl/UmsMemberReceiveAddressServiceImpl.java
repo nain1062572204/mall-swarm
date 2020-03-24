@@ -27,6 +27,8 @@ public class UmsMemberReceiveAddressServiceImpl implements UmsMemberReceiveAddre
     public int add(UmsMemberReceiveAddress address) {
         UmsMember currentMember = memberService.getCurrentMember();
         address.setMemberId(currentMember.getId());
+        if (address.getDefaultStatus() == null)
+            address.setDefaultStatus(0);
         return memberReceiveAddressMapper.insert(address);
     }
 
@@ -62,7 +64,7 @@ public class UmsMemberReceiveAddressServiceImpl implements UmsMemberReceiveAddre
         UmsMemberReceiveAddressExample example = new UmsMemberReceiveAddressExample();
         example.createCriteria().andMemberIdEqualTo(currentMember.getId()).andIdEqualTo(id);
         List<UmsMemberReceiveAddress> addressList = memberReceiveAddressMapper.selectByExample(example);
-        if(!CollectionUtils.isEmpty(addressList)){
+        if (!CollectionUtils.isEmpty(addressList)) {
             return addressList.get(0);
         }
         return null;

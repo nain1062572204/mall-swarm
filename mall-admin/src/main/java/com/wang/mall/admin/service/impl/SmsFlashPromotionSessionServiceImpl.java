@@ -2,9 +2,8 @@ package com.wang.mall.admin.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.wang.mall.admin.dto.SmsFlashPromotionSessionDetail;
-import com.wang.mall.admin.feign.FeignRedisService;
 import com.wang.mall.admin.util.RedisUtil;
-import com.wang.mall.common.rediskey.RedisKeys;
+import com.wang.mall.cache.keys.RedisKeys;
 import com.wang.mall.mapper.SmsFlashPromotionSessionMapper;
 import com.wang.mall.model.SmsFlashPromotionSession;
 import com.wang.mall.model.SmsFlashPromotionSessionExample;

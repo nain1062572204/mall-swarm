@@ -38,4 +38,9 @@ public interface UmsAdminRoleRelationDao {
      * 获取用户可以访问的资源
      */
     List<UmsResource> getResourceList(@Param("adminId") Long adminId);
+
+    /**
+     * 获取资相关用户Id列表
+     */
+    List<Long> getAdminIdList(@Param("resourceId") Long resourceId);
 }

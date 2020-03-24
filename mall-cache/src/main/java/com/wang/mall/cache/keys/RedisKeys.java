@@ -1,4 +1,4 @@
-package com.wang.mall.common.rediskey;
+package com.wang.mall.cache.keys;
 
 /**
  * @author 王念
@@ -14,7 +14,11 @@ public enum RedisKeys {
     CATEGORY("mall::home:category"),
     FLASH_PROMOTION("mall::home:flash"),
     HOME_PRODUCT("mall::home:product"),
-    NAV_CATEGORY("mall::nav:category");
+    NAV_CATEGORY("mall::nav:category"),
+    DATABASE("mall"),
+    ADMIN("usm:admin"),
+    RESOURCE_LIST("ums:resourceList"),
+    MEMBER("mall:ums:member");
 
     private String key;
 

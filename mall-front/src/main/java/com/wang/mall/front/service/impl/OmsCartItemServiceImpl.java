@@ -1,11 +1,8 @@
 package com.wang.mall.front.service.impl;
 
-import com.netflix.discovery.converters.Auto;
-import com.wang.mall.common.rediskey.RedisKeys;
-import com.wang.mall.front.config.RedisConfig;
-import com.wang.mall.front.dao.PmsProductDao;
+import com.wang.mall.cache.keys.RedisKeys;
+import com.wang.mall.cache.service.RedisService;
 import com.wang.mall.front.service.OmsCartItemService;
-import com.wang.mall.front.service.RedisService;
 import com.wang.mall.front.service.UmsMemberService;
 import com.wang.mall.mapper.OmsCartItemMapper;
 import com.wang.mall.model.OmsCartItem;
@@ -13,8 +10,6 @@ import com.wang.mall.model.OmsCartItemExample;
 import com.wang.mall.model.UmsMember;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -87,6 +82,13 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
         }
         return result;
 
+    }
+
+    @Override
+    public List<OmsCartItem> list(List<Long> ids) {
+        OmsCartItemExample example = new OmsCartItemExample();
+        example.createCriteria().andIdIn(ids).andDeleteStatusEqualTo(0);
+        return cartItemMapper.selectByExample(example);
     }
 
     @Override

@@ -36,6 +36,7 @@
     <result column="receiver_province" jdbcType="VARCHAR" property="receiverProvince" />
     <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity" />
     <result column="receiver_region" jdbcType="VARCHAR" property="receiverRegion" />
+    <result column="receiver_street" jdbcType="VARCHAR" property="receiverStreet" />
     <result column="receiver_detail_address" jdbcType="VARCHAR" property="receiverDetailAddress" />
     <result column="note" jdbcType="VARCHAR" property="note" />
     <result column="confirm_status" jdbcType="INTEGER" property="confirmStatus" />
@@ -111,8 +112,9 @@
     pay_type, source_type, status, order_type, delivery_company, delivery_sn, auto_confirm_day, 
     integration, growth, promotion_info, bill_type, bill_header, bill_content, bill_receiver_phone, 
     bill_receiver_email, receiver_name, receiver_phone, receiver_post_code, receiver_province, 
-    receiver_city, receiver_region, receiver_detail_address, note, confirm_status, delete_status, 
-    use_integration, payment_time, delivery_time, receive_time, comment_time, modify_time
+    receiver_city, receiver_region, receiver_street, receiver_detail_address, note, confirm_status, 
+    delete_status, use_integration, payment_time, delivery_time, receive_time, comment_time, 
+    modify_time
   </sql>
   <select id="selectByExample" parameterType="com.wang.mall.model.OmsOrderExample" resultMap="BaseResultMap">
     select
@@ -159,10 +161,11 @@
       bill_content, bill_receiver_phone, bill_receiver_email, 
       receiver_name, receiver_phone, receiver_post_code, 
       receiver_province, receiver_city, receiver_region, 
-      receiver_detail_address, note, confirm_status, 
-      delete_status, use_integration, payment_time, 
-      delivery_time, receive_time, comment_time, 
-      modify_time)
+      receiver_street, receiver_detail_address, 
+      note, confirm_status, delete_status, 
+      use_integration, payment_time, delivery_time, 
+      receive_time, comment_time, modify_time
+      )
     values (#{memberId,jdbcType=BIGINT}, #{couponId,jdbcType=BIGINT}, #{orderSn,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{memberUsername,jdbcType=VARCHAR}, #{totalAmount,jdbcType=DECIMAL}, 
       #{payAmount,jdbcType=DECIMAL}, #{freightAmount,jdbcType=DECIMAL}, #{promotionAmount,jdbcType=DECIMAL}, 
@@ -174,10 +177,11 @@
       #{billContent,jdbcType=VARCHAR}, #{billReceiverPhone,jdbcType=VARCHAR}, #{billReceiverEmail,jdbcType=VARCHAR}, 
       #{receiverName,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR}, #{receiverPostCode,jdbcType=VARCHAR}, 
       #{receiverProvince,jdbcType=VARCHAR}, #{receiverCity,jdbcType=VARCHAR}, #{receiverRegion,jdbcType=VARCHAR}, 
-      #{receiverDetailAddress,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{confirmStatus,jdbcType=INTEGER}, 
-      #{deleteStatus,jdbcType=INTEGER}, #{useIntegration,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, 
-      #{deliveryTime,jdbcType=TIMESTAMP}, #{receiveTime,jdbcType=TIMESTAMP}, #{commentTime,jdbcType=TIMESTAMP}, 
-      #{modifyTime,jdbcType=TIMESTAMP})
+      #{receiverStreet,jdbcType=VARCHAR}, #{receiverDetailAddress,jdbcType=VARCHAR}, 
+      #{note,jdbcType=VARCHAR}, #{confirmStatus,jdbcType=INTEGER}, #{deleteStatus,jdbcType=INTEGER}, 
+      #{useIntegration,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, #{deliveryTime,jdbcType=TIMESTAMP}, 
+      #{receiveTime,jdbcType=TIMESTAMP}, #{commentTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wang.mall.model.OmsOrder">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -283,6 +287,9 @@
       </if>
       <if test="receiverRegion != null">
         receiver_region,
+      </if>
+      <if test="receiverStreet != null">
+        receiver_street,
       </if>
       <if test="receiverDetailAddress != null">
         receiver_detail_address,
@@ -414,6 +421,9 @@
       </if>
       <if test="receiverRegion != null">
         #{receiverRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverStreet != null">
+        #{receiverStreet,jdbcType=VARCHAR},
       </if>
       <if test="receiverDetailAddress != null">
         #{receiverDetailAddress,jdbcType=VARCHAR},
@@ -558,6 +568,9 @@
       <if test="record.receiverRegion != null">
         receiver_region = #{record.receiverRegion,jdbcType=VARCHAR},
       </if>
+      <if test="record.receiverStreet != null">
+        receiver_street = #{record.receiverStreet,jdbcType=VARCHAR},
+      </if>
       <if test="record.receiverDetailAddress != null">
         receiver_detail_address = #{record.receiverDetailAddress,jdbcType=VARCHAR},
       </if>
@@ -629,6 +642,7 @@
       receiver_province = #{record.receiverProvince,jdbcType=VARCHAR},
       receiver_city = #{record.receiverCity,jdbcType=VARCHAR},
       receiver_region = #{record.receiverRegion,jdbcType=VARCHAR},
+      receiver_street = #{record.receiverStreet,jdbcType=VARCHAR},
       receiver_detail_address = #{record.receiverDetailAddress,jdbcType=VARCHAR},
       note = #{record.note,jdbcType=VARCHAR},
       confirm_status = #{record.confirmStatus,jdbcType=INTEGER},
@@ -745,6 +759,9 @@
       <if test="receiverRegion != null">
         receiver_region = #{receiverRegion,jdbcType=VARCHAR},
       </if>
+      <if test="receiverStreet != null">
+        receiver_street = #{receiverStreet,jdbcType=VARCHAR},
+      </if>
       <if test="receiverDetailAddress != null">
         receiver_detail_address = #{receiverDetailAddress,jdbcType=VARCHAR},
       </if>
@@ -813,6 +830,7 @@
       receiver_province = #{receiverProvince,jdbcType=VARCHAR},
       receiver_city = #{receiverCity,jdbcType=VARCHAR},
       receiver_region = #{receiverRegion,jdbcType=VARCHAR},
+      receiver_street = #{receiverStreet,jdbcType=VARCHAR},
       receiver_detail_address = #{receiverDetailAddress,jdbcType=VARCHAR},
       note = #{note,jdbcType=VARCHAR},
       confirm_status = #{confirmStatus,jdbcType=INTEGER},

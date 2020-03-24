@@ -1,8 +1,8 @@
 package com.wang.mall.front.controller;
 
+import com.wang.mall.cache.service.RedisService;
 import com.wang.mall.front.bto.RedisKeyValue;
 import com.wang.mall.common.api.CommonResult;
-import com.wang.mall.front.service.RedisService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

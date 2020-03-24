@@ -1,22 +1,14 @@
-package com.wang.mall.front.service;
-
-
-/**
- * @author 王念
- * @create 2020-02-09 19:56
- * Redis操作Service
- */
+package com.wang.mall.cache.service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * redis操作Service
- * Created by macro on 2020/3/3.
+ * @author 王念
+ * @create 2020-03-23 21:08
  */
 public interface RedisService {
-
     /**
      * 保存属性
      */

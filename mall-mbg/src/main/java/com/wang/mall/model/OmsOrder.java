@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-03-05 22:39
+ * Created by Mybatis Generator 2020-03-20 22:42
  */
 @Data
 @Builder
@@ -116,6 +116,9 @@ public class OmsOrder implements Serializable {
 
     @ApiModelProperty(value = "区")
     private String receiverRegion;
+
+    @ApiModelProperty(value = "街道")
+    private String receiverStreet;
 
     @ApiModelProperty(value = "详细地址")
     private String receiverDetailAddress;
