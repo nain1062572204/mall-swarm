@@ -254,12 +254,20 @@ public class HomeServiceImpl implements HomeService {
      * 获取搜索框广告
      */
     private List<SmsHomeAdvertise> getSearchAdvertise() {
+        //先读缓存
+        List<SmsHomeAdvertise> result = frontCacheService.getSearchAdvertise();
+        if (!CollectionUtils.isEmpty(result))
+            return result;
+
         Date currentTime = new Date();
         SmsHomeAdvertiseExample example = new SmsHomeAdvertiseExample();
         example.createCriteria().andTypeEqualTo(3)
                 .andStartTimeLessThanOrEqualTo(currentTime)
                 .andEndTimeGreaterThanOrEqualTo(currentTime);
         example.setOrderByClause("sort ASC");
-        return advertiseMapper.selectByExample(example);
+        result = advertiseMapper.selectByExample(example);
+        if (!CollectionUtils.isEmpty(result))
+            frontCacheService.setSearchAdvertise(result);
+        return result;
     }
 }

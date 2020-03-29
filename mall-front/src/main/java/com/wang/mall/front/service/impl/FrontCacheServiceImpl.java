@@ -2,12 +2,10 @@ package com.wang.mall.front.service.impl;
 
 import com.wang.mall.cache.keys.RedisKeys;
 import com.wang.mall.cache.service.RedisService;
+import com.wang.mall.front.domain.PmsProductDetailResult;
 import com.wang.mall.front.dto.PmsProductCategoryWithProduct;
 import com.wang.mall.front.service.FrontCacheService;
-import com.wang.mall.model.OmsCartItem;
-import com.wang.mall.model.PmsProductCategory;
-import com.wang.mall.model.SmsHomeAdvertise;
-import com.wang.mall.model.UmsMember;
+import com.wang.mall.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,5 +85,30 @@ public class FrontCacheServiceImpl implements FrontCacheService {
     @Override
     public void setMember(UmsMember member) {
         redisService.set(RedisKeys.MEMBER + ":" + member.getUsername(), member, 60 * 60 * 24);
+    }
+
+    @Override
+    public void setProduct(PmsProductDetailResult productDetailResult) {
+        redisService.set(RedisKeys.PMS_PRODUCT.getKey() + ":" + productDetailResult.getId(), productDetailResult, 60 * 60 * 24);
+    }
+
+    @Override
+    public PmsProductDetailResult getProduct(Long productId) {
+        return (PmsProductDetailResult) redisService.get(RedisKeys.PMS_PRODUCT.getKey() + ":" + productId);
+    }
+
+    @Override
+    public List<SmsHomeAdvertise> getSearchAdvertise() {
+        return (List<SmsHomeAdvertise>) redisService.get(RedisKeys.SEARCH_ADVERTISE.getKey());
+    }
+
+    @Override
+    public void delSearchAdvertise() {
+
+    }
+
+    @Override
+    public void setSearchAdvertise(List<SmsHomeAdvertise> advertise) {
+        redisService.set(RedisKeys.SEARCH_ADVERTISE.getKey(), advertise, 60 * 60 * 24);
     }
 }

@@ -1,11 +1,9 @@
 package com.wang.mall.front.service;
 
+import com.wang.mall.front.domain.PmsProductDetailResult;
 import com.wang.mall.front.dto.PmsProductCategoryWithProduct;
 import com.wang.mall.front.dto.SmsFlashPromotionWithProduct;
-import com.wang.mall.model.OmsCartItem;
-import com.wang.mall.model.PmsProductCategory;
-import com.wang.mall.model.SmsHomeAdvertise;
-import com.wang.mall.model.UmsMember;
+import com.wang.mall.model.*;
 
 import java.lang.reflect.Member;
 import java.util.List;
@@ -57,4 +55,19 @@ public interface FrontCacheService {
 
     //设置用户
     void setMember(UmsMember member);
+
+    //设置商品信息
+    void setProduct(PmsProductDetailResult productDetailResult);
+
+    //获取商品缓存
+    PmsProductDetailResult getProduct(Long productId);
+
+    //获取搜索框广告
+    List<SmsHomeAdvertise> getSearchAdvertise();
+
+    //删除搜索框广告
+    void delSearchAdvertise();
+
+    //设置搜索框广告
+    void setSearchAdvertise(List<SmsHomeAdvertise> advertise);
 }

@@ -18,7 +18,9 @@ public enum RedisKeys {
     DATABASE("mall"),
     ADMIN("usm:admin"),
     RESOURCE_LIST("ums:resourceList"),
-    MEMBER("mall:ums:member");
+    MEMBER("mall:ums:member"),
+    PMS_PRODUCT("mall:pms:product"),
+    SEARCH_ADVERTISE("mall:home:searchAdvertise");
 
     private String key;
 
