@@ -8,16 +8,12 @@
     <result column="product_id" jdbcType="BIGINT" property="productId" />
     <result column="product_pic" jdbcType="VARCHAR" property="productPic" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="product_brand" jdbcType="VARCHAR" property="productBrand" />
     <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
     <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
     <result column="product_quantity" jdbcType="INTEGER" property="productQuantity" />
     <result column="product_sku_id" jdbcType="BIGINT" property="productSkuId" />
     <result column="product_sku_code" jdbcType="VARCHAR" property="productSkuCode" />
     <result column="product_category_id" jdbcType="BIGINT" property="productCategoryId" />
-    <result column="sp1" jdbcType="VARCHAR" property="sp1" />
-    <result column="sp2" jdbcType="VARCHAR" property="sp2" />
-    <result column="sp3" jdbcType="VARCHAR" property="sp3" />
     <result column="promotion_name" jdbcType="VARCHAR" property="promotionName" />
     <result column="promotion_amount" jdbcType="DECIMAL" property="promotionAmount" />
     <result column="coupon_amount" jdbcType="DECIMAL" property="couponAmount" />
@@ -86,10 +82,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_id, order_sn, product_id, product_pic, product_name, product_brand, product_sn, 
-    product_price, product_quantity, product_sku_id, product_sku_code, product_category_id, 
-    sp1, sp2, sp3, promotion_name, promotion_amount, coupon_amount, integration_amount, 
-    real_amount, gift_integration, gift_growth, product_attr
+    id, order_id, order_sn, product_id, product_pic, product_name, product_sn, product_price, 
+    product_quantity, product_sku_id, product_sku_code, product_category_id, promotion_name, 
+    promotion_amount, coupon_amount, integration_amount, real_amount, gift_integration, 
+    gift_growth, product_attr
   </sql>
   <select id="selectByExample" parameterType="com.wang.mall.model.OmsOrderItemExample" resultMap="BaseResultMap">
     select
@@ -126,18 +122,16 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into oms_order_item (order_id, order_sn, product_id, 
-      product_pic, product_name, product_brand, 
-      product_sn, product_price, product_quantity, 
-      product_sku_id, product_sku_code, product_category_id, 
-      sp1, sp2, sp3, promotion_name, 
+      product_pic, product_name, product_sn, 
+      product_price, product_quantity, product_sku_id, 
+      product_sku_code, product_category_id, promotion_name, 
       promotion_amount, coupon_amount, integration_amount, 
       real_amount, gift_integration, gift_growth, 
       product_attr)
     values (#{orderId,jdbcType=BIGINT}, #{orderSn,jdbcType=VARCHAR}, #{productId,jdbcType=BIGINT}, 
-      #{productPic,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productBrand,jdbcType=VARCHAR}, 
-      #{productSn,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL}, #{productQuantity,jdbcType=INTEGER}, 
-      #{productSkuId,jdbcType=BIGINT}, #{productSkuCode,jdbcType=VARCHAR}, #{productCategoryId,jdbcType=BIGINT}, 
-      #{sp1,jdbcType=VARCHAR}, #{sp2,jdbcType=VARCHAR}, #{sp3,jdbcType=VARCHAR}, #{promotionName,jdbcType=VARCHAR}, 
+      #{productPic,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productSn,jdbcType=VARCHAR}, 
+      #{productPrice,jdbcType=DECIMAL}, #{productQuantity,jdbcType=INTEGER}, #{productSkuId,jdbcType=BIGINT}, 
+      #{productSkuCode,jdbcType=VARCHAR}, #{productCategoryId,jdbcType=BIGINT}, #{promotionName,jdbcType=VARCHAR}, 
       #{promotionAmount,jdbcType=DECIMAL}, #{couponAmount,jdbcType=DECIMAL}, #{integrationAmount,jdbcType=DECIMAL}, 
       #{realAmount,jdbcType=DECIMAL}, #{giftIntegration,jdbcType=INTEGER}, #{giftGrowth,jdbcType=INTEGER}, 
       #{productAttr,jdbcType=VARCHAR})
@@ -163,9 +157,6 @@
       <if test="productName != null">
         product_name,
       </if>
-      <if test="productBrand != null">
-        product_brand,
-      </if>
       <if test="productSn != null">
         product_sn,
       </if>
@@ -183,15 +174,6 @@
       </if>
       <if test="productCategoryId != null">
         product_category_id,
-      </if>
-      <if test="sp1 != null">
-        sp1,
-      </if>
-      <if test="sp2 != null">
-        sp2,
-      </if>
-      <if test="sp3 != null">
-        sp3,
       </if>
       <if test="promotionName != null">
         promotion_name,
@@ -234,9 +216,6 @@
       <if test="productName != null">
         #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="productBrand != null">
-        #{productBrand,jdbcType=VARCHAR},
-      </if>
       <if test="productSn != null">
         #{productSn,jdbcType=VARCHAR},
       </if>
@@ -254,15 +233,6 @@
       </if>
       <if test="productCategoryId != null">
         #{productCategoryId,jdbcType=BIGINT},
-      </if>
-      <if test="sp1 != null">
-        #{sp1,jdbcType=VARCHAR},
-      </if>
-      <if test="sp2 != null">
-        #{sp2,jdbcType=VARCHAR},
-      </if>
-      <if test="sp3 != null">
-        #{sp3,jdbcType=VARCHAR},
       </if>
       <if test="promotionName != null">
         #{promotionName,jdbcType=VARCHAR},
@@ -317,9 +287,6 @@
       <if test="record.productName != null">
         product_name = #{record.productName,jdbcType=VARCHAR},
       </if>
-      <if test="record.productBrand != null">
-        product_brand = #{record.productBrand,jdbcType=VARCHAR},
-      </if>
       <if test="record.productSn != null">
         product_sn = #{record.productSn,jdbcType=VARCHAR},
       </if>
@@ -337,15 +304,6 @@
       </if>
       <if test="record.productCategoryId != null">
         product_category_id = #{record.productCategoryId,jdbcType=BIGINT},
-      </if>
-      <if test="record.sp1 != null">
-        sp1 = #{record.sp1,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sp2 != null">
-        sp2 = #{record.sp2,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sp3 != null">
-        sp3 = #{record.sp3,jdbcType=VARCHAR},
       </if>
       <if test="record.promotionName != null">
         promotion_name = #{record.promotionName,jdbcType=VARCHAR},
@@ -384,16 +342,12 @@
       product_id = #{record.productId,jdbcType=BIGINT},
       product_pic = #{record.productPic,jdbcType=VARCHAR},
       product_name = #{record.productName,jdbcType=VARCHAR},
-      product_brand = #{record.productBrand,jdbcType=VARCHAR},
       product_sn = #{record.productSn,jdbcType=VARCHAR},
       product_price = #{record.productPrice,jdbcType=DECIMAL},
       product_quantity = #{record.productQuantity,jdbcType=INTEGER},
       product_sku_id = #{record.productSkuId,jdbcType=BIGINT},
       product_sku_code = #{record.productSkuCode,jdbcType=VARCHAR},
       product_category_id = #{record.productCategoryId,jdbcType=BIGINT},
-      sp1 = #{record.sp1,jdbcType=VARCHAR},
-      sp2 = #{record.sp2,jdbcType=VARCHAR},
-      sp3 = #{record.sp3,jdbcType=VARCHAR},
       promotion_name = #{record.promotionName,jdbcType=VARCHAR},
       promotion_amount = #{record.promotionAmount,jdbcType=DECIMAL},
       coupon_amount = #{record.couponAmount,jdbcType=DECIMAL},
@@ -424,9 +378,6 @@
       <if test="productName != null">
         product_name = #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="productBrand != null">
-        product_brand = #{productBrand,jdbcType=VARCHAR},
-      </if>
       <if test="productSn != null">
         product_sn = #{productSn,jdbcType=VARCHAR},
       </if>
@@ -444,15 +395,6 @@
       </if>
       <if test="productCategoryId != null">
         product_category_id = #{productCategoryId,jdbcType=BIGINT},
-      </if>
-      <if test="sp1 != null">
-        sp1 = #{sp1,jdbcType=VARCHAR},
-      </if>
-      <if test="sp2 != null">
-        sp2 = #{sp2,jdbcType=VARCHAR},
-      </if>
-      <if test="sp3 != null">
-        sp3 = #{sp3,jdbcType=VARCHAR},
       </if>
       <if test="promotionName != null">
         promotion_name = #{promotionName,jdbcType=VARCHAR},
@@ -488,16 +430,12 @@
       product_id = #{productId,jdbcType=BIGINT},
       product_pic = #{productPic,jdbcType=VARCHAR},
       product_name = #{productName,jdbcType=VARCHAR},
-      product_brand = #{productBrand,jdbcType=VARCHAR},
       product_sn = #{productSn,jdbcType=VARCHAR},
       product_price = #{productPrice,jdbcType=DECIMAL},
       product_quantity = #{productQuantity,jdbcType=INTEGER},
       product_sku_id = #{productSkuId,jdbcType=BIGINT},
       product_sku_code = #{productSkuCode,jdbcType=VARCHAR},
       product_category_id = #{productCategoryId,jdbcType=BIGINT},
-      sp1 = #{sp1,jdbcType=VARCHAR},
-      sp2 = #{sp2,jdbcType=VARCHAR},
-      sp3 = #{sp3,jdbcType=VARCHAR},
       promotion_name = #{promotionName,jdbcType=VARCHAR},
       promotion_amount = #{promotionAmount,jdbcType=DECIMAL},
       coupon_amount = #{couponAmount,jdbcType=DECIMAL},

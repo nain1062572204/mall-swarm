@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-03-20 22:42
+ * Created by Mybatis Generator 2020-04-01 18:49
  */
 @Data
 @Builder
@@ -30,8 +30,6 @@ public class OmsOrderItem implements Serializable {
 
     private String productName;
 
-    private String productBrand;
-
     private String productSn;
 
     @ApiModelProperty(value = "销售价格")
@@ -48,13 +46,6 @@ public class OmsOrderItem implements Serializable {
 
     @ApiModelProperty(value = "商品分类id")
     private Long productCategoryId;
-
-    @ApiModelProperty(value = "商品的销售属性")
-    private String sp1;
-
-    private String sp2;
-
-    private String sp3;
 
     @ApiModelProperty(value = "商品促销名称")
     private String promotionName;

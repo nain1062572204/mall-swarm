@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by Mybatis Generator 2020-03-20 22:42
+ * Created by Mybatis Generator 2020-04-01 18:49
  */
 @Data
 @Builder

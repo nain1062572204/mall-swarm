@@ -9,7 +9,9 @@ public enum ResultCode implements IErrorCode {
     FAILED(500, "操作失败"),
     VALIDATE_FAILED(404, "参数检验失败"),
     UNAUTHORIZED(401, "暂未登录或token已经过期"),
-    FORBIDDEN(403, "没有相关权限");
+    FORBIDDEN(403, "没有相关权限"),
+    PRODUCT_STOCK_UNDER_STOCK(405, "商品库存不足"),
+    PRODUCT_NOT_FOUND(406, "商品不存在");
     private long code;
     private String message;
 

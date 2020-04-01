@@ -1,6 +1,7 @@
 package com.wang.mall.front.service;
 
 import com.wang.mall.front.domain.ConfirmOrderResult;
+import com.wang.mall.front.domain.OrderParam;
 
 import java.util.List;
 
@@ -15,4 +16,9 @@ public interface OmsOrderService {
      * 确认订单返回信息
      */
     ConfirmOrderResult generateConfirmOrder(List<Long> ids);
+
+    /**
+     * 生成订单
+     */
+    void generateOrder(OrderParam orderParam);
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wang.mall.front.dao.PmsSkuStockDao">
+    <!--查询库存的同时加排它锁-->
+    <select id="getPmsSkuListForUpdate" resultMap="com.wang.mall.mapper.PmsSkuStockMapper.BaseResultMap">
+        SELECT
+        p.id,
+        p.product_id,
+        p.sku_code,
+        p.price,
+        p.stock,
+        p.promotion_price,
+        p.lock_stock,
+        p.sp_data
+        FROM pms_sku_stock p WHERE id in
+        <foreach collection="ids" item="id" index="index" separator="," open="(" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+        FOR UPDATE
+    </select>
+    <!--扣库存-->
+    <update id="updatePmsSkuStock">
+        <foreach collection="productInfos" index="index" item="productInfo">
+            UPDATE pms_sku_stock
+            SET
+            stock = stock - #{productInfo.quantity},lock_stock = lock_stock + #{productInfo.quantity}
+            WHERE id=#{productInfo.stockId};
+        </foreach>
+    </update>
+
+</mapper>
