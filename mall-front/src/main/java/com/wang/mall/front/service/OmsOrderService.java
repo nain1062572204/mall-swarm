@@ -1,6 +1,7 @@
 package com.wang.mall.front.service;
 
 import com.wang.mall.front.domain.ConfirmOrderResult;
+import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
 
 import java.util.List;
@@ -20,5 +21,6 @@ public interface OmsOrderService {
     /**
      * 生成订单
      */
-    void generateOrder(OrderParam orderParam);
+    String generateOrder(OrderParam orderParam);
+    OmsOrderInfoResult getOrderInfoByOrderSn(String orderSn);
 }

@@ -24,7 +24,7 @@
             UPDATE pms_sku_stock
             SET
             stock = stock - #{productInfo.quantity},lock_stock = lock_stock + #{productInfo.quantity}
-            WHERE id=#{productInfo.stockId};
+            WHERE id=#{productInfo.productSkuId};
         </foreach>
     </update>
 

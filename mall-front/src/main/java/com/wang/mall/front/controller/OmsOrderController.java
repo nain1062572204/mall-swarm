@@ -2,6 +2,7 @@ package com.wang.mall.front.controller;
 
 import com.wang.mall.common.api.CommonResult;
 import com.wang.mall.front.domain.ConfirmOrderResult;
+import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
 import com.wang.mall.front.exception.PmsSkuStockNotFoundException;
 import com.wang.mall.front.exception.PmsSkuStockUnderStockException;
@@ -34,12 +35,17 @@ public class OmsOrderController {
     @PostMapping("/generateOrder")
     public CommonResult generateOrder(@RequestBody OrderParam orderParam) {
         try {
-            orderService.generateOrder(orderParam);
+            return CommonResult.success(orderService.generateOrder(orderParam));
         } catch (PmsSkuStockNotFoundException e) {
             return CommonResult.failed("商品不存在");
         } catch (PmsSkuStockUnderStockException e) {
             return CommonResult.failed("商品库存不足");
         }
-        return CommonResult.success("提交成功");
+    }
+
+    @ApiOperation("根据订单号获取订单信息")
+    @GetMapping("/{orderSn}")
+    public CommonResult<OmsOrderInfoResult> getOrderInfoByOrderSn(@PathVariable String orderSn) {
+        return CommonResult.success(orderService.getOrderInfoByOrderSn(orderSn));
     }
 }

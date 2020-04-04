@@ -1,9 +1,11 @@
 package com.wang.mall.front.service.impl;
 
 import com.wang.mall.common.utils.SnowflakeIdWorker;
+import com.wang.mall.front.dao.OmsOrderDao;
 import com.wang.mall.front.dao.OmsOrderItemDao;
 import com.wang.mall.front.dao.PmsSkuStockDao;
 import com.wang.mall.front.domain.ConfirmOrderResult;
+import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
 import com.wang.mall.front.exception.PmsSkuStockNotFoundException;
 import com.wang.mall.front.exception.PmsSkuStockUnderStockException;
@@ -21,7 +23,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +43,10 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     private OmsOrderMapper orderMapper;
     @Autowired
     private OmsOrderItemDao orderItemDao;
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
+    @Autowired
+    private OmsOrderDao orderDao;
 
     @Override
     public ConfirmOrderResult generateConfirmOrder(List<Long> ids) {
@@ -52,8 +57,8 @@ public class OmsOrderServiceImpl implements OmsOrderService {
 
     @Override
     @Transactional
-    public void generateOrder(OrderParam orderParam) {
-        List<Long> ids = orderParam.getProductInfos().stream().map(OrderParam.ProductInfo::getStockId).collect(Collectors.toList());
+    public String generateOrder(OrderParam orderParam) {
+        List<Long> ids = orderParam.getProductInfos().stream().map(OrderParam.ProductInfo::getProductSkuId).collect(Collectors.toList());
         //获取数据，同时获取的行加排它锁
         List<PmsSkuStock> skuStocks = skuStockDao.getPmsSkuListForUpdate(ids);
         //购买的商品信息
@@ -66,7 +71,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         //校验库存
         for (OrderParam.ProductInfo productInfo : productInfos) {
             List<PmsSkuStock> filterSkuStockResultList = skuStocks.stream()
-                    .filter(stock -> stock.getId().equals(productInfo.getStockId()))
+                    .filter(stock -> stock.getId().equals(productInfo.getProductSkuId()))
                     .collect(Collectors.toList());
             if (CollectionUtils.isEmpty(filterSkuStockResultList)) {
                 throw new PmsSkuStockNotFoundException("商品sku不存在");
@@ -77,15 +82,20 @@ public class OmsOrderServiceImpl implements OmsOrderService {
                 throw new PmsSkuStockUnderStockException("商品库存不足");
             //计算总价
             totalAmount = totalAmount.add(total(productInfo.getQuantity(), skuStock.getPrice()));
+
         }
         //更新库存
         skuStockDao.updatePmsSkuStock(orderParam.getProductInfos());
         //创建订单
-        createOrder(orderParam, skuStocks, totalAmount);
-        //添加订单包含的商品
+        return createOrder(orderParam, skuStocks, totalAmount);
     }
 
-    private void createOrder(OrderParam orderParam, List<PmsSkuStock> skuStocks, BigDecimal totalAmount) {
+    @Override
+    public OmsOrderInfoResult getOrderInfoByOrderSn(String orderSn) {
+        return orderDao.getOrderInfoByOrderSn(orderSn);
+    }
+
+    private String createOrder(OrderParam orderParam, List<PmsSkuStock> skuStocks, BigDecimal totalAmount) {
         //获取当前用户
         UmsMember currentMember = memberService.getCurrentMember();
         //0元
@@ -123,10 +133,9 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         orderMapper.insert(order);
         //插入相关商品
         List<OmsOrderItem> items = new ArrayList<>(orderParam.getProductInfos().size());
-
         for (OrderParam.ProductInfo productInfo : orderParam.getProductInfos()) {
             PmsSkuStock skuStock = skuStocks.stream()
-                    .filter(stock -> stock.getId().equals(productInfo.getStockId()))
+                    .filter(stock -> stock.getId().equals(productInfo.getProductSkuId()))
                     .collect(Collectors.toList()).get(0);
             OmsOrderItem item = OmsOrderItem.builder()
                     .orderId(order.getId())
@@ -143,6 +152,8 @@ public class OmsOrderServiceImpl implements OmsOrderService {
             items.add(item);
         }
         orderItemDao.insertList(items);
+        //TODO 此处应该发送延时消息取消订单
+        return orderSn;
     }
 
     /**
@@ -151,8 +162,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
      * @return orderSn
      */
     private String generateOrderSn() {
-        SnowflakeIdWorker worker = new SnowflakeIdWorker(0, 0);
-        return String.valueOf(worker.nextId());
+        return String.valueOf(snowflakeIdWorker.nextId());
     }
 
     /**

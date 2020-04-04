@@ -22,10 +22,10 @@ public class OrderServiceTest {
     @Test
     public void testGeneratorOrder() {
         OrderParam.ProductInfo productInfo1 = new OrderParam.ProductInfo();
-        productInfo1.setStockId(140L);
+        productInfo1.setProductSkuId(140L);
         productInfo1.setQuantity(2);
         OrderParam.ProductInfo productInfo2 = new OrderParam.ProductInfo();
-        productInfo2.setStockId(141L);
+        productInfo2.setProductSkuId(141L);
         productInfo2.setQuantity(2);
         OrderParam orderParam = OrderParam.builder().productInfos(Arrays.asList(productInfo1, productInfo2)).build();
         orderService.generateOrder(orderParam);

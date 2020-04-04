@@ -29,7 +29,7 @@ public class OrderParam {
     @ToString
     public static class ProductInfo {
         //库存Id
-        private Long stockId;
+        private Long productSkuId;
         //购买数量
         private Integer quantity;
         //商品名
@@ -38,6 +38,8 @@ public class OrderParam {
         private String productSn;
         private Long productId;
         private String productPic;
+        //销售属性
+        private String productAttr;
 
 
     }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wang.mall.front.dao.OmsOrderDao">
+    <select id="getOrderInfoByOrderSn" resultMap="orderInfo_resultMap">
+    	SELECT
+	      o.order_sn,
+	      o.create_time,
+	      o.pay_amount,
+	      o.receiver_name,
+	      o.receiver_phone,
+	      o.receiver_province,
+	      o.receiver_city,
+	      o.receiver_region,
+	      o.receiver_street,
+	      o.receiver_detail_address,
+	      o.note,
+	      i.product_name,
+	      i.product_attr
+		FROM
+	      oms_order o
+		LEFT JOIN oms_order_item i ON o.order_sn = i.order_sn
+        WHERE
+		  o.order_sn = #{orderSn}
+    </select>
+    <resultMap id="orderInfo_resultMap" type="com.wang.mall.front.domain.OmsOrderInfoResult">
+        <result property="orderSn" column="order_sn"/>
+        <result property="total" column="pay_amount"/>
+        <result property="createTime" column="create_time"/>
+        <result property="address.name" column="receiver_name"/>
+        <result property="address.phoneNumber" column="receiver_phone"/>
+        <result property="address.province" column="receiver_province"/>
+        <result property="address.city" column="receiver_city"/>
+        <result property="address.region" column="receiver_region"/>
+        <result property="address.street" column="receiver_street"/>
+        <result property="address.detailAddress" column="receiver_detail_address"/>
+        <collection property="productList" ofType="com.wang.mall.model.OmsOrderItem"
+                    resultMap="com.wang.mall.mapper.OmsOrderItemMapper.BaseResultMap">
+        </collection>
+    </resultMap>
+</mapper>
