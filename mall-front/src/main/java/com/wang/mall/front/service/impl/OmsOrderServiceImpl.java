@@ -1,20 +1,25 @@
 package com.wang.mall.front.service.impl;
 
 import com.wang.mall.common.utils.SnowflakeIdWorker;
+import com.wang.mall.front.component.CancelOrderSender;
 import com.wang.mall.front.dao.OmsOrderDao;
 import com.wang.mall.front.dao.OmsOrderItemDao;
 import com.wang.mall.front.dao.PmsSkuStockDao;
 import com.wang.mall.front.domain.ConfirmOrderResult;
 import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
+import com.wang.mall.front.dto.OmsOrderWithItemDTO;
 import com.wang.mall.front.exception.PmsSkuStockNotFoundException;
 import com.wang.mall.front.exception.PmsSkuStockUnderStockException;
 import com.wang.mall.front.service.OmsCartItemService;
 import com.wang.mall.front.service.OmsOrderService;
 import com.wang.mall.front.service.UmsMemberService;
+import com.wang.mall.mapper.OmsOrderItemMapper;
 import com.wang.mall.mapper.OmsOrderMapper;
 import com.wang.mall.model.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -32,6 +37,7 @@ import java.util.stream.Collectors;
  * @create 2020-03-22 17:07
  */
 @Service
+@Slf4j
 public class OmsOrderServiceImpl implements OmsOrderService {
     @Autowired
     private UmsMemberService memberService;
@@ -46,7 +52,11 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
     @Autowired
+    private OmsOrderItemMapper orderItemMapper;
+    @Autowired
     private OmsOrderDao orderDao;
+    @Autowired
+    private CancelOrderSender cancelOrderSender;
 
     @Override
     public ConfirmOrderResult generateConfirmOrder(List<Long> ids) {
@@ -93,6 +103,32 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     @Override
     public OmsOrderInfoResult getOrderInfoByOrderSn(String orderSn) {
         return orderDao.getOrderInfoByOrderSn(orderSn);
+    }
+
+    @Override
+    @Transactional
+    public void cancelOrderByOrderSn(String orderSn) {
+        log.info("取消订单:{}", orderSn);
+        OmsOrderExample example = new OmsOrderExample();
+        example.createCriteria().andOrderSnEqualTo(orderSn);
+        //修改订单状态为已关闭
+        OmsOrder order = OmsOrder.builder().status(4).build();
+        orderMapper.updateByExampleSelective(order, example);
+        //返还库存
+        OmsOrderItemExample orderItemExample = new OmsOrderItemExample();
+        orderItemExample.createCriteria().andOrderSnEqualTo(orderSn);
+        List<OmsOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample);
+        if (CollectionUtils.isEmpty(orderItemList))
+            return;
+        orderItemList.forEach(System.out::println);
+        skuStockDao.cancelPmsSkuStock(orderItemList);
+
+    }
+
+    @Override
+    public List<OmsOrderWithItemDTO> getOrderWithItemByMemberId(String keyword) {
+        UmsMember currentMember = memberService.getCurrentMember();
+        return orderDao.getOrderListWithItem(currentMember.getId(), keyword);
     }
 
     private String createOrder(OrderParam orderParam, List<PmsSkuStock> skuStocks, BigDecimal totalAmount) {
@@ -146,6 +182,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
                     .productSn(productInfo.getProductSn())
                     .productPrice(skuStock.getPrice())
                     .productQuantity(productInfo.getQuantity())
+                    .productSkuId(skuStock.getId())
                     .productSkuCode(skuStock.getSkuCode())
                     .productAttr(skuStock.getSpData())
                     .build();
@@ -153,7 +190,15 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         }
         orderItemDao.insertList(items);
         //TODO 此处应该发送延时消息取消订单
+        sendDelayMessageCancelOrder(orderSn);
         return orderSn;
+    }
+
+    private void sendDelayMessageCancelOrder(String orderSn) {
+        //取消时间 ->30分钟
+        long delayTimes = 1000 * 60 * 30;
+        //发送延时消息
+        cancelOrderSender.sendMessage(orderSn, delayTimes);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.wang.mall.front.service;
 import com.wang.mall.front.domain.ConfirmOrderResult;
 import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
+import com.wang.mall.front.dto.OmsOrderWithItemDTO;
 
 import java.util.List;
 
@@ -22,5 +23,16 @@ public interface OmsOrderService {
      * 生成订单
      */
     String generateOrder(OrderParam orderParam);
+
     OmsOrderInfoResult getOrderInfoByOrderSn(String orderSn);
+
+    /**
+     * 取消订单
+     */
+    void cancelOrderByOrderSn(String orderSn);
+
+    /**
+     * 根据用户ID查询订单
+     */
+    List<OmsOrderWithItemDTO> getOrderWithItemByMemberId( String keyword);
 }

@@ -3,10 +3,8 @@ package com.wang.mall.model;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 /**
  * Created by Mybatis Generator 2020-04-01 18:49
@@ -15,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class OmsOrderItem implements Serializable {
     private Long id;
 

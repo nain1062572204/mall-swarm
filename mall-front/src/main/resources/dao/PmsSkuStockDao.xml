@@ -27,5 +27,15 @@
             WHERE id=#{productInfo.productSkuId};
         </foreach>
     </update>
+    <update id="cancelPmsSkuStock">
+        <foreach collection="orderItemList" index="index" item="item">
+            UPDATE pms_sku_stock
+            SET
+            stock = stock + #{item.productQuantity},
+            lock_stock = lock_stock - #{item.productQuantity}
+            WHERE
+            id=#{item.productSkuId};
+        </foreach>
+    </update>
 
 </mapper>

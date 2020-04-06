@@ -22,6 +22,37 @@
         WHERE
 		  o.order_sn = #{orderSn}
     </select>
+    <select id="getOrderListWithItem" resultMap="orderWithItemResultMap">
+        SELECT
+        o.id,
+        o.create_time,
+        o.receiver_name,
+        o.order_sn,
+        o.pay_type,
+        o.pay_amount,
+        i.id item_id,
+        i.product_id item_product_id,
+        i.product_pic item_product_pic,
+        i.product_name item_product_name,
+        i.product_price item_product_price,
+        i.product_quantity item_product_quantity,
+        i.product_attr item_product_attr
+        FROM
+        oms_order o
+        LEFT JOIN oms_order_item i ON o.id = i.order_id
+        WHERE
+        o.member_id = #{memberId}
+        AND
+        (1=1
+        <if test="keyword!=null">
+            OR o.order_sn = #{keyword}
+        </if>
+        <if test="keyword!=null">
+            OR i.product_name like concat('%',#{keyword},'%')
+        </if>
+        )
+    </select>
+
     <resultMap id="orderInfo_resultMap" type="com.wang.mall.front.domain.OmsOrderInfoResult">
         <result property="orderSn" column="order_sn"/>
         <result property="total" column="pay_amount"/>
@@ -35,6 +66,13 @@
         <result property="address.detailAddress" column="receiver_detail_address"/>
         <collection property="productList" ofType="com.wang.mall.model.OmsOrderItem"
                     resultMap="com.wang.mall.mapper.OmsOrderItemMapper.BaseResultMap">
+        </collection>
+    </resultMap>
+    <resultMap id="orderWithItemResultMap" type="com.wang.mall.front.dto.OmsOrderWithItemDTO"
+               extends="com.wang.mall.mapper.OmsOrderMapper.BaseResultMap">
+        <collection property="orderItemList" columnPrefix="item_"
+                    resultMap="com.wang.mall.mapper.OmsOrderItemMapper.BaseResultMap">
+
         </collection>
     </resultMap>
 </mapper>

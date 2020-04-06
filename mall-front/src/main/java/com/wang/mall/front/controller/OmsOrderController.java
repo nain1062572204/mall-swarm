@@ -4,6 +4,7 @@ import com.wang.mall.common.api.CommonResult;
 import com.wang.mall.front.domain.ConfirmOrderResult;
 import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
+import com.wang.mall.front.dto.OmsOrderWithItemDTO;
 import com.wang.mall.front.exception.PmsSkuStockNotFoundException;
 import com.wang.mall.front.exception.PmsSkuStockUnderStockException;
 import com.wang.mall.front.service.OmsOrderService;
@@ -47,5 +48,11 @@ public class OmsOrderController {
     @GetMapping("/{orderSn}")
     public CommonResult<OmsOrderInfoResult> getOrderInfoByOrderSn(@PathVariable String orderSn) {
         return CommonResult.success(orderService.getOrderInfoByOrderSn(orderSn));
+    }
+
+    @ApiOperation("查询订单")
+    @GetMapping("/list")
+    public CommonResult<List<OmsOrderWithItemDTO>> list(@RequestParam(value = "keyword", required = false) String keyword) {
+        return CommonResult.success(orderService.getOrderWithItemByMemberId(keyword));
     }
 }

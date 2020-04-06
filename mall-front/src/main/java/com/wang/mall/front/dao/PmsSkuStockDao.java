@@ -1,6 +1,7 @@
 package com.wang.mall.front.dao;
 
 import com.wang.mall.front.domain.OrderParam;
+import com.wang.mall.model.OmsOrderItem;
 import com.wang.mall.model.PmsSkuStock;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,4 +19,7 @@ public interface PmsSkuStockDao {
 
     //更新商品库存
     Integer updatePmsSkuStock(@Param("productInfos") List<OrderParam.ProductInfo> productInfos);
+
+    //释放锁定库存
+    Integer cancelPmsSkuStock(@Param("orderItemList") List<OmsOrderItem> orderItemList);
 }
