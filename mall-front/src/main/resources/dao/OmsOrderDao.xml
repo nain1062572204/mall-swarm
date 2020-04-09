@@ -52,7 +52,33 @@
         </if>
         )
     </select>
-
+    <!--查询有效订单-->
+    <select id="getValidOrderListWithItem" resultMap="orderWithItemResultMap">
+        SELECT
+	        o.id,
+	        o.create_time,
+	        o.receiver_name,
+	        o.order_sn,
+	        o.pay_type,
+	        o.pay_amount,
+	        i.id item_id,
+	        i.product_id item_product_id,
+	        i.product_pic item_product_pic,
+	        i.product_name item_product_name,
+	        i.product_price item_product_price,
+	        i.product_quantity item_product_quantity,
+	        i.product_attr item_product_attr
+        FROM
+        	oms_order o
+        	LEFT JOIN oms_order_item i ON o.id = i.order_id
+        WHERE
+        	o.member_id = 1
+        	AND `status` = 0
+        	OR `status` = 1
+        	OR `status` = 2
+        	OR `status` = 3
+        	AND delete_status =0
+    </select>
     <resultMap id="orderInfo_resultMap" type="com.wang.mall.front.domain.OmsOrderInfoResult">
         <result property="orderSn" column="order_sn"/>
         <result property="total" column="pay_amount"/>

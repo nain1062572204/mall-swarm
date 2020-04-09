@@ -19,4 +19,9 @@ public interface OmsOrderDao {
      * 查询订单
      */
     List<OmsOrderWithItemDTO> getOrderListWithItem(@Param("memberId") Long memberId, @Param("keyword") String keyword);
+
+    /**
+     * 查询有效订单
+     */
+    //List<OmsOrderWithItemDTO> getValidOrderListWithItem(@Param("memberId") Long memberId);
 }
