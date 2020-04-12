@@ -9,8 +9,10 @@ import com.wang.mall.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author 王念
@@ -95,6 +97,15 @@ public class FrontCacheServiceImpl implements FrontCacheService {
     @Override
     public PmsProductDetailResult getProduct(Long productId) {
         return (PmsProductDetailResult) redisService.get(RedisKeys.PMS_PRODUCT.getKey() + ":" + productId);
+    }
+
+    @Override
+    public void delProduct(Set<Long> ids) {
+        List<String> keys = new ArrayList<>(ids.size());
+        for (Long id : ids) {
+            keys.add(RedisKeys.PMS_PRODUCT.getKey() + ":" + id);
+        }
+        redisService.del(keys);
     }
 
     @Override

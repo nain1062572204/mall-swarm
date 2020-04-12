@@ -1,6 +1,7 @@
 package com.wang.mall.admin.service.impl;
 
 import com.wang.mall.admin.dao.PmsSkuStockDao;
+import com.wang.mall.admin.service.AdminCacheService;
 import com.wang.mall.mapper.PmsSkuStockMapper;
 import com.wang.mall.model.PmsSkuStock;
 import com.wang.mall.model.PmsSkuStockExample;
@@ -23,6 +24,8 @@ public class PmsSkuStockServiceImpl implements PmsSkuStockService {
     private PmsSkuStockMapper skuStockMapper;
     @Autowired
     private PmsSkuStockDao skuStockDao;
+    @Autowired
+    private AdminCacheService adminCacheService;
 
     @Override
     public List<PmsSkuStock> list(Long pid, String keyword) {
@@ -37,6 +40,7 @@ public class PmsSkuStockServiceImpl implements PmsSkuStockService {
 
     @Override
     public int update(Long pid, List<PmsSkuStock> skuStocks) {
+        adminCacheService.delProduct(pid);
         return skuStockDao.replaceList(skuStocks);
     }
 }

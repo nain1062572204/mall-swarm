@@ -5,6 +5,7 @@ import com.wang.mall.admin.dao.*;
 import com.wang.mall.admin.dto.PmsProductParam;
 import com.wang.mall.admin.dto.PmsProductQueryParam;
 import com.wang.mall.admin.dto.PmsProductResult;
+import com.wang.mall.admin.service.AdminCacheService;
 import com.wang.mall.admin.util.RedisUtil;
 import com.wang.mall.cache.keys.RedisKeys;
 import com.wang.mall.mapper.*;
@@ -57,6 +58,8 @@ public class PmsProductServiceImpl implements PmsProductService {
     private PmsProductVerifyRecordDao productVerifyRecordDao;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private AdminCacheService adminCacheService;
 
     @Override
     public int create(PmsProductParam productParam) {
@@ -112,6 +115,8 @@ public class PmsProductServiceImpl implements PmsProductService {
 
     @Override
     public int update(Long id, PmsProductParam productParam) {
+        //删除缓存
+        adminCacheService.delProduct(id);
         redisUtil.deleteAll(new String[]{
                 RedisKeys.HOME_PRODUCT.getKey(),
                 RedisKeys.CATEGORY.getKey()

@@ -11,6 +11,7 @@ import com.wang.mall.front.domain.OrderParam;
 import com.wang.mall.front.dto.OmsOrderWithItemDTO;
 import com.wang.mall.front.exception.PmsSkuStockNotFoundException;
 import com.wang.mall.front.exception.PmsSkuStockUnderStockException;
+import com.wang.mall.front.service.FrontCacheService;
 import com.wang.mall.front.service.OmsCartItemService;
 import com.wang.mall.front.service.OmsOrderService;
 import com.wang.mall.front.service.UmsMemberService;
@@ -26,9 +27,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -58,6 +57,8 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     private OmsOrderDao orderDao;
     @Autowired
     private CancelOrderSender cancelOrderSender;
+    @Autowired
+    private FrontCacheService frontCacheService;
 
     @Override
     public ConfirmOrderResult generateConfirmOrder(List<Long> ids) {
@@ -78,9 +79,12 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         if (CollectionUtils.isEmpty(productInfos) || CollectionUtils.isEmpty(skuStocks))
             throw new PmsSkuStockNotFoundException("商品不存在");
         //总价
-        BigDecimal totalAmount = new BigDecimal("0");
+        BigDecimal totalAmount = BigDecimal.ZERO;
+        //需要删除缓存的商品id
+        Set<Long> keys = new HashSet<>(orderParam.getProductInfos().size());
         //校验库存
         for (OrderParam.ProductInfo productInfo : productInfos) {
+            keys.add(productInfo.getProductId());
             List<PmsSkuStock> filterSkuStockResultList = skuStocks.stream()
                     .filter(stock -> stock.getId().equals(productInfo.getProductSkuId()))
                     .collect(Collectors.toList());
@@ -95,6 +99,8 @@ public class OmsOrderServiceImpl implements OmsOrderService {
             totalAmount = totalAmount.add(total(productInfo.getQuantity(), skuStock.getPrice()));
 
         }
+        //更新缓存
+        frontCacheService.delProduct(keys);
         //更新库存
         skuStockDao.updatePmsSkuStock(orderParam.getProductInfos());
         //创建订单
@@ -235,10 +241,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
      */
     private ConfirmOrderResult.CalcAmount total(List<OmsCartItem> cartItems) {
 
-        BigDecimal total = new BigDecimal("0");
-        BigDecimal promotion = new BigDecimal("0");
-        BigDecimal freight = new BigDecimal("0");
-        BigDecimal coupon = new BigDecimal("0");
+        BigDecimal total = BigDecimal.ZERO;
         if (!CollectionUtils.isEmpty(cartItems)) {
             for (OmsCartItem cartItem : cartItems) {
                 total = total.add(cartItem.getPrice().multiply(new BigDecimal(cartItem.getQuantity())));
@@ -246,9 +249,9 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         }
         return ConfirmOrderResult.CalcAmount.builder()
                 .total(total)
-                .promotion(promotion)
-                .freight(freight)
-                .coupon(coupon)
+                .promotion(BigDecimal.ZERO)
+                .freight(BigDecimal.ZERO)
+                .coupon(BigDecimal.ZERO)
                 .build();
     }
 }

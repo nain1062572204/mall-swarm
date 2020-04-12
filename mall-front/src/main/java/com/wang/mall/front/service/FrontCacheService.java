@@ -8,6 +8,7 @@ import com.wang.mall.model.*;
 import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 缓存service
@@ -61,6 +62,9 @@ public interface FrontCacheService {
 
     //获取商品缓存
     PmsProductDetailResult getProduct(Long productId);
+
+    //删除商品缓存
+    void delProduct(Set<Long> ids);
 
     //获取搜索框广告
     List<SmsHomeAdvertise> getSearchAdvertise();
