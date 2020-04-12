@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -162,6 +163,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
                 .receiverCity(orderParam.getAddress().getCity())
                 .receiverRegion(orderParam.getAddress().getRegion())
                 .receiverStreet(orderParam.getAddress().getStreet())
+                .receiverDetailAddress(orderParam.getAddress().getDetailAddress())
                 .note(orderParam.getNote())
                 .deleteStatus(0)
                 .useIntegration(0)
@@ -207,7 +209,9 @@ public class OmsOrderServiceImpl implements OmsOrderService {
      * @return orderSn
      */
     private String generateOrderSn() {
-        return String.valueOf(snowflakeIdWorker.nextId());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date currentDate = new Date();
+        return dateFormat.format(currentDate) + String.valueOf(snowflakeIdWorker.nextId());
     }
 
     /**

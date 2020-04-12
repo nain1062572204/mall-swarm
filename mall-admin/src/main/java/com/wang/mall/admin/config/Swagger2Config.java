@@ -72,6 +72,7 @@ public class Swagger2Config {
         result.add(getContextByPath("/resourceCategory/.*"));
         result.add(getContextByPath("/resource/.*"));
         result.add(getContextByPath("/role/.*"));
+        result.add(getContextByPath("/order/.*"));
         return result;
     }
 

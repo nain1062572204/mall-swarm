@@ -27,6 +27,7 @@
             WHERE id=#{productInfo.productSkuId};
         </foreach>
     </update>
+    <!--取消订单，释放锁定库存-->
     <update id="cancelPmsSkuStock">
         <foreach collection="orderItemList" index="index" item="item">
             UPDATE pms_sku_stock
