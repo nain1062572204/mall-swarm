@@ -4,6 +4,7 @@ import com.wang.mall.front.dao.OmsOrderDao;
 import com.wang.mall.front.dto.OmsOrderWithItemDTO;
 import com.wang.mall.front.factory.OrderTypeServiceFactory;
 import com.wang.mall.front.service.OmsOrderTypeService;
+import org.apache.catalina.valves.RemoteIpValve;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,23 +12,23 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 获取有效的订单
+ * 关闭订单查询
  *
  * @author 王念
- * @create 2020-04-08 21:26
+ * @create 2020-04-13 20:02
  */
 @Service
-public class ValidOrderTypeServiceImpl implements OmsOrderTypeService, InitializingBean {
+public class CanceledOrderTypeServiceImpl implements OmsOrderTypeService, InitializingBean {
     @Autowired
     private OmsOrderDao orderDao;
 
     @Override
     public List<OmsOrderWithItemDTO> list(Long memberId) {
-        return orderDao.getValidOrderListWithItem(memberId);
+        return orderDao.getCanceledOrderListWithItem(memberId);
     }
 
     @Override
-    public void afterPropertiesSet() {
-        OrderTypeServiceFactory.register(0, this);
+    public void afterPropertiesSet() throws Exception {
+        OrderTypeServiceFactory.register(4, this);
     }
 }

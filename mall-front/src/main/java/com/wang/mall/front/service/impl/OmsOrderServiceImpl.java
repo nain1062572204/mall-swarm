@@ -8,9 +8,11 @@ import com.wang.mall.front.dao.PmsSkuStockDao;
 import com.wang.mall.front.domain.ConfirmOrderResult;
 import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
+import com.wang.mall.front.domain.OrderQueryParam;
 import com.wang.mall.front.dto.OmsOrderWithItemDTO;
 import com.wang.mall.front.exception.PmsSkuStockNotFoundException;
 import com.wang.mall.front.exception.PmsSkuStockUnderStockException;
+import com.wang.mall.front.factory.OrderTypeServiceFactory;
 import com.wang.mall.front.service.FrontCacheService;
 import com.wang.mall.front.service.OmsCartItemService;
 import com.wang.mall.front.service.OmsOrderService;
@@ -133,9 +135,9 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     }
 
     @Override
-    public List<OmsOrderWithItemDTO> getOrderWithItemByMemberId(String keyword) {
+    public List<OmsOrderWithItemDTO> getOrderWithItemByMemberId(Integer orderType) {
         UmsMember currentMember = memberService.getCurrentMember();
-        return orderDao.getOrderListWithItem(currentMember.getId(), keyword);
+        return OrderTypeServiceFactory.getOmsOrderTypeServiceByType(orderType).list(currentMember.getId());
     }
 
     private String createOrder(OrderParam orderParam, List<PmsSkuStock> skuStocks, BigDecimal totalAmount) {

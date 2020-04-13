@@ -11,23 +11,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * 获取有效的订单
- *
  * @author 王念
- * @create 2020-04-08 21:26
+ * @create 2020-04-13 20:15
  */
 @Service
-public class ValidOrderTypeServiceImpl implements OmsOrderTypeService, InitializingBean {
+public class WaitDeliverOrderTypeImpl implements OmsOrderTypeService, InitializingBean {
     @Autowired
     private OmsOrderDao orderDao;
 
     @Override
     public List<OmsOrderWithItemDTO> list(Long memberId) {
-        return orderDao.getValidOrderListWithItem(memberId);
+        return orderDao.getWaitDeliverOrderListWithItem(memberId);
     }
 
     @Override
-    public void afterPropertiesSet() {
-        OrderTypeServiceFactory.register(0, this);
+    public void afterPropertiesSet() throws Exception {
+        OrderTypeServiceFactory.register(2, this);
     }
 }

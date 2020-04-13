@@ -11,16 +11,16 @@ import java.util.concurrent.ConcurrentHashMap;
  * @create 2020-04-08 21:27
  */
 public class OrderTypeServiceFactory {
-    private static Map<String, OmsOrderTypeService> services = new ConcurrentHashMap<>(8);
+    private static Map<Integer, OmsOrderTypeService> services = new ConcurrentHashMap<>(8);
 
     private OrderTypeServiceFactory() {
     }
 
-    public static OmsOrderTypeService getOmsOrderTypeServiceByType(String orderType) {
+    public static OmsOrderTypeService getOmsOrderTypeServiceByType(Integer orderType) {
         return services.get(orderType);
     }
 
-    public static void register(String orderType, OmsOrderTypeService orderTypeService) {
+    public static void register(Integer orderType, OmsOrderTypeService orderTypeService) {
         if (StringUtils.isEmpty(orderType))
             throw new RuntimeException("userType can't be null");
         services.put(orderType, orderTypeService);
