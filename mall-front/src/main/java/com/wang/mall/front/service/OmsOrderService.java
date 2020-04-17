@@ -5,7 +5,9 @@ import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
 import com.wang.mall.front.domain.OrderQueryParam;
 import com.wang.mall.front.dto.OmsOrderWithItemDTO;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.List;
 
 /**
@@ -36,4 +38,14 @@ public interface OmsOrderService {
      * 根据用户ID查询订单
      */
     List<OmsOrderWithItemDTO> getOrderWithItemByMemberId(Integer orderType);
+
+    /**
+     * 删除订单
+     */
+    Integer deleteOrder(Long orderId);
+    /**
+     * 订单支付
+     */
+    String payOrder(String orderSn);
+
 }

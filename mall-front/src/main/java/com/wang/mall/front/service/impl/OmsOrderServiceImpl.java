@@ -10,6 +10,8 @@ import com.wang.mall.front.domain.OmsOrderInfoResult;
 import com.wang.mall.front.domain.OrderParam;
 import com.wang.mall.front.domain.OrderQueryParam;
 import com.wang.mall.front.dto.OmsOrderWithItemDTO;
+import com.wang.mall.front.exception.OrderNotFoundException;
+import com.wang.mall.front.exception.OrderTimeOutException;
 import com.wang.mall.front.exception.PmsSkuStockNotFoundException;
 import com.wang.mall.front.exception.PmsSkuStockUnderStockException;
 import com.wang.mall.front.factory.OrderTypeServiceFactory;
@@ -120,6 +122,13 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         log.info("取消订单:{}", orderSn);
         OmsOrderExample example = new OmsOrderExample();
         example.createCriteria().andOrderSnEqualTo(orderSn);
+        //先判断订单是否已经支付
+        List<OmsOrder> omsOrderList = orderMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(omsOrderList))
+            return;
+        if ((!omsOrderList.get(0).getStatus().equals(0)))
+            //订单状态不是待支付状态
+            return;
         //修改订单状态为已关闭
         OmsOrder order = OmsOrder.builder().status(4).build();
         orderMapper.updateByExampleSelective(order, example);
@@ -129,7 +138,6 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         List<OmsOrderItem> orderItemList = orderItemMapper.selectByExample(orderItemExample);
         if (CollectionUtils.isEmpty(orderItemList))
             return;
-        orderItemList.forEach(System.out::println);
         skuStockDao.cancelPmsSkuStock(orderItemList);
 
     }
@@ -138,6 +146,34 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     public List<OmsOrderWithItemDTO> getOrderWithItemByMemberId(Integer orderType) {
         UmsMember currentMember = memberService.getCurrentMember();
         return OrderTypeServiceFactory.getOmsOrderTypeServiceByType(orderType).list(currentMember.getId());
+    }
+
+    @Override
+    public Integer deleteOrder(Long orderId) {
+        //将订单和订单商品标记为删除状态
+        OmsOrder order = OmsOrder.builder().id(orderId).deleteStatus(1).build();
+        return orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Override
+    public String payOrder(String orderSn) {
+        OmsOrderExample example = new OmsOrderExample();
+        example.createCriteria().andOrderSnEqualTo(orderSn);
+        //确认订单是否超时
+        List<OmsOrder> orderList = orderMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(orderList))
+            throw new OrderNotFoundException("订单不存在");
+        OmsOrder order = orderList.get(0);
+        if (order.getStatus() == 4)
+            throw new OrderTimeOutException("订单已经超时");
+        Date currentDate = new Date();
+        orderMapper.updateByExampleSelective(
+                OmsOrder.builder()
+                        .status(1)
+                        .paymentTime(currentDate)
+                        .modifyTime(currentDate).build(),
+                example);
+        return orderSn;
     }
 
     private String createOrder(OrderParam orderParam, List<PmsSkuStock> skuStocks, BigDecimal totalAmount) {
