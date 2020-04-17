@@ -27,4 +27,9 @@ public interface OmsOrderDao {
      * 获取订单详情
      */
     OmsOrderDetail getDetail(@Param("id") Long id);
+
+    /**
+     * @param recentlyDays 最近几天
+     */
+    List<OmsOrder> getRecentlyOrderList(@Param("recentlyDays") Integer recentlyDays);
 }

@@ -86,4 +86,9 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         order.setModifyTime(new Date());
         return orderMapper.updateByPrimaryKeySelective(order);
     }
+
+    @Override
+    public List<OmsOrder> getRecentlyOrderList(Integer recentlyDays) {
+        return orderDao.getRecentlyOrderList(recentlyDays);
+    }
 }

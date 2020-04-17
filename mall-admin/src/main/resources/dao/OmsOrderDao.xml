@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wang.mall.admin.dao.OmsOrderDao">
-    <resultMap id="orderDetailResultMap" type="com.wang.mall.admin.dto.OmsOrderDetail" extends="com.wang.mall.mapper.OmsOrderMapper.BaseResultMap">
-        <collection property="orderItemList" resultMap="com.wang.mall.mapper.OmsOrderItemMapper.BaseResultMap" columnPrefix="item_"/>
+    <resultMap id="orderDetailResultMap" type="com.wang.mall.admin.dto.OmsOrderDetail"
+               extends="com.wang.mall.mapper.OmsOrderMapper.BaseResultMap">
+        <collection property="orderItemList" resultMap="com.wang.mall.mapper.OmsOrderItemMapper.BaseResultMap"
+                    columnPrefix="item_"/>
     </resultMap>
     <select id="getList" resultMap="com.wang.mall.mapper.OmsOrderMapper.BaseResultMap">
         SELECT *
@@ -78,5 +80,13 @@
         WHERE
             o.id = #{id}
         ORDER BY oi.id ASC
+    </select>
+    <select id="getRecentlyOrderList" resultMap="com.wang.mall.mapper.OmsOrderMapper.BaseResultMap">
+        SELECT
+        *
+        FROM
+        oms_order
+        WHERE
+        DATE_SUB( CURDATE(), INTERVAL #{recentlyDays} DAY ) &lt;= date(create_time)
     </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.wang.mall.admin.dto.OmsOrderDetail;
 import com.wang.mall.admin.dto.OmsOrderQueryParam;
 import com.wang.mall.admin.dto.OmsReceiverInfoParam;
 import com.wang.mall.model.OmsOrder;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,31 +20,35 @@ public interface OmsOrderService {
     /**
      * 订单查询
      */
-    List<OmsOrder>list (OmsOrderQueryParam orderQueryParam,Integer pageSize, Integer pageNum);
+    List<OmsOrder> list(OmsOrderQueryParam orderQueryParam, Integer pageSize, Integer pageNum);
+
     /**
      * 批量发货
      */
     @Transactional
     int delivery(List<OmsOrderDeliveryParam> deliveryParamList);
+
     /**
      * 批量删除
      */
     int delete(List<Long> ids);
+
     /**
      * 批量关闭订单
      */
     @Transactional
     int close(List<Long> ids);
+
     /**
      * 获取指定订单详情
      */
     OmsOrderDetail detail(Long id);
+
     /**
      * 修改订单收货人信息
      */
     @Transactional
     int updateReceiverInfo(OmsReceiverInfoParam receiverInfoParam);
-
 
 
     /**
@@ -52,4 +57,8 @@ public interface OmsOrderService {
     @Transactional
     int updateNote(Long id, String note, Integer status);
 
+    /**
+     * @param recentlyDays 最近几天
+     */
+    List<OmsOrder> getRecentlyOrderList(Integer recentlyDays);
 }

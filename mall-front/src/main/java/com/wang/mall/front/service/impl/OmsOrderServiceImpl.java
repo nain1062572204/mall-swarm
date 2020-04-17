@@ -170,6 +170,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         orderMapper.updateByExampleSelective(
                 OmsOrder.builder()
                         .status(1)
+                        .payType(1)
                         .paymentTime(currentDate)
                         .modifyTime(currentDate).build(),
                 example);
