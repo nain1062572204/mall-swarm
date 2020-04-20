@@ -14,7 +14,7 @@ import java.util.List;
  * @author 王念
  * @create 2020-02-13 23:18
  */
-@Api(tags = "SmsHomeAdvertiseController", description = "首页轮播管理")
+@Api(tags = "SmsHomeAdvertiseController", description = "广告管理")
 @RestController
 @RequestMapping("/advertise")
 public class SmsHomeAdvertiseController {

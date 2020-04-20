@@ -5,6 +5,7 @@ import com.wang.mall.admin.dto.OmsOrderDetail;
 import com.wang.mall.admin.dto.OmsOrderQueryParam;
 import com.wang.mall.model.OmsOrder;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -32,4 +33,9 @@ public interface OmsOrderDao {
      * @param recentlyDays 最近几天
      */
     List<OmsOrder> getRecentlyOrderList(@Param("recentlyDays") Integer recentlyDays);
+
+    /**
+     * 根据订单状态获取订单数量
+     */
+    Integer getOrderTotalByStatus(@Param("status") Integer status);
 }

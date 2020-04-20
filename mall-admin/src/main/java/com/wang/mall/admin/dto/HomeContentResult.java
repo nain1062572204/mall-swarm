@@ -1,9 +1,7 @@
 package com.wang.mall.admin.dto;
 
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -14,22 +12,24 @@ import java.util.Date;
  * @author 王念
  * @create 2020-04-17 14:59
  */
-@Data
-@Builder
-@NoArgsConstructor
+@Getter
+@Setter
 public class HomeContentResult {
+    public HomeContentResult() {
+    }
+
+    public HomeContentResult(SalesStatistics salesStatistics, WaitHandleTransaction waitHandleTransaction, Products products, Users users, OrderStatistics orderStatistics) {
+        this.salesStatistics = salesStatistics;
+        this.waitHandleTransaction = waitHandleTransaction;
+        this.products = products;
+        this.users = users;
+        this.orderStatistics = orderStatistics;
+    }
+
     /**
-     * 今日订单数
+     * 销售统计
      */
-    private Integer todayOrderTotal;
-    /**
-     * 今日销售额
-     */
-    private BigDecimal todaySalesAmount;
-    /**
-     * 昨日销售额
-     */
-    private BigDecimal yesterdaySalesAmount;
+    private SalesStatistics salesStatistics;
     /**
      * 待处理事务
      */
@@ -48,104 +48,131 @@ public class HomeContentResult {
     private OrderStatistics orderStatistics;
 
     /**
+     * 销售统计类
+     */
+    @Getter
+    @Setter
+    public static class SalesStatistics {
+        /**
+         * 今日订单数
+         */
+        private int todayOrderTotal;
+        /**
+         * 今日销售额
+         */
+        private BigDecimal todaySalesAmount = BigDecimal.ZERO;
+        /**
+         * 昨日销售额
+         */
+        private BigDecimal yesterdaySalesAmount = BigDecimal.ZERO;
+        /**
+         * 近七天销售额
+         */
+        private BigDecimal weekSalesAmount = BigDecimal.ZERO;
+
+    }
+
+    /**
      * 待处理事务类
      */
-    @Builder
-    @Data
-    static class WaitHandleTransaction {
+    @Getter
+    @Setter
+    public static class WaitHandleTransaction {
         /**
          * 待付款订单
          */
-        private Integer waitPayOrderTotal;
+        private int waitPayOrderTotal;
         /**
          * 待发货定单
          */
-        private Integer waitDeliverOrderTotal;
+        private int waitDeliverOrderTotal;
         /**
          * 待收货订单
          */
-        private Integer waitSignOrderTotal;
+        private int waitSignOrderTotal;
         /**
          * 已完成订单
          */
-        private Integer completeOrderTotal;
+        private int completeOrderTotal;
         /**
          * 新增缺货登记
          */
-        private Integer wantBook;
+        private int wantBook;
         /**
          * 待处理退货订单
          */
-        private Integer waitHandleReturnOrderTotal;
+        private int waitHandleReturnOrderTotal;
         /**
          * 待确认收货订单
          */
-        private Integer waitConfirmOrderTotal;
+        private int waitConfirmOrderTotal;
         /**
          * 待处理退款
          */
-        private Integer waitHandelReturnMoneyOrderTotal;
+        private int waitHandelReturnMoneyOrderTotal;
         /**
          * 即将到期广告位
          */
-        private Integer expireAdvertiseTotal;
+        private int expireAdvertiseTotal;
+
     }
 
     /**
      * 商品总览
      */
-    @Builder
-    @Data
-    static class Products {
+    @Getter
+    @Setter
+    public static class Products {
         /**
          * 已上架
          */
-        private Integer publishTotal;
+        private int publishTotal;
         /**
          * 已下架
          */
-        private Integer noPublishTotal;
+        private int noPublishTotal;
         /**
          * 库存紧张
          */
-        private Integer lowStockTotal;
+        private int lowStockTotal;
         /**
          * 所有商品数量
          */
-        private Integer allProductTotal;
+        private int allProductTotal;
+
     }
 
     /**
      * 用户总览类
      */
-    @Builder
-    @Data
-    static class Users {
+    @Getter
+    @Setter
+    public static class Users {
         /**
          * 今日新增用户
          */
-        private Integer todayAddTotal;
+        private int todayAddTotal;
         /**
          * 昨日新增
          */
-        private Integer yesterdayAddTotal;
+        private int yesterdayAddTotal;
         /**
          * 本月新增
          */
-        private Integer monthAddTotal;
+        private int monthAddTotal;
         /**
          * 用户总数
          */
-        private Integer allTotal;
+        private int allTotal;
 
     }
 
     /**
      * 订单统计类
      */
-    @Builder
-    @Data
-    static class OrderStatistics {
+    @Getter
+    @Setter
+    public static class OrderStatistics {
         /**
          * 订单日期
          */
@@ -153,11 +180,12 @@ public class HomeContentResult {
         /**
          * 订单数量
          */
-        private Integer orderCount;
+        private int orderCount;
         /**
          * 订单总额
          */
-        private BigDecimal orderAmount;
+        private BigDecimal orderAmount = BigDecimal.ZERO;
+
     }
 
 }
