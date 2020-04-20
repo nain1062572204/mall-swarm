@@ -2,6 +2,9 @@ package com.wang.mall.admin.service;
 
 import com.wang.mall.admin.dto.HomeContentResult;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * 首页内容service
  *
@@ -10,4 +13,6 @@ import com.wang.mall.admin.dto.HomeContentResult;
  */
 public interface HomeService {
     HomeContentResult content();
+
+    List<HomeContentResult.OrderStatistics> getOrderStatisticsByDate(Date startDate, Date endDate);
 }

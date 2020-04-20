@@ -5,21 +5,20 @@ import com.wang.mall.admin.dao.SmsHomeAdvertiseDao;
 import com.wang.mall.admin.dao.UmsMemberDao;
 import com.wang.mall.admin.dto.HomeContentResult;
 import com.wang.mall.admin.service.HomeService;
-import com.wang.mall.model.OmsOrder;
+import com.wang.mall.admin.util.DateUtil;
+import com.wang.mall.mapper.OmsOrderMapper;
+import com.wang.mall.mapper.PmsProductMapper;
+import com.wang.mall.mapper.UmsMemberMapper;
+import com.wang.mall.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import javax.xml.crypto.Data;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.SimpleFormatter;
 
 /**
  * @author 王念
@@ -30,10 +29,15 @@ public class HomeServiceImpl implements HomeService {
     @Autowired
     private OmsOrderDao orderDao;
     @Autowired
+    private OmsOrderMapper orderMapper;
+    @Autowired
     private UmsMemberDao memberDao;
     @Autowired
+    private PmsProductMapper productMapper;
+    @Autowired
+    private UmsMemberMapper memberMapper;
+    @Autowired
     private SmsHomeAdvertiseDao advertiseDao;
-    private SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
     /**
      * 订单状态：0->待付款；1->待发货；2->已发货；3->已完成；4->已关闭；5->无效订单
      */
@@ -47,6 +51,22 @@ public class HomeServiceImpl implements HomeService {
     @Override
 
     public HomeContentResult content() {
+        /*
+          本月订单总数
+         */
+        int currentMonthOrderTotal = 0;
+        /*
+         * 本周订单数
+         */
+        int currentWeekOrderTotal = 0;
+        /*
+         * 本月销售额
+         */
+        BigDecimal currentMonthSalesAmount = BigDecimal.ZERO;
+        /*
+         * 本周销售额
+         */
+        BigDecimal currentWeekSalesAmount = BigDecimal.ZERO;
         final HomeContentResult result = new HomeContentResult();
         /*
           销售统计
@@ -64,10 +84,6 @@ public class HomeServiceImpl implements HomeService {
           用户总览
          */
         final HomeContentResult.Users users = new HomeContentResult.Users();
-        /*
-          订单统计
-         */
-        final HomeContentResult.OrderStatistics orderStatistics = new HomeContentResult.OrderStatistics();
         //查询近七日订单
         final List<OmsOrder> recentlyOrderList = orderDao.getRecentlyOrderList(7);
         //设置本周订单数，即查询结果数
@@ -86,10 +102,10 @@ public class HomeServiceImpl implements HomeService {
             //本周销售额
             BigDecimal weekSalesAmount = BigDecimal.ZERO;
             for (OmsOrder order : recentlyOrderList) {
-                if (isToday(order.getCreateTime())) {
+                if (DateUtil.isToday(order.getCreateTime())) {
                     todaySalesAmount = todaySalesAmount.add(order.getTotalAmount());
                 }
-                if (isYesterday(order.getCreateTime())) {
+                if (DateUtil.isYesterday(order.getCreateTime())) {
                     yesterDaySalesAmount = yesterDaySalesAmount.add(order.getTotalAmount());
                 }
                 weekSalesAmount = weekSalesAmount.add(order.getTotalAmount());
@@ -101,28 +117,90 @@ public class HomeServiceImpl implements HomeService {
         waitHandleTransaction.setCompleteOrderTotal(orderDao.getOrderTotalByStatus(COMPLETED_ORDER_TYPE));
         waitHandleTransaction.setWaitConfirmOrderTotal(orderDao.getOrderTotalByStatus(WAIT_CONFIRM_ORDER_TYPE));
         waitHandleTransaction.setExpireAdvertiseTotal(advertiseDao.getExpireAdvertise());
-        return new HomeContentResult(salesStatistics, waitHandleTransaction, products, users, orderStatistics);
+        //获取已上架商品数量
+        products.setPublishTotal((int) getPublishedProductTotal());
+        //获取已下架商品数量
+        products.setNoPublishTotal((int) getNoPublishedProductTotal());
+        //获取所有商品数量
+        products.setAllProductTotal((int) productMapper.countByExample(new PmsProductExample()));
+        //获取最近一个月用户数
+        final List<UmsMember> recentlyMemberList = memberDao.getRecentlyUser(30);
+        if (CollectionUtils.isEmpty(recentlyMemberList)) {
+            users.setTodayAddTotal(0);
+            users.setTodayAddTotal(0);
+            users.setMonthAddTotal(0);
+        } else {
+            int todayAdd = 0;
+            int yesterdayAdd = 0;
+            for (UmsMember member : recentlyMemberList) {
+                if (DateUtil.isToday(member.getCreateTime()))
+                    todayAdd++;
+                if (DateUtil.isYesterday(member.getCreateTime()))
+                    yesterdayAdd++;
+            }
+            users.setTodayAddTotal(todayAdd);
+            users.setYesterdayAddTotal(yesterdayAdd);
+            users.setMonthAddTotal(recentlyMemberList.size());
+        }
+        //设置用户总数
+        users.setAllTotal((int) getAllMemberTotal());
+        //获取订单统计,默认获取最近七天订单
+        final List<HomeContentResult.OrderStatistics> orderStatisticsList
+                = getOrderStatisticsByDate(new Date(), DateUtil.getBeforeDate(7));
+
+        return new HomeContentResult(salesStatistics,
+                waitHandleTransaction,
+                products,
+                users,
+                orderStatisticsList);
     }
 
     /**
-     * 判断一个时期是否为当前日期
+     * 查询指定时间范围的订单
      *
-     * @param date 待判断日期
+     * @param startDate 开始时间
+     * @param endDate   结束时间
+     * @return
      */
-    private boolean isToday(Date date) {
-
-        return sf.format(date).equals(sf.format(new Date()));
+    @Override
+    public List<HomeContentResult.OrderStatistics> getOrderStatisticsByDate(Date startDate, Date endDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        OmsOrderExample example = new OmsOrderExample();
+        example.createCriteria().
+                andStatusEqualTo(3)
+                .andDeleteStatusEqualTo(0)
+                .andCreateTimeBetween(startDate, endDate);
+        final List<OmsOrder> orderList = orderMapper.selectByExample(example);
+        final List<String> dayList = DateUtil.getEveryday(dateFormat.format(endDate), dateFormat.format(startDate));
+        final List<HomeContentResult.OrderStatistics> result = new ArrayList<>(dayList.size());
+        for (String date : dayList) {
+            HomeContentResult.OrderStatistics orderStatistics = new HomeContentResult.OrderStatistics();
+            orderStatistics.setDate(date);
+            for (OmsOrder order : orderList) {
+                if (DateUtil.isOneDay(date, order.getCreateTime())) {
+                    orderStatistics.setOrderAmount(orderStatistics.getOrderAmount().add(order.getPayAmount()));
+                    orderStatistics.setOrderCount(orderStatistics.getOrderCount() + 1);
+                }
+            }
+            result.add(orderStatistics);
+        }
+        return result;
     }
 
-    /**
-     * 判断一个日期是否是昨日
-     */
-    private boolean isYesterday(Date date) {
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        calendar.add(Calendar.DATE, +1);
-        return isToday(calendar.getTime());
-
-
+    private long getAllMemberTotal() {
+        return memberMapper.countByExample(new UmsMemberExample());
     }
+
+    private long getNoPublishedProductTotal() {
+        PmsProductExample example = new PmsProductExample();
+        example.createCriteria().andPublishStatusEqualTo(0);
+        return productMapper.countByExample(example);
+    }
+
+    private long getPublishedProductTotal() {
+        PmsProductExample example = new PmsProductExample();
+        example.createCriteria().andPublishStatusEqualTo(1);
+        return productMapper.countByExample(example);
+    }
+
 }

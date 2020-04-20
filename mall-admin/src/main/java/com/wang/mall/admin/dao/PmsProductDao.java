@@ -14,4 +14,8 @@ public interface PmsProductDao {
      * 获取商品编辑信息
      */
     PmsProductResult getUpdateInfo(@Param("id") Long id);
+    /**
+     * 获取已上架商品数量
+     */
+    Integer get(@Param("status") Integer status);
 }

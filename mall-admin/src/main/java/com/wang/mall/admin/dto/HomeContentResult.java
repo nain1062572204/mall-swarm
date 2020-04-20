@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 首页数据返回内容
@@ -14,18 +15,9 @@ import java.util.Date;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class HomeContentResult {
-    public HomeContentResult() {
-    }
-
-    public HomeContentResult(SalesStatistics salesStatistics, WaitHandleTransaction waitHandleTransaction, Products products, Users users, OrderStatistics orderStatistics) {
-        this.salesStatistics = salesStatistics;
-        this.waitHandleTransaction = waitHandleTransaction;
-        this.products = products;
-        this.users = users;
-        this.orderStatistics = orderStatistics;
-    }
-
     /**
      * 销售统计
      */
@@ -45,7 +37,7 @@ public class HomeContentResult {
     /**
      * 订单统计
      */
-    private OrderStatistics orderStatistics;
+    private List<OrderStatistics> orderStatisticList;
 
     /**
      * 销售统计类
@@ -176,11 +168,11 @@ public class HomeContentResult {
         /**
          * 订单日期
          */
-        private Date date;
+        private String date;
         /**
          * 订单数量
          */
-        private int orderCount;
+        private int orderCount = 0;
         /**
          * 订单总额
          */

@@ -34,6 +34,9 @@
         LEFT JOIN pms_product_attribute_value a ON a.product_id=p.id
         WHERE p.id=#{id}
     </select>
+    <select id="getProductTotalByStatus" resultType="int">
+
+    </select>
 
 
 </mapper>
