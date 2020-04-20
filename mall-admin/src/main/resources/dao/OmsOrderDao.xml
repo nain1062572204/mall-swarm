@@ -88,6 +88,7 @@
         oms_order
         WHERE
         DATE_SUB( CURDATE(), INTERVAL #{recentlyDays} DAY ) &lt;= date(create_time)
+        AND `status`=3
     </select>
     <select id="getOrderTotalByStatus" resultType="int">
         SELECT count(DISTINCT `status`)  FROM oms_order WHERE `status` = #{status}

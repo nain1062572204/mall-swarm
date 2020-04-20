@@ -52,23 +52,6 @@ public class HomeServiceImpl implements HomeService {
 
     public HomeContentResult content() {
         /*
-          本月订单总数
-         */
-        int currentMonthOrderTotal = 0;
-        /*
-         * 本周订单数
-         */
-        int currentWeekOrderTotal = 0;
-        /*
-         * 本月销售额
-         */
-        BigDecimal currentMonthSalesAmount = BigDecimal.ZERO;
-        /*
-         * 本周销售额
-         */
-        BigDecimal currentWeekSalesAmount = BigDecimal.ZERO;
-        final HomeContentResult result = new HomeContentResult();
-        /*
           销售统计
          */
         final HomeContentResult.SalesStatistics salesStatistics = new HomeContentResult.SalesStatistics();
@@ -86,8 +69,6 @@ public class HomeServiceImpl implements HomeService {
         final HomeContentResult.Users users = new HomeContentResult.Users();
         //查询近七日订单
         final List<OmsOrder> recentlyOrderList = orderDao.getRecentlyOrderList(7);
-        //设置本周订单数，即查询结果数
-        salesStatistics.setTodayOrderTotal(recentlyOrderList.size());
         if (CollectionUtils.isEmpty(recentlyOrderList)) {
             //如果近7日没有订单，则销售统计均为零
             salesStatistics.setTodayOrderTotal(0);
@@ -101,15 +82,22 @@ public class HomeServiceImpl implements HomeService {
             BigDecimal yesterDaySalesAmount = BigDecimal.ZERO;
             //本周销售额
             BigDecimal weekSalesAmount = BigDecimal.ZERO;
+            //今日订单数
+            int todayOrderTotal = 0;
             for (OmsOrder order : recentlyOrderList) {
                 if (DateUtil.isToday(order.getCreateTime())) {
                     todaySalesAmount = todaySalesAmount.add(order.getTotalAmount());
+                    todayOrderTotal++;
                 }
                 if (DateUtil.isYesterday(order.getCreateTime())) {
                     yesterDaySalesAmount = yesterDaySalesAmount.add(order.getTotalAmount());
                 }
                 weekSalesAmount = weekSalesAmount.add(order.getTotalAmount());
             }
+            salesStatistics.setTodayOrderTotal(todayOrderTotal);
+            salesStatistics.setTodaySalesAmount(todaySalesAmount);
+            salesStatistics.setYesterdaySalesAmount(yesterDaySalesAmount);
+            salesStatistics.setWeekSalesAmount(weekSalesAmount);
         }
         waitHandleTransaction.setWaitPayOrderTotal(orderDao.getOrderTotalByStatus(WAIT_PAY_ORDER_TYPE));
         waitHandleTransaction.setWaitDeliverOrderTotal(orderDao.getOrderTotalByStatus(WAIT_DELIVER_ORDER_TYPE));
@@ -146,7 +134,7 @@ public class HomeServiceImpl implements HomeService {
         users.setAllTotal((int) getAllMemberTotal());
         //获取订单统计,默认获取最近七天订单
         final List<HomeContentResult.OrderStatistics> orderStatisticsList
-                = getOrderStatisticsByDate(new Date(), DateUtil.getBeforeDate(7));
+                = getOrderStatisticsByDate(DateUtil.getBeforeDate(7), new Date());
 
         return new HomeContentResult(salesStatistics,
                 waitHandleTransaction,
@@ -171,7 +159,7 @@ public class HomeServiceImpl implements HomeService {
                 .andDeleteStatusEqualTo(0)
                 .andCreateTimeBetween(startDate, endDate);
         final List<OmsOrder> orderList = orderMapper.selectByExample(example);
-        final List<String> dayList = DateUtil.getEveryday(dateFormat.format(endDate), dateFormat.format(startDate));
+        final List<String> dayList = DateUtil.getEveryday(dateFormat.format(startDate),dateFormat.format(endDate));
         final List<HomeContentResult.OrderStatistics> result = new ArrayList<>(dayList.size());
         for (String date : dayList) {
             HomeContentResult.OrderStatistics orderStatistics = new HomeContentResult.OrderStatistics();

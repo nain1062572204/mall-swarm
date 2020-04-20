@@ -167,9 +167,8 @@ public class DateUtil {
         return new Date();
     }
 
-    public static void main(String[] args) {
-        Date beforeDate = getBeforeDate(7);
-        List<String> everyday = getEveryday(dateFormat.format(beforeDate), dateFormat.format(new Date()));
+    public static void main(String[] args) throws ParseException {
+        List<String> everyday = getEveryday(dateFormat.format("Mon Apr 13 00:00:00 CST 2020"), dateFormat.format("Mon Apr 20 00:00:00 CST 2020"));
         for (String s : everyday) {
             System.out.println(s);
         }
