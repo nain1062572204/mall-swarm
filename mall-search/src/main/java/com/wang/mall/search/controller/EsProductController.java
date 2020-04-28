@@ -1,6 +1,5 @@
 package com.wang.mall.search.controller;
 
-import cn.hutool.core.thread.ThreadUtil;
 import com.wang.mall.common.api.CommonPage;
 import com.wang.mall.common.api.CommonResult;
 import com.wang.mall.search.domain.EsProduct;
@@ -10,13 +9,11 @@ import com.wang.mall.search.service.EsProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 王念

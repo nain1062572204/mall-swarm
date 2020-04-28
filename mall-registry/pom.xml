@@ -19,9 +19,13 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>1.1.0</version>
+                <version>${docker.maven.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>build-image</id>
@@ -32,11 +36,10 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <imageName>mall-swarm/${project.artifactId}:${project.version}</imageName>
-                    <dockerHost>http://39.97.118.107:2375</dockerHost>
+                    <imageName>mall/${project.artifactId}:${project.version}</imageName>
+                    <dockerHost>${docker.host}</dockerHost>
                     <baseImage>java:8</baseImage>
-                    <entryPoint>["java", "-jar","/${project.build.finalName}.jar"]
-                    </entryPoint>
+                    <entryPoint>["java", "-jar", "-Dspring.profiles.active=prod","/${project.build.finalName}.jar"]</entryPoint>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
