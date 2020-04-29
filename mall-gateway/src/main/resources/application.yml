@@ -9,6 +9,13 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true  #使用小写service-id
+eureka:
+  client:
+    service-url:
+      defaultZone: http://182.92.129.6:8761/eureka/
+    registry-fetch-interval-seconds: 10
+  instance:
+    prefer-ip-address: true
 logging:
   level:
     org.springframework.cloud.gateway: debug
