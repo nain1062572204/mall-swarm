@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @create 2020-04-08 21:27
  */
 public class OrderTypeServiceFactory {
-    private static Map<Integer, OmsOrderTypeService> services = new ConcurrentHashMap<>(8);
+    private static final Map<Integer, OmsOrderTypeService> services = new ConcurrentHashMap<>(8);
 
     private OrderTypeServiceFactory() {
     }

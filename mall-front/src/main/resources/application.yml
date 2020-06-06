@@ -1,7 +1,7 @@
 eureka:
   client:
     service-url:
-      defaultZone: http://182.92.129.6:8761/eureka/
+      defaultZone: http://localhost:8761/eureka/
   instance:
     prefer-ip-address: true
 server:
@@ -10,8 +10,8 @@ spring:
   application:
     name: mall-front
   datasource:
-    url: jdbc:mysql://182.92.129.6:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
-    username: rose
+    url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
     password: 106257
     druid:
       initial-size: 5 #连接池初始化大小
@@ -26,7 +26,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
   rabbitmq:
-    host: 182.92.129.6 # rabbitmq的连接地址
+    host: localhost # rabbitmq的连接地址
     port: 5672 # rabbitmq的连接端口号
     virtual-host: /mall # rabbitmq的虚拟host
     username: mall # rabbitmq的用户名

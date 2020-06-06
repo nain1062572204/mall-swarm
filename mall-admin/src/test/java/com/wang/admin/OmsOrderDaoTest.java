@@ -18,7 +18,7 @@ public class OmsOrderDaoTest {
     private OmsOrderService orderService;
     @Test
     public void test() {
-        List<OmsOrder> orderList = orderService.getRecentlyOrderList(15);
+        List<OmsOrder> orderList = orderService.getRecentlyOrderList(30);
         orderList.forEach(System.out::println);
     }
 }
