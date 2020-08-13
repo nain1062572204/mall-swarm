@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7a0567c9-e221-489e-923b-1fba17e7a3ff" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/mall-admin/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mall-admin/src/main/resources/application.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="F:\mvnRepository" />
+        <option name="mavenHome" value="$PROJECT_DIR$/../../apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="C:\Users\Rose\.m2\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1cwo8TMRk9S3GAZVu6c9K4uNdsl" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../damddos" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.AdminApplication">
+    <configuration name="AdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="mall-admin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.wang.mall.admin.AdminApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CacheApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="mall-cache" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.wang.mall.cache.CacheApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FrontApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="mall-front" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.wang.mall.front.FrontApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="mall-gateway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.wang.mall.GatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RegistryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="mall-registry" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.wang.mall.RegistryApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SearchApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="mall-search" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.wang.mall.search.SearchApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SecurityApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="mall-security" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.wang.mall.security.SecurityApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Spring Boot.AdminApplication" />
+      <item itemvalue="Spring Boot.CacheApplication" />
+      <item itemvalue="Spring Boot.FrontApplication" />
+      <item itemvalue="Spring Boot.GatewayApplication" />
+      <item itemvalue="Spring Boot.RegistryApplication" />
+      <item itemvalue="Spring Boot.SearchApplication" />
+      <item itemvalue="Spring Boot.SecurityApplication" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7a0567c9-e221-489e-923b-1fba17e7a3ff" name="Default Changelist" comment="" />
+      <created>1591448856580</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591448856580</updated>
+      <workItem from="1591448863124" duration="690000" />
+      <workItem from="1591449598171" duration="960000" />
+      <workItem from="1591453293229" duration="417000" />
+      <workItem from="1591749122703" duration="825000" />
+      <workItem from="1593823141701" duration="140000" />
+      <workItem from="1595500002083" duration="203000" />
+      <workItem from="1596433070742" duration="5738000" />
+      <workItem from="1596614759796" duration="102000" />
+      <workItem from="1597300723746" duration="99000" />
+    </task>
+    <task id="LOCAL-00001" summary="隐藏accessKeySecret">
+      <created>1593823257614</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1593823257614</updated>
+    </task>
+    <task id="LOCAL-00002" summary="隐藏accessKeySecret">
+      <created>1595500102248</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1595500102248</updated>
+    </task>
+    <task id="LOCAL-00003" summary="隐藏accessKeySecret">
+      <created>1595500151733</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1595500151733</updated>
+    </task>
+    <task id="LOCAL-00004" summary="隐藏accessKeySecret">
+      <created>1597300757229</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1597300757229</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="隐藏accessKeySecret" />
+    <option name="LAST_COMMIT_MESSAGE" value="隐藏accessKeySecret" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591749951505">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="174" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1591749951505" />
+    <state x="562" y="84" key="CommitChangelistDialog2" timestamp="1597300756101">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="562" y="84" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1597300756101" />
+    <state x="96" y="96" width="1728" height="848" key="DiffContextDialog" timestamp="1597300822009">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="96" y="96" width="1728" height="848" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1597300822009" />
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1596448557923">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1596448557923" />
+    <state width="1576" height="728" key="GridCell.Tab.0.bottom" timestamp="1596448561159">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1576" height="728" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596448561159" />
+    <state width="1576" height="728" key="GridCell.Tab.0.center" timestamp="1596448561159">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1576" height="728" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596448561159" />
+    <state width="1576" height="728" key="GridCell.Tab.0.left" timestamp="1596448561159">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1576" height="728" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596448561159" />
+    <state width="1576" height="728" key="GridCell.Tab.0.right" timestamp="1596448561159">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1576" height="728" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596448561159" />
+    <state width="1576" height="728" key="GridCell.Tab.1.bottom" timestamp="1596448561159">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1576" height="728" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1596448561159" />
+    <state width="1576" height="728" key="GridCell.Tab.1.center" timestamp="1596448561159">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1576" height="728" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1596448561159" />
+    <state width="1576" height="728" key="GridCell.Tab.1.left" timestamp="1596448561159">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1576" height="728" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1596448561159" />
+    <state width="1576" height="728" key="GridCell.Tab.1.right" timestamp="1596448561159">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1576" height="728" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1596448561159" />
+    <state x="461" y="164" key="SettingsEditor" timestamp="1595500142632">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1595500142632" />
+    <state x="556" y="255" key="Vcs.Push.Dialog.v2" timestamp="1597300767736">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="556" y="255" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1597300767736" />
+    <state x="640" y="306" key="git4idea.merge.GitPullDialog" timestamp="1591449832093">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="640" y="306" key="git4idea.merge.GitPullDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1591449832093" />
+    <state x="338" y="182" key="new project wizard" timestamp="1596441850755">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="338" y="182" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1596441850755" />
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1596438096146">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1596438096146" />
+  </component>
+</project>
